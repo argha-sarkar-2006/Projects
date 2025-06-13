@@ -76,7 +76,7 @@
     }
 
     input[type="checkbox"]:checked + label + .code-box {
-      max-height: 500px;
+      max-height: 1000px;
       padding: 15px;
     }
 
@@ -224,24 +224,113 @@ while True:
 
     <!-- Project 4 -->
     <div class="project">
-      <h3>Project 4: Coming Soon</h3>
+      <h3>Project 4: Books Library With Multiple Functionality</h3>
       <input type="checkbox" id="code4" />
       <label for="code4" class="toggle">Show Code</label>
       <div class="code-box">
         <pre>
-Coming Soon
+class library:
+    def __init__(self):
+        self.title = []
+        self.author = []
+        self.year = []
+    def add_books(self,author, title, year):
+        self.title.append(title)
+        self.author.append(author)
+        self.year.append(year)
+    def number_of_books(self):
+        print(f"Number of books in the library: {len(self.title)}")
+    def show_library(self):
+        print("Books in the library:")
+        for i in range(len(self.title)):
+            print(f"Title: {self.title[i]}\nAuthor: {self.author[i]}\nYear: {self.year[i]}")
+lib=library()
+def user_input():
+    print("1. Add a book")
+    print("2. Show library")
+    print("3. Number of books")
+    print("4. Exit")
+    choice = int(input("Enter your choice: "))
+    if choice == 1:
+        a = input("Enter the name of Book: ")
+        b = input("Enter the name of Author: ")
+        c = int(input("Enter the year of publication: "))
+        lib.add_books(a, b, c)
+    elif choice == 2:
+        if len(lib.title) == 0:
+            print("No books in the library")
+        else:
+          lib.show_library()
+    elif choice == 3:
+        lib.number_of_books()
+    elif choice == 4:
+        exit()
+    else:
+        print("Invalid choice")
+while True:
+    user_input()
+    print("Do you want to continue? (yes/no)")
+    cont = input()
+    if cont.lower() =="yes":
+        user_input()
+    else:
+        break
+    break
+
         </pre>
       </div>
     </div>
 
     <!-- Project 5 -->
     <div class="project">
-      <h3>Project 5: Coming Soon</h3>
+      <h3>Project 5: Stone Paper Sessior Game</h3>
       <input type="checkbox" id="code5" />
       <label for="code5" class="toggle">Show Code</label>
       <div class="code-box">
         <pre>
-Coming Soon
+# stone_paper_scissor.py
+import random
+
+print("Welcome to the game \nType 'start' to start\nType 'quit' to quit")
+
+def game():
+    list1 = ["stone", "paper", "scissor"]
+    
+    while True:
+        print("Choose one of these: stone, paper, scissor")
+        user = input("Enter your choice (or type 'quit' to exit): ").lower()
+        
+        if user == "quit":
+            print("Thanks for playing!")
+            break
+        
+        if user not in list1:
+            print("Invalid input. Please choose stone, paper or scissor.")
+            continue
+        
+        computer = random.choice(list1)
+        print(f"Computer chose: {computer}")
+        
+        if user == computer:
+            print("Draw")
+        elif (user == "stone" and computer == "scissor") or \
+             (user == "paper" and computer == "stone") or \
+             (user == "scissor" and computer == "paper"):
+            print("You win!")
+        else:
+            print("Computer wins!")
+
+# Main loop
+while True:
+    inp = input("Type 'start' to play or 'quit' to exit: ").lower()
+    if inp not in ["start", "quit"]:
+        print("Invalid input. Please type 'start' to play or 'quit' to exit.")
+        continue
+    if inp == "start":
+        game()
+    elif inp == "quit":
+        print("Thanks for playing!")
+        break
         </pre>
       </div>
     </div>
