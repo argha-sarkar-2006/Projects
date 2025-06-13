@@ -172,12 +172,52 @@ writer.close()
 
     <!-- Project 3 -->
     <div class="project">
-      <h3>Project 3: Coming Soon</h3>
+      <h3>Project 3: Guess The Number Game</h3>
       <input type="checkbox" id="code3" />
       <label for="code3" class="toggle">Show Code</label>
       <div class="code-box">
         <pre>
-Coming Soon
+import random
+
+def gandu(numlist1):
+    num1 = random.choice(numlist1)
+    num2 = random.choice(numlist1)
+    if num1 > num2:
+        num1, num2 = num2, num1
+    numlist2 = list(range(num1, num2 + 1))
+    number = random.choice(numlist2)
+    print("Guess The Number....")
+    print(f"The number range is between {num1} to {num2}")
+
+    # Generate 3 wrong answers and 1 correct answer
+    answers = set()
+    answers.add(number)
+    while len(answers) < 4:
+        answers.add(random.choice(numlist2))
+    answers = list(answers)
+    random.shuffle(answers)
+
+    print(f"\n1..{answers[0]}             2..{answers[1]}")
+    print(f"3..{answers[2]}             4..{answers[3]}")
+    try:
+        user = int(input("Enter the option number (1-4): "))
+        if 1 <= user <= 4:
+            if answers[user - 1] == number:
+                print("Congratulations!!!\nYou guessed it right....")
+            else:
+                print("Better Luck Next Time")
+                print(f"The Right Answer Was...{number}")
+        else:
+            print("Invalid option. Please enter a number between 1 and 4.")
+    except ValueError:
+        print("Invalid input. Please enter a number.")
+
+numlist1 = list(range(1, 101))
+while True:
+    gandu(numlist1)
+    play_again = input("Play again? (y/n): ").strip().lower()
+    if play_again != 'y':
+        break
         </pre>
       </div>
     </div>
