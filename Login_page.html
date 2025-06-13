@@ -3,975 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Animated Login Page</title>
     <style>
-   
-        header {padding :5px;
-              font-family : Arial, Helvetica, sans-serif;
-                background-color :antiquewhite;
-                
-                text-align : center;
-                color : #e63434;
-                line-height: 10px;
-        }
-        span {font-family: Arial, Courier;
-            color:rgb(208, 186, 226)
-            /* font-size:20px; */
-        }
-        textarea {font-family: Arial, Helvetica, sans-serif;
-            color: rgb(0, 0, 0);
-            font-size: 12px;
-        }
-        body {background-color: #000000;
-        color:white;}
-        .pulse-btn {
-  background-color: #C5A46D;
-  color: gold;
-    position: absolute; 
-    left: 550px;
-    bottom: 560px;
-  padding: 7px 15px;
-  border: none;
-  animation: pulse 2s infinite ;
-}
-
-
-@keyframes pulse {
-  0% { background-color: #e448dc; }
-  50% { background-color: #9466eb; }
-  100% { background-color: #f59b00; }
-}
-.pulse-btn:hover { 
-   background: transparent;
-  color: gold;
-  padding: 10 px 20px;
-    font-size: 15px;
-    box-shadow: 0 0 15px rgba(248, 248, 248, 0.5);
-  border: 2px solid #C5A46D;
-  transition: all 1s ;
-}
-
-    </style>
-    <style>
-        nav ul {
-            padding: 0;
-            list-style: none;
-            background: #e8491d;
-            text-align: center;
-        }
-        nav li {
-            display: inline;
-            margin: 0 15px;
-        }
-        nav a {
-            color: white;
-            text-decoration: none;
-        }
-        section {
-            margin: 20px 0;
-        }
-        .sample-link {
-            color: #3d17c7;
-            padding: 10px 20px;
-            position:fixed;
-            top: 60px;
-            left: 100px;
-            font-weight: bold;
-            font-size: 30px;
-        }
-        .glow-input1{
-  padding: 12px 15px;
-  border: 2px solid transparent;
-  border-image: linear-gradient( #ff00cc, #3333ff);
-  border-image-slice: 1;
-  border-radius: 4px;
-  background-color: rgba(0, 0, 0, 0.7);
-  color: white;
-  font-size: 16px;
-  position: absolute;
-  left : 20px;
-  top: 400px;
-  transition: all 0.4s ease;
-}
-
-.glow-input1:focus {
-  /* outline: none; */
-  box-shadow: 
-    0 0 15px rgba(255, 0, 204, 0.7),
-    0 0 30px rgba(51, 51, 255, 0.5),
-    inset 0 0 10px rgba(255, 255, 255, 0.2);
-  background-color: rgba(0, 0, 0, 0.9);
-  animation: cyber-glow 0.3s infinite alternate;
-  border-color: white;
-}
-.glow-input2 {
-  padding: 12px 15px;
-  border: 2px solid transparent;
-  border-image: linear-gradient(45deg, #ff00cc, #3333ff);
-  border-image-slice: 1;
-  position: absolute;
-  left: 270px;
-  top:400px;
-  border-radius: 4px;
-  background-color: rgba(0, 0, 0, 0.7);
-  color: white;
-  font-size: 16px;
-  /* text-shadow: 0 0 5px rgba(255, 255, 255, 0.5); */
-  transition: all 1s ease;
-  border-color: white;
-}
-
-.glow-input2:focus {
-  outline: none;
-  box-shadow: 
-    0 0 15px rgba(255, 0, 204, 0.7),
-    0 0 30px rgba(51, 51, 255, 0.5),
-    inset 0 0 10px rgba(255, 255, 255, 0.2);
-  background-color: rgba(0, 0, 0, 0.9);
-  animation: cyber-glow 0.3s infinite alternate;
-  
-}
-
-@keyframes cyber-glow {
-  from {
-    box-shadow: 
-      0 0 15px rgba(255, 0, 204, 0.7),
-      0 0 30px rgba(51, 51, 255, 0.5);
-  }
-  to {
-    box-shadow: 
-      0 0 25px rgba(255, 0, 204, 0.9),
-      0 0 45px rgba(51, 51, 255, 0.7),
-      0 0 60px rgba(51, 51, 255, 0.3);
-  }
-}
-@keyframes cyber-glow {
-  from {
-    box-shadow: 
-      0 0 15px rgba(255, 0, 204, 0.7),
-      0 0 30px rgba(51, 51, 255, 0.5);
-  }
-  to {
-    box-shadow: 
-      0 0 25px rgba(255, 0, 204, 0.9),
-      0 0 45px rgba(51, 51, 255, 0.7),
-      0 0 60px rgba(51, 51, 255, 0.3);
-  }
-}
-.neon-radio {
-  display: flex;
-  align-items: center;
-  cursor: pointer;
-  margin: 0 -15px; /* Horizontal margin now */
-  padding: 7px 12px;
-  position: relative;
-  top: -40px;
- left:-24px;
-  border-radius: 100px;
-  transition: all 0.3s;
-}
-
-.neon-radio:hover {
-  background: rgba(0, 243, 255, 0.1);
-}
-
-.neon-radio input {
-  position: absolute;
-  opacity: 0;
-}
-
-.neon-btn {
-  width: 22px;
-  height: 22px;
-  border: 2px solid #00f3ff;
-  border-radius: 50%;
-  position: relative;
-  transition: all 0.3s;
-  flex-shrink: 0;
-}
-
-.neon-btn::before {
-  content: '';
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  border-radius: 50%;
-  background: #00f3ff;
-  transform: scale(0);
-  opacity: 0;
-  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-}
-
-.neon-label {
-  margin-left: 12px;
-  font-family: 'Courier New', monospace;
-  color: #00f3ff;
-  text-shadow: 0 0 5px rgba(0, 243, 255, 0.5);
-  font-size: 16px;
-  letter-spacing: 1px;
-  white-space: nowrap;
-}
-
-.neon-radio input:checked ~ .neon-btn {
-  border-color: #ff00aa;
-}
-
-.neon-radio input:checked ~ .neon-btn::before {
-  transform: scale(0.6);
-  opacity: 1;
-  background: #ff00aa;
-  animation: neon-pulse 1.5s infinite;
-}
-
-.neon-radio input:checked ~ .neon-label {
-  color: #ff00aa;
-  text-shadow: 0 0 5px rgba(255, 0, 170, 0.5);
-}
-
-@keyframes neon-pulse {
-  0%, 100% { box-shadow: 0 0 5px #ff00aa, 0 0 10px #ff00aa; }
-  50% { box-shadow: 0 0 15px #ff00aa, 0 0 30px #ff00aa; }
-}
-
-/* Layout styles */
-.radio-container {
-  padding: 15px;
-  background:transparent;
-  border-radius: 2px;
-  display: inline-block;
-}
-
-.neon-options-row {
-  display: flex;
-  gap: 20px; /* Space between options */
-}
-
-/* Responsive adjustment */
-@media (max-width: 480px) {
-  .neon-options-row {
-    flex-direction: column;
-    gap: 2px;
-  }
-} 
- .youtube-logo {
-  display: inline-flex;
-  align-items: center;
-  text-decoration: none;
-  cursor: pointer;
-  position:absolute;
-  top: 330px;
-  padding: 10px 15px;
-  border-radius: 8px;
-  transition: all 0.3s ease;
-}
-
-.youtube-logo:hover {
-  transform: scale(1.05);
-  background: rgba(255, 0, 0, 0.1);
-}
-
-.youtube-icon {
-  width: 50px;
-  height: 35px;
-  background: #ff0000;
-  border-radius: 10px;
-  position: relative;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  
-  animation: pulse 1.5s infinite;
-}
-
-.triangle {
-  width: 0;
-  height: 0;
-  border-top: 10px solid transparent;
-  border-left: 18px solid white;
-  border-bottom: 10px solid transparent;
-  margin-left: 5px;
-  rotate:0deg;
-  position: absolute;
-  top:-7px;
-  transform: scale(0.9);
-  transition: transform 0.3s ease;
-}
-
-.youtube-logo:hover .triangle {
-  transform: scale(1.1);
-}
-
-.youtube-text {
-  font-family: 'Roboto', Arial, sans-serif;
-  font-size: 24px;
-  font-weight: bold;
-  position: absolute;
-  top:0px;
-  left :25px;
-  color: #ff0000;
-  margin-left: 10px;
-  /* letter-spacing: -1px; */
-  text-shadow: 0 2px 4px rgba(0,0,0,0.1);
-  transition: all 0.3s ease;
-}
-
-.youtube-logo:hover .youtube-text {
-  color: #cc0000;
-  text-shadow: 0 4px 8px rgba(0,0,0,0.15);
-}
-
-@keyframes pulse {
-  0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255, 0, 0, 0.4); }
-  70% { transform: scale(1.03); box-shadow: 0 0 0 10px rgba(255, 0, 0, 0); }
-  100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255, 0, 0, 0); }
-}
-
-/* Add the Roboto font */
-@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@500&display=swap');
-.github-logo {
-  display: inline-flex;
-  align-items: center;
-  text-decoration: none;
-  cursor: pointer;
-  padding: 10px 15px;
-  position:absolute;
-  left:220px;
-  top: 330px;
-  border-radius: 8px;
-  transition: all 0.3s ease;
-}
-
-.github-logo:hover {
-  transform: scale(1.05);
-  background: rgba(151, 137, 137, 0.05);
-}
-
-.github-icon {
-  width: 40px;
-  height: 40px;
-  fill: #576092;
-  transition: all 0.3s ease;
-  animation: float 2s ease-in-out infinite;
-}
-
-.github-arm {
-  transform-origin: 130px 106px;
-}
-
-.github-logo:hover .github-icon {
-  fill: #4078c0;
-  animation: float-hover 1.5s ease-in-out infinite, octocat-wave 560ms ease-in-out;
-}
-
-.github-text {
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
-  font-size: 24px;
-  font-weight: 600;
-  color: #3d4958;
-  margin-left: 10px;
-  transition: all 0.3s ease;
-}
-
-.github-logo:hover .github-text {
-  color: #4078c0;
-}
-
-@keyframes float {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-5px); }
-}
-
-@keyframes float-hover {
-  0%, 100% { transform: translateY(0) rotate(0); }
-  25% { transform: translateY(-3px) rotate(-2deg); }
-  75% { transform: translateY(-3px) rotate(2deg); }
-}
-
-@keyframes octocat-wave {
-  0%, 100% { transform: rotate(0); }
-  20%, 60% { transform: rotate(-25deg); }
-  40%, 80% { transform: rotate(10deg); }
-}
-
-/* Mobile responsiveness */
-@media (max-width: 500px) {
-  .github-icon {
-    width: 30px;
-    height: 30px;
-  }
-  .github-text {
-    font-size: 20px;
-  }
-}
-.facebook-logo {
-  display: inline-flex;
-  align-items: center;
-  text-decoration: none;
-  cursor: pointer;
-  padding: 12px 16px;
-  position: absolute;
-    left: 390px;
-    top:325px;
-  border-radius: 8px;
-  background-color: transparent;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  transition: all 0.3s ease;
-}
-
-.facebook-logo:hover {
-  transform: scale(1.05);
-  background-color:transparent;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-}
-
-.facebook-icon {
-  width: 40px;
-  height: 40px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  animation: pulse 2s ease-in-out infinite;
-}
-
-.facebook-icon svg {
-  width: 100%;
-  height: 100%;
-  fill: #3b5998; /* Facebook blue */
-  transition: all 0.3s ease;
-}
-
-.facebook-logo:hover .facebook-icon svg {
-  fill: #2d4373; /* Darker Facebook blue */
-  animation: pulse-hover 1.5s ease-in-out infinite, icon-tilt 0.5s ease;
-}
-
-.facebook-text {
-  font-family: 'Helvetica Neue', Arial, sans-serif;
-  font-size: 22px;
-  font-weight: 600;
-  color: #3b5998;
-  margin-left: 12px;
-  transition: all 0.3s ease;
-}
-
-.facebook-logo:hover .facebook-text {
-  color: #2d4373;
-}
-
-@keyframes pulse {
-  0%, 100% { 
-    transform: scale(1);
-  }
-  50% { 
-    transform: scale(1.05);
-  }
-}
-
-@keyframes pulse-hover {
-  0%, 100% { 
-    transform: scale(1);
-  }
-  50% { 
-    transform: scale(1.1);
-  }
-}
-
-@keyframes icon-tilt {
-  0%, 100% { 
-    transform: rotate(0deg);
-  }
-  25% { 
-    transform: rotate(-5deg);
-  }
-  75% { 
-    transform: rotate(5deg);
-  }
-}
-
-/* Mobile responsiveness */
-@media (max-width: 500px) {
-  .facebook-logo {
-    padding: 10px 12px;
-  }
-  .facebook-icon {
-    width: 32px;
-    height: 32px;
-  }
-  .facebook-text {
-    font-size: 18px;
-    margin-left: 8px;
-  }
-}
-.instagram-logo {
-  display: inline-flex;
-  align-items: center;
-  text-decoration: none;
-  cursor: pointer;
-  padding: 12px 16px;
-  border-radius: 12px;
-  background: transparent;
-  position: absolute;
-  top:330px;
-  left: 590px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  transition: all 0.3s ease;
-}
-
-.instagram-logo:hover {
-  transform: scale(1.05);
-  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
-}
-
-.instagram-icon {
-  width: 40px;
-  height: 40px;
-  position: relative;
-  animation: float 3s ease-in-out infinite;
-}
-
-.instagram-gradient {
-  width: 100%;
-  height: 100%;
-  border-radius: 25%;
-  background: linear-gradient(45deg, 
-    #f09433 0%, 
-    #e6683c 25%, 
-    #dc2743 50%, 
-    #cc2366 75%, 
-    #bc1888 100%);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: all 0.5s ease;
-  animation: gradient-pulse 8s infinite alternate;
-}
-
-.instagram-logo:hover .instagram-gradient {
-  animation: gradient-rotate 3s infinite, gradient-pulse 4s infinite alternate;
-}
-
-.instagram-icon svg {
-  width: 70%;
-  height: 70%;
-}
-
-.instagram-text {
-  font-family: 'Helvetica Neue', Arial, sans-serif;
-  font-size: 22px;
-  font-weight: 600;
-  margin-left: 12px;
-  background: linear-gradient(45deg, 
-    #f09433 0%, 
-    #e6683c 25%, 
-    #dc2743 50%, 
-    #cc2366 75%, 
-    #bc1888 100%);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-  transition: all 0.5s ease;
-}
-
-.instagram-logo:hover .instagram-text {
-  animation: text-gradient 3s infinite;
-}
-
-@keyframes float {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-5px); }
-}
-
-@keyframes gradient-rotate {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
-}
-
-@keyframes gradient-pulse {
-  0% { background-size: 100% 100%; }
-  50% { background-size: 150% 150%; }
-  100% { background-size: 100% 100%; }
-}
-
-@keyframes text-gradient {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
-}
-
-/* Mobile responsive */
-@media (max-width: 500px) {
-  .instagram-logo {
-    padding: 10px 12px;
-  }
-  .instagram-icon {
-    width: 32px;
-    height: 32px;
-  }
-  .instagram-text {
-    font-size: 18px;
-    margin-left: 8px;
-  }
-}
-        .welcome-header {
-            background: linear-gradient(135deg, #6e45e2 0%, #89d4cf 100%);
-            color: white;
-            text-align: center;
-            padding: 5rem 2rem;
-            position: relative;
-            overflow: hidden;
-            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
-        }
-        
-        .welcome-header::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="none"><path d="M0,0 L100,0 L100,100 L0,100 Z" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="2"/></svg>');
-            background-size: 50px 50px;
-            opacity: 0.5;
-        }
-        
-        .welcome-title {
-            font-size: 3.5rem;
-            font-weight: 700;
-            position
-            margin-bottom: 1rem;
-            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
-            animation: fadeInDown 1s ease-out, float 6s ease-in-out infinite;
-        }
-        
-        .welcome-subtitle {
-            font-size: 1.5rem;
-            font-weight: 300;
-            max-width: 800px;
-
-            margin: 0 auto 2rem;
-            opacity: 0.9;
-            animation: fadeInUp 1s ease-out 0.3s both;
-        }
-        
-        .welcome-button {
-            display: inline-block;
-            padding: 12px 30px;
-            background: white;
-            color: #6e45e2;
-            text-decoration: none;
-            border-radius: 50px;
-            font-weight: 600;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-            animation: fadeInUp 1s ease-out 0.6s both;
-        }
-        
-        .welcome-button:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
-            background: #f1f1f1;
-        }
-        
-        .floating-shapes {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            top: 0;
-            left: 0;
-            pointer-events: none;
-        }
-        
-        .shape {
-            position: absolute;
-            opacity: 0.3;
-            animation-duration: 15s;
-            animation-iteration-count: infinite;
-            animation-timing-function: linear;
-        }
-        
-        .circle {
-            width: 20px;
-            height: 20px;
-            border-radius: 50%;
-            background: white;
-            animation-name: floatShape;
-        }
-        
-        .triangle {
-            width: 0;
-            height: 0;
-            border-left: 15px solid transparent;
-            border-right: 15px solid transparent;
-            border-bottom: 25px solid white;
-            animation-name: floatShapeReverse;
-        }
-        
-        .square {
-            width: 20px;
-            height: 20px;
-            background: white;
-            animation-name: floatShape;
-        }
-        
-        @keyframes fadeInDown {
-            from {
-                opacity: 0;
-                transform: translateY(-30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-        
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-        
-        @keyframes float {
-            0%, 100% {
-                transform: translateY(0);
-            }
-            50% {
-                transform: translateY(-10px);
-            }
-        }
-        
-        @keyframes floatShape {
-            0% {
-                transform: translateY(0) rotate(0deg);
-            }
-            100% {
-                transform: translateY(-500px) rotate(360deg);
-            }
-        }
-        
-        @keyframes floatShapeReverse {
-            0% {
-                transform: translateY(0) rotate(0deg);
-            }
-            100% {
-                transform: translateY(-500px) rotate(-360deg);
-            }
-        }
-        
-        @media (max-width: 768px) {
-            .welcome-title {
-                font-size: 2.5rem;
-            }
-            
-            .welcome-subtitle {
-                font-size: 1.2rem;
-            }
-        }
-@import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Montserrat:wght@400;600&display=swap');
-
-.creator-signature {
-  text-align: center;
-  margin: 2rem 0;
-  padding: 1rem;
-  position: relative;
-  right:-650px;
-}
-
-.signature-text {
-  font-family: 'Dancing Script', cursive;
-  font-size: 2.5rem;
-  font-weight: 700;
-  color: #b19999;
-  display: inline-block;
-  position: relative;
-  animation: 
-    fadeIn 1.5s ease-out,
-    float 4s ease-in-out infinite;
-  text-shadow: 0 2px 4px rgba(0,0,0,0.1);
-}
-
-.signature-text::before {
-  content: '';
-  position: absolute;
-  width: 0;
-  height: 2px;
-  bottom: 0;
-  left: 50%;
-  background: linear-gradient(90deg, #ff6b6b, #3a86ff);
-  transform: translateX(-50%);
-  animation: underline 2s ease-out 1.5s forwards;
-}
-
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(20px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-@keyframes float {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-8px); }
-}
-
-@keyframes underline {
-  to { width: 100%; }
-}
-
-/* For a more modern version */
-.alternative-style {
-  font-family: 'Montserrat', sans-serif;
-  font-weight: 600;
-  background: linear-gradient(135deg, #3a86ff, #ff6b6b);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-  animation: 
-    fadeIn 1s ease-out,
-    colorShift 6s infinite alternate;
-}
-
-@keyframes colorShift {
-  0% { background-position: 0% 50%; }
-  100% { background-position: 100% 50%; }
-}
-
-/* Responsive adjustments */
-@media (max-width: 768px) {
-  .signature-text {
-    font-size: 2rem;
-  }
-}
-    .logo-link1 {
-      width: 60px;
-      height: 60px;
-      border-radius: 50%;
-      background-color:transparent;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      position: relative;
-      left:-30PX;
-      top:-50px;
-      transition: transform 1s ease, box-shadow 0.3s ease;
-    }
-
-    .logo-link1:hover {
-      transform: scale(1.2);
-      box-shadow: 0 0 35px rgb(0, 255, 34);
-    }
-
-    .logo-link1 img {
-      width: 30px;
-      height: 30px;
-      object-fit: contain;
-    }
-    .logo-link2 {
-      width: 60px;
-      height: 60px;
-      border-radius: 50%;
-      background-color:transparent;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      position: relative;
-      left:25px;
-      top:-109px;
-      transition: transform 1s ease, box-shadow 0.3s ease;
-    }
-
-    .logo-link2:hover {
-      transform: scale(1.2);
-      box-shadow: 0 0 35px rgb(4, 0, 255);
-    }
-
-    .logo-link2 img {
-      width: 30px;
-      height: 30px;
-      object-fit: contain;
-    }
-    .logo-link3 {
-      width: 60px;
-      height: 60px;
-      border-radius: 50%;
-      background-color: transparent;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      position: relative;
-      left:80px;
-      top:-168px;
-      transition: transform 1s ease, box-shadow 0.3s ease;
-    }
-
-    .logo-link3:hover {
-      transform: scale(1.2);
-      box-shadow: 0 0 35px rgb(0, 174, 255);
-    }
-
-    .logo-link3 img {
-      width: 30px;
-      height: 30px;
-      object-fit: contain;
-    }
-    .logo-link4 {
-      width: 60px;
-      height: 60px;
-      border-radius: 50%;
-      background-color: transparent;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      position: relative;
-      left:135px;
-     top:-228px;
-      transition: transform 1s ease, box-shadow 0.3s ease;
-    }
-
-    .logo-link4:hover {
-      transform: scale(1.2);
-      box-shadow: 0 0 35px rgb(255, 0, 149);
-    }
-
-    .logo-link4 img {
-      width: 30px;
-      height: 30px;
-      object-fit: contain;
-    }
-    .logo-link5 {
-      width: 60px;
-      height: 60px;
-      border-radius: 50%;
-      background-color: transparent;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      position: absolute;
-      left:225px;
-      top:501px;
-      transition: transform 1s ease, box-shadow 0.3s ease;
-    }
-
-    .logo-link5:hover {
-      transform: scale(1.2);
-      box-shadow: 0 0 35px rgb(255, 0, 0);
-    }
-
-    .logo-link5 img {
-      width: 30px;
-      height: 30px;
-      object-fit: contain;
-    }
-     @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
-        
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
-             
+
+        body {
+            font-family: 'Arial', sans-serif;
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+
         /* Animated Background */
         .animated-bg {
             position: fixed;
@@ -979,928 +25,679 @@
             left: 0;
             width: 100%;
             height: 100%;
-            z-index: -1;
-            background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
-            background-size: 400% 400%;
-            animation: gradientBG 15s ease infinite;
+            background: linear-gradient(45deg, #667eea 0%, #764ba2 100%);
+            z-index: -2;
         }
-        
-        .bubbles {
+
+        .animated-bg::before {
+            content: '';
             position: absolute;
+            top: 0;
+            left: 0;
             width: 100%;
             height: 100%;
-            overflow: hidden;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><radialGradient id="a" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="%23ffffff" stop-opacity="0.1"/><stop offset="100%" stop-color="%23ffffff" stop-opacity="0"/></radialGradient></defs><circle cx="20" cy="20" r="10" fill="url(%23a)"><animate attributeName="cx" values="20;80;20" dur="4s" repeatCount="indefinite"/></circle><circle cx="80" cy="80" r="15" fill="url(%23a)"><animate attributeName="cy" values="80;20;80" dur="6s" repeatCount="indefinite"/></circle><circle cx="50" cy="50" r="8" fill="url(%23a)"><animate attributeName="r" values="8;20;8" dur="3s" repeatCount="indefinite"/></circle></svg>');
+            animation: float 8s ease-in-out infinite;
         }
-        
-        .bubble {
-            position: absolute;
-            bottom: -100px;
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(180deg); }
+        }
+
+        /* Creator Badge */
+        .creator-badge {
+            position: fixed;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
             background: rgba(255, 255, 255, 0.1);
-            border-radius: 50%;
-            animation: rise 15s infinite ease-in;
-        }
-        
-        .bubble:nth-child(1) {
-            width: 40px;
-            height: 40px;
-            left: 10%;
-            animation-duration: 8s;
-        }
-        
-        .bubble:nth-child(2) {
-            width: 20px;
-            height: 20px;
-            left: 20%;
-            animation-duration: 5s;
-            animation-delay: 1s;
-        }
-        
-        .bubble:nth-child(3) {
-            width: 50px;
-            height: 50px;
-            left: 35%;
-            animation-duration: 7s;
-            animation-delay: 2s;
-        }
-        
-        .bubble:nth-child(4) {
-            width: 80px;
-            height: 80px;
-            left: 50%;
-            animation-duration: 11s;
-            animation-delay: 0s;
-        }
-        
-        .bubble:nth-child(5) {
-            width: 35px;
-            height: 35px;
-            left: 55%;
-            animation-duration: 6s;
-            animation-delay: 1s;
-        }
-        
-        .bubble:nth-child(6) {
-            width: 45px;
-            height: 45px;
-            left: 65%;
-            animation-duration: 8s;
-            animation-delay: 3s;
-        }
-        
-        .bubble:nth-child(7) {
-            width: 25px;
-            height: 25px;
-            left: 75%;
-            animation-duration: 7s;
-            animation-delay: 2s;
-        }
-        
-        .bubble:nth-child(8) {
-            width: 80px;
-            height: 80px;
-            left: 80%;
-            animation-duration: 6s;
-            animation-delay: 1s;
-        }
-        
-        .bubble:nth-child(9) {
-            width: 15px;
-            height: 15px;
-            left: 70%;
-            animation-duration: 9s;
-            animation-delay: 0s;
-        }
-        
-        .bubble:nth-child(10) {
-            width: 50px;
-            height: 50px;
-            left: 85%;
-            animation-duration: 5s;
-            animation-delay: 3s;
-        }
-        
-        /* Content Styling */
-        .content {
-            position: relative;
-            z-index: 1;
-            padding: 50px;
-            max-width: 1200px;
-            margin: 0 auto;
-            text-align: center;
-        }
-        
-        h1 {
-            font-size: 3rem;
-            margin-bottom: 1.5rem;
-            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
-            animation: fadeInDown 1s ease-out;
-        }
-        
-        p {
-            font-size: 1.2rem;
-            line-height: 1.6;
-            margin-bottom: 2rem;
-            max-width: 800px;
-            margin-left: auto;
-            margin-right: auto;
-            animation: fadeInUp 1s ease-out 0.3s both;
-        }
-        
-        .btn {
-            display: inline-block;
-            padding: 12px 30px;
-            background: transparent;
-            color: white;
-            text-decoration: none;
-            border-radius: 50px;
-            font-weight: 600;
-            transition: all 0.3s ease;
-            backdrop-filter: blur(5px);
+            backdrop-filter: blur(10px);
+            padding: 15px 20px;
+            border-radius: 15px;
             border: 1px solid rgba(255, 255, 255, 0.2);
-            animation: fadeInUp 1s ease-out 0.6s both;
+            color: white;
+            font-weight: bold;
+            z-index: 1000;
+            transition: all 1s ease;
+            writing-mode: vertical-rl;
+            text-orientation: mixed;
         }
-        
-        .btn:hover {
-            background: transparent;
-            transform: translateY(-3px);
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+
+        .creator-badge:hover {
+            transform: translateY(-50%) scale(1.1);
+            background: rgba(255, 255, 255, 0.2);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
         }
-        
-        /* Animations */
-        @keyframes gradientBG {
-            0% {
-                background-position: 0% 50%;
-            }
-            50% {
-                background-position: 100% 50%;
-            }
-            100% {
-                background-position: 0% 50%;
-            }
+
+        /* Main Container */
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
         }
-        
-        @keyframes rise {
-            0% {
-                bottom: -100px;
-                transform: translateX(0);
-            }
-            50% {
-                transform: translateX(100px);
-            }
-            100% {
-                bottom: 100vh;
-                transform: translateX(-200px);
-            }
+
+        .login-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(15px);
+            border-radius: 20px;
+            padding: 40px;
+            width: 100%;
+            max-width: 450px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            animation: slideIn 1s ease-out;
         }
-        
-        @keyframes fadeInDown {
+
+        @keyframes slideIn {
             from {
                 opacity: 0;
-                transform: translateY(-30px);
+                transform: translateY(50px);
             }
             to {
                 opacity: 1;
                 transform: translateY(0);
             }
         }
-        
+
+        /* Animated Header */
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .welcome-text {
+            font-size: 2.5rem;
+            font-weight: bold;
+            background: linear-gradient(45deg, #00ffff, #ff00ff, #ffff00, #00ffff);
+            background-size: 300% 300%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: gradientShift 3s ease-in-out infinite;
+            margin-bottom: 10px;
+        }
+
+        @keyframes gradientShift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        .subtitle {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 1.1rem;
+            animation: fadeInUp 1s ease-out 0.5s both;
+        }
+
         @keyframes fadeInUp {
             from {
                 opacity: 0;
-                transform: translateY(30px);
+                transform: translateY(20px);
             }
             to {
                 opacity: 1;
                 transform: translateY(0);
             }
         }
-        
-        /* Responsive */
-        @media (max-width: 768px) {
-            h1 {
-                font-size: 2.2rem;
-            }
-            
-            p {
-                font-size: 1rem;
-            }
-            
-            .content {
-                padding: 30px 20px;
-            }
-        }
-          @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap');
-        
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
-        body {
-            font-family: 'Poppins', sans-serif;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            background: #f5f7fa;
-        }
-        
-        main {
-            flex: 1;
-            padding: 2rem;
-        }
-        
-        footer {
-            background: linear-gradient(135deg, #2c3e50, #4a6491);
-            color: white;
-            padding: 3rem 2rem 2rem;
+
+        /* Input Styles */
+        .input-group {
+            margin-bottom: 20px;
             position: relative;
-            overflow: hidden;
-            border-radius: 50px;
         }
-        
-        .footer-wave {
-            position: absolute;
-            top: -50px;
-            left: 0;
+
+        .input-field {
             width: 100%;
-            height: 50px;
-            background: url('data:image/svg+xml;utf8,<svg viewBox="0 0 1200 120" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none"><path d="M0,0V46.29c47.79,22.2,103.59,32.17,158,28,70.36-5.37,136.33-33.31,206.8-37.5C438.64,32.43,512.34,53.67,583,72.05c69.27,18,138.3,24.88,209.4,13.08,36.15-6,69.85-17.84,104.45-29.34C989.49,25,1113-14.29,1200,52.47V0Z" fill="%23f5f7fa" opacity=".25"/><path d="M0,0V15.81C13,36.92,27.64,56.86,47.69,72.05,99.41,111.27,165,111,224.58,91.58c31.15-10.15,60.09-26.07,89.67-39.8,40.92-19,84.73-46,130.83-49.67,36.26-2.85,70.9,9.42,98.6,31.56,31.77,25.39,62.32,62,103.63,73,40.44,10.79,81.35-6.69,119.13-24.28s75.16-39,116.92-43.05c59.73-5.85,113.28,22.88,168.9,38.84,30.2,8.66,59,6.17,87.09-7.5,22.43-10.89,48-26.93,60.65-49.24V0Z" fill="%23f5f7fa" opacity=".5"/><path d="M0,0V5.63C149.93,59,314.09,71.32,475.83,42.57c43-7.64,84.23-20.12,127.61-26.46,59-8.63,112.48,12.24,165.56,35.4C827.93,77.22,886,95.24,951.2,90c86.53-7,172.46-45.71,248.8-84.81V0Z" fill="%23f5f7fa"/></svg>');
-            background-size: 1200px 100px;
-            animation: wave 12s linear infinite;
-        }
-        
-        .footer-content {
-            max-width: 1200px;
-            margin: 0 auto;
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
-        }
-        
-        .footer-form {
-            position: relative;
-            z-index: 2;
-        }
-        
-        .form-title {
-            font-size: 1.5rem;
-            margin-bottom: 1.5rem;
-            position: relative;
-            display: inline-block;
-        }
-        
-        .form-title::after {
-            content: '';
-            position: absolute;
-            bottom: -8px;
-            left: 0;
-            width: 60px;
-            height: 3px;
-            background: #4fc1e9;
-            border-radius: 3px;
-            animation: underlineGrow 1s ease-out;
-        }
-        
-        .feedback-form {
-            display: flex;
-            flex-direction: column;
-            gap: 1.2rem;
-        }
-        
-        .form-group {
-            position: relative;
-        }
-        
-        .form-input {
-            width: 100%;
-            padding: 12px 15px;
-            border: 2px solid rgba(255, 255, 255, 0.2);
-            border-radius: 8px;
+            padding: 15px 20px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 10px;
             background: rgba(255, 255, 255, 0.1);
             color: white;
-            font-family: 'Poppins', sans-serif;
             font-size: 1rem;
-            transition: all 0.3s ease;
-            backdrop-filter: blur(5px);
-        }
-        
-        .form-input:focus {
+            transition: all 1s ease;
             outline: none;
-            border-color: #4fc1e9;
-            background: rgba(255, 255, 255, 0.15);
-            box-shadow: 0 0 0 3px rgba(79, 193, 233, 0.3);
         }
-        
-        .form-label {
-            position: absolute;
-            top: 12px;
-            left: 15px;
-            color: rgba(255, 255, 255, 0.7);
-            transition: all 0.3s ease;
-            pointer-events: none;
-            font-size: 1rem;
-        }
-        
-        .form-input:focus + .form-label,
-        .form-input:not(:placeholder-shown) + .form-label {
-            top: -20px;
-            left: 10px;
-            font-size: 0.8rem;
-            color: #4fc1e9;
-            background: #2c3e50;
-            padding: 0 5px;
-            border-radius: 4px;
-        }
-        
-        textarea.form-input {
-            min-height: 120px;
-            resize: vertical;
-        }
-        
-        .submit-btn {
-            background: #4fc1e9;
-            color: #2c3e50;
-            border: none;
-            padding: 12px 25px;
-            border-radius: 50px;
-            font-family: 'Poppins', sans-serif;
-            font-size: 1rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            align-self: flex-start;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-        }
-        
-        .submit-btn:hover {
-            background: #3da7d1;
-            transform: translateY(-3px);
-            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
-        }
-        
-        .submit-btn:active {
-            transform: translateY(1px);
-        }
-        
-        .footer-links {
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
-        }
-        
-        .footer-links h3 {
-            font-size: 1.5rem;
-            margin-bottom: 0.5rem;
-        }
-        
-        .footer-links a {
-            color: rgba(255, 255, 255, 0.7);
-            text-decoration: none;
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        
-        .footer-links a:hover {
-            color: white;
-            transform: translateX(5px);
-        }
-        
-        .footer-links a::before {
-            content: '→';
-            opacity: 0;
-            transition: all 0.3s ease;
-        }
-        
-        .footer-links a:hover::before {
-            opacity: 1;
-        }
-        
-        .footer-bottom {
-            text-align: center;
-            margin-top: 3rem;
-            padding-top: 1.5rem;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-            font-size: 0.9rem;
+
+        .input-field::placeholder {
             color: rgba(255, 255, 255, 0.6);
         }
-        
-        /* Floating bubbles animation */
-        .footer-bubbles {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            top: 0;
-            left: 0;
-            overflow: hidden;
-            z-index: 1;
+
+        .input-field:focus {
+            border-color: #00ffff;
+            box-shadow: 0 0 20px rgba(0, 255, 255, 0.5);
+            animation: pulseGlow 1s ease-in-out;
         }
-        
-        .footer-bubble {
-            position: absolute;
-            bottom: -100px;
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 50%;
-            animation: footerRise 15s infinite ease-in;
-        }
-        
-        @keyframes wave {
-            0% {
-                background-position-x: 0;
-            }
-            100% {
-                background-position-x: 1200px;
-            }
-        }
-        
-        @keyframes underlineGrow {
-            from {
-                width: 0;
-            }
-            to {
-                width: 60px;
-            }
-        }
-        
-        @keyframes footerRise {
-            0% {
-                bottom: -100px;
-                transform: translateX(0);
+
+        @keyframes pulseGlow {
+            0%, 100% {
+                box-shadow: 0 0 20px rgba(0, 255, 255, 0.5);
             }
             50% {
-                transform: translateX(100px);
-            }
-            100% {
-                bottom: 100%;
-                transform: translateX(-200px);
+                box-shadow: 0 0 30px rgba(0, 255, 255, 0.8);
             }
         }
-        
-        /* Responsive */
-        @media (max-width: 768px) {
-            .footer-content {
-                grid-template-columns: 1fr;
-            }
+
+        /* Usage Type Buttons */
+        .usage-section {
+            margin: 30px 0;
+        }
+
+        .usage-label {
+            color: white;
+            font-weight: bold;
+            margin-bottom: 15px;
+            display: block;
+        }
+
+        .usage-buttons {
+            display: flex;
+            gap: 15px;
+        }
+
+        .usage-btn {
+            flex: 1;
+            padding: 12px 20px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            cursor: pointer;
+            transition: all 1s ease;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        .usage-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .usage-btn.business:hover,
+        .usage-btn.business.active {
+            background: linear-gradient(45deg, #00ffff, #0080ff);
+            border-color: #00ffff;
+            box-shadow: 0 0 20px rgba(0, 255, 255, 0.5);
+        }
+
+        .usage-btn.personal:hover,
+        .usage-btn.personal.active {
+            background: linear-gradient(45deg, #ff00ff, #8000ff);
+            border-color: #ff00ff;
+            box-shadow: 0 0 20px rgba(255, 0, 255, 0.5);
+        }
+
+        /* Social Media Links */
+        .social-section {
+            margin: 30px 0;
+        }
+
+        .social-label {
+            color: white;
+            font-weight: bold;
+            margin-bottom: 15px;
+            display: block;
+            text-align: center;
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .social-link {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            /* align-items: center; */
+            justify-content: center;
+            color: white;
+            text-decoration: none;
+            font-size: 1.5rem;
+            transition: all 1s ease;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            background: rgba(255, 255, 255, 0.1);
             
-            .form-title, .footer-links h3 {
+        }
+
+        .social-link:hover {
+            transform: rotate(360deg) scale(1.2);
+        }
+
+        .social-link.youtube:hover {
+            background: #ff0000;
+            border-color: #ff0000;
+            box-shadow: 0 0 20px rgba(255, 0, 0, 0.5);
+        }
+
+        .social-link.facebook:hover {
+            background: #1877f2;
+            border-color: #1877f2;
+            box-shadow: 0 0 20px rgba(24, 119, 242, 0.5);
+        }
+
+        .social-link.instagram:hover {
+            background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
+            border-color: #e6683c;
+            box-shadow: 0 0 20px rgba(230, 104, 60, 0.5);
+        }
+
+        .social-link.github:hover {
+            background: #333;
+            border-color: #333;
+            box-shadow: 0 0 20px rgba(51, 51, 51, 0.5);
+        }
+
+        /* Submit Button */
+        .submit-btn {
+            width: 100%;
+            padding: 15px;
+            border: none;
+            border-radius: 10px;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 1s ease;
+            margin-top: 20px;
+        }
+
+        .submit-btn:hover {
+            background: linear-gradient(45deg, #764ba2, #667eea);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Footer */
+        .footer {
+            margin-top: 40px;
+            text-align: center;
+        }
+
+        .feedback-trigger {
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            padding: 10px 20px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 20px;
+            transition: all 1s ease;
+            display: inline-block;
+        }
+
+        .feedback-trigger:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Feedback Modal */
+        .feedback-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+            animation: fadeIn 1s ease;
+        }
+
+        .feedback-modal.show {
+            display: flex;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .feedback-form {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(15px);
+            border-radius: 20px;
+            padding: 30px;
+            width: 90%;
+            max-width: 500px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            animation: slideInScale 1s ease;
+        }
+
+        @keyframes slideInScale {
+            from {
+                opacity: 0;
+                transform: scale(0.8) translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
+
+        .feedback-header {
+            color: white;
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        .contact-info {
+            color: rgba(255, 255, 255, 0.8);
+            text-align: center;
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+
+        .contact-info a {
+            color: #00ffff;
+            text-decoration: none;
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: all 1s ease;
+        }
+
+        .close-btn:hover {
+            transform: rotate(90deg);
+            color: #ff0000;
+        }
+
+        .feedback-submit {
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 10px;
+            background: linear-gradient(45deg, #00ffff, #ff00ff);
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 1s ease;
+            margin-top: 15px;
+        }
+
+        .feedback-submit:hover {
+            background: linear-gradient(45deg, #ff00ff, #00ffff);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .creator-badge {
+                position: fixed;
+                right: 10px;
+                top: 10px;
+                transform: none;
+                writing-mode: horizontal-tb;
+                text-orientation: initial;
+                font-size: 0.8rem;
+                padding: 8px 12px;
+            }
+
+            .welcome-text {
+                font-size: 2rem;
+            }
+
+            .login-card {
+                padding: 30px 20px;
+            }
+
+            .usage-buttons {
+                flex-direction: column;
+            }
+
+            .social-links {
+                gap: 15px;
+            }
+
+            .social-link {
+                width: 45px;
+                height: 45px;
                 font-size: 1.3rem;
             }
         }
-          .pulse-logo {
-    display: inline-flex;
-    align-items: center;
-    background: #000000;
-    color: #f7f7f7;
-    padding: 10px 16px;
-    border-radius: 100px;
-    gap: 50px;
-    position: relative;
-    top:-75px;
-    right:-85%;
-
-    text-decoration: none;
-    font-weight: bold;
-    font-family: sans-serif;
-    animation: pulse 3s infinite;
-    box-shadow: 100 100 100px rgb(255, 0, 0);
-  }
-
-  .pulse-logo img {
-    width: 55px;
-    height: 35px;
-    filter: invert(1);
-  }
-
-  @keyframes pulse {
-    0%, 100% { box-shadow: 0 0 10px rgb(255, 0, 0); }
-    50% { box-shadow: 0 0 20px rgba(0, 255, 128, 0.7); }
-  }
-      .gmail-box {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      padding: 12px 20px;
-      background: black;
-      border-radius: 50px;
-      box-shadow: 0 0 10px rgba(255, 0, 0, 0.2);
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
-      text-decoration: none;
-      position: relative;
-     top:-20px;
-      left: 10px;
-      width: 40%;
-    }
-
-    .gmail-box:hover {
-      transform: scale(1.05);
-      box-shadow: 0 0 20px rgba(255, 0, 0, 0.5);
-    }
-
-    .gmail-box img {
-      width: 30px;
-      height: 30px;
-      animation: bounce 2s infinite;
-    }
-
-    .gmail-id {
-      font-size: 1rem;
-      color: #fff;
-      font-weight: bold;
-      white-space: nowrap;
-    }
-
-    @keyframes bounce {
-      0%,  { transform: translateY(0); }
-      50% { transform: translateY(-10px);}
-      100% { transform: translateY(0); }
-    }
-   .about-btn {
-  display: inline-flex;
-  align-items: center;
-  padding: 15px 30px;
-  background-color: #e74c3c; /* Red color */
-  color: white;
-  font-family: 'Arial', sans-serif;
-  font-size: 18px;
-  font-weight: bold;
-  text-decoration: none;
-  border-radius: 50px;
-  overflow: hidden;
-  position: relative;
-  left :280px;
-  top:-300px;
-  transition: all 0.4s ease;
-  box-shadow: 0 4px 15px rgb(255, 255, 255);
-}
-
-.about-btn:hover {
-  background-color: #ffffff; /* Darker red on hover */
-  transform: translateY(-3px);
-  box-shadow: 0 6px 20px rgb(255, 25, 0);
-}
-
-.about-btn:active {
-  transform: translateY(1px);
-}
-
-.about-btn-text {
-  transition: all 0.4s ease;
-  display: inline-block;
-}
-
-.about-btn-icon {
-  margin-left: 10px;
-  opacity: 0;
-  transform: translateX(-20px);
-  transition: all 0.4s ease;
-  display: inline-block;
-}
-
-.about-btn:hover .about-btn-text {
-  transform: translateX(-5px);
-}
-
-.about-btn:hover .about-btn-icon {
-  opacity: 1;
-  transform: translateX(0);
-}
-
-/* Pulse animation */
-@keyframes pulse {
-  0% { transform: scale(1); }
-  50% { transform: scale(1.05); }
-  100% { transform: scale(1); }
-}
-
-.about-btn:hover {
-  animation: pulse 1.5s infinite;
-}
-
-/* Ripple effect */
-.about-btn::after {
-  content: "";
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  top: 0;
-  left: 0;
-  background: radial-gradient(circle, rgba(255,255,255,0.3) 1%, transparent 1%) center/15000%;
-  opacity: 0;
-  transition: opacity 1s, background-size 0.8s;
-}
-
-.about-btn:active::after {
-  background-size: 100%;
-  opacity: 1;
-  transition: 0s;
-}.about-btn {
-  display: inline-flex;
-  align-items: center;
-  padding: 15px 30px;
-  background-color: #e74c3c; /* Red color */
-  color: white;
-  font-family: 'Arial', sans-serif;
-  font-size: 18px;
-  font-weight: bold;
-  text-decoration: none;
-  border-radius: 50px;
-  overflow: hidden;
-  position: relative;
-  transition: all 0.4s ease;
-  box-shadow: 0 4px 15px rgba(231, 76, 60, 0.3);
-}
-
-.about-btn:hover {
-  background-color: #c0392b; /* Darker red on hover */
-  transform: translateY(-3px);
-  box-shadow: 0 6px 20px rgba(231, 76, 60, 0.4);
-}
-
-.about-btn:active {
-  transform: translateY(1px);
-}
-
-.about-btn-text {
-  transition: all 0.4s ease;
-  display: inline-block;
-}
-
-.about-btn-icon {
-  margin-left: 10px;
-  opacity: 0;
-  transform: translateX(-20px);
-  transition: all 0.4s ease;
-  display: inline-block;
-}
-
-.about-btn:hover .about-btn-text {
-  transform: translateX(-10px);
-}
-
-.about-btn:hover .about-btn-icon {
-  opacity: 1;
-  transform: translateX(0);
-}
-
-/* Pulse animation */
-@keyframes pulse {
-  0% { transform: scale(1); }
-  50% { transform: scale(1.05); }
-  100% { transform: scale(1); }
-}
-
-.about-btn:hover {
-  animation: pulse 1.5s infinite;
-}
-
-/* Ripple effect */
-.about-btn::after {
-  content: "";
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  top: 0;
-  left: 0;
-  background: radial-gradient(circle, rgba(255,255,255,0.3) 1%, transparent 1%) center/15000%;
-  opacity: 0;
-  transition: opacity 1s, background-size 0.8s;
-}
-
-.about-btn:active::after {
-  background-size: 100%;
-  opacity: 1;
-  transition: 0s;
-}
-    </style> 
+    </style>
 </head>
 <body>
-    <header class="welcome-header">
-        <div class="floating-shapes">
-            <div class="shape circle" style="top: 10%; left: 15%; animation-delay: 0s;"></div>
-            <div class="shape triangle" style="top: 20%; left: 80%; animation-delay: 2s;"></div>
-            <div class="shape square" style="top: 70%; left: 10%; animation-delay: 4s;"></div>
-            <div class="shape circle" style="top: 80%; left: 70%; animation-delay: 6s;"></div>
-            <div class="shape triangle" style="top: 30%; left: 30%; animation-delay: 8s;"></div>
-            <div class="shape square" style="top: 60%; left: 50%; animation-delay: 10s;"></div>
-        </div>
-        
-        <h1 class="welcome-title">Welcome to My Webpage</h1>
-        <p class="welcome-subtitle">Creation Like Beyond You Think</p>
-        <a href="/index.html" target = "_blank" class="welcome-button" >Explore More</a>
-    </header>
-     <main>
-                      <a href="https://youtube.com/@technicalasgaming8795?si=fdni0EAKU2vV_s0X" target="_blank" class="youtube-logo"><span class="youtube-icon">
-                 <SPAN class="triangle"><SPAN>
-                 </span>
-                    <span class="youtube-text">YouTube</span></a>
-                    <a href="https://github.com/argha-sarkar-2006" target="_blank" class="github-logo">
-  <svg class="github-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-    <path class="github-arm" d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/>
-  </svg>
-  <span class="github-text">GitHub</span>
-</a>
-<a href="https://www.facebook.com/profile.php?id=100023490275383" target="_blank" class="facebook-logo">
-  <div class="facebook-icon">
-    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-      <path d="M22.675 0H1.325C.593 0 0 .593 0 1.325v21.351C0 23.407.593 24 1.325 24H12.82v-9.294H9.692v-3.622h3.128V8.413c0-3.1 1.893-4.788 4.659-4.788 1.325 0 2.463.099 2.795.143v3.24l-1.918.001c-1.504 0-1.795.715-1.795 1.763v2.313h3.587l-.467 3.622h-3.12V24h6.116c.733 0 1.325-.592 1.325-1.325V1.325C24 .593 23.407 0 22.675 0z"/>
-    </svg>
-  </div>
-  <span class="facebook-text">Facebook</span>
-</a>
-<a href="https://instagram.com/argha_0002" target="_blank" class="instagram-logo">
-  <div class="instagram-icon">
-    <div class="instagram-gradient">
-      <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-        <rect x="2" y="2" width="20" height="20" rx="5" ry="5" fill="transparent" stroke="white" stroke-width="2"/>
-        <circle cx="12" cy="12" r="5" fill="transparent" stroke="white" stroke-width="2"/>
-        <circle cx="18" cy="6" r="1" fill="white"/>
-      </svg>
-    </div>
-  </div>
-  <span class="instagram-text">Instagram</span>
-</a>
-<div class="creator-signature">
-  <div class="signature-text">Created by Argha Sarkar</div>
-</div>
+    <!-- Animated Background -->
     <div class="animated-bg"></div>
-    
-    <div class="bubbles">
-        <div class="bubble"></div>
-        <div class="bubble"></div>
-        <div class="bubble"></div>
-        <div class="bubble"></div>
-        <div class="bubble"></div>
-        <div class="bubble"></div>
-        <div class="bubble"></div>
-        <div class="bubble"></div>
-        <div class="bubble"></div>
-        <div class="bubble"></div>
-    </div>
-        <form action="/action.php">
-            <input type=" text" placeholder="Enter your name" class="glow-input1">
-            <input type="password" placeholder="Enter your password " class ="glow-input2">
-             <div class="radio-container">
-             <!-- Both options now in a flex row -->
-             <div class="neon-options-row">
-             <!-- Personal Use Option -->
-             <label class="neon-radio">
-             <input type="radio" name="neon" checked>
-             <span class="neon-btn"></span>
-             <span class="neon-label">Personal Use</span>
-             </label>
-    
-             <!-- Business Use Option -->
-             <label class="neon-radio">
-             <input type="radio" name="neon">
-             <span class="neon-btn"></span>
-             <span class="neon-label">Business Use</span>
-             </label>
-             </div>
-            </div>
-            </label><br><a href="/File-Sorter/experimental.html"><button class="pulse-btn" type="button">Submit</button></a>
 
-  <a href="https://chat.openai.com/" target="_blank" class="logo-link1" title="ChatGPT">
-    <img src="https://cdn-icons-png.flaticon.com/512/12222/12222588.png" alt="ChatGPT">
-  </a>
-  <a href="https://chat.deepseek.com/" target="_blank" class="logo-link2" title="DeepSeek">
-    <img src="data:image/png;base64,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" alt="DeepSeek">
-  </a>
-  <a href="https://gemini.google.com/app" target="_blank" class="logo-link3" title="Gemini">
-    <img src="data:image/jpeg;base64,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" alt="Gemini">
-  </a>
-  <a href="https://github.com/features/copilot" target="_blank" class="logo-link4" title="GitHub Copilot">
-    <img src="data:image/png;base64,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" alt="Copilot">
-  </a>
-  <a href="https://x.ai/" target="_blank" class="logo-link5" title="Grok by xAI">
-    <img src="https://x.ai/favicon.ico" alt="Grok">
-  </a><br>
-  <a href="/index.html" class="about-btn" target="_blank" title="About Us">
-  <span class="about-btn-text">About Us</span>
-  <span class="about-btn-icon">→ My Portfolio</span>
-</a>
-  <footer>
-    <a href="mailto:yourname@gmail.com" class="gmail-box" title="Send me an email">
-      <img src="https://ssl.gstatic.com/ui/v1/icons/mail/rfr/gmail.ico" alt="Gmail Logo">
-      <span class="gmail-id">arghasarkar953@gmail.com</span>
-    </a>
-    <a href="tel:+918944000648" class="pulse-logo">
-      <img src="https://img.freepik.com/free-psd/phone-icon-design_23-2151311664.jpg?t=st=1749283994~exp=1749287594~hmac=9da2fbdff32442024afe20390cd0824141e8fe89088355b64f6a5f444523f9da&w=2000" alt="Call" />
-      <span>+91-8944000648</span>
-    </a><br>
-    
-        <div class="footer-wave"></div>
-        
-        <div class="footer-bubbles">
-            <div class="footer-bubble" style="width: 30px; height: 30px; left: 10%; animation-duration: 12s; animation-delay: 0s;"></div>
-            <div class="footer-bubble" style="width: 20px; height: 20px; left: 20%; animation-duration: 15s; animation-delay: 2s;"></div>
-            <div class="footer-bubble" style="width: 40px; height: 40px; left: 35%; animation-duration: 18s; animation-delay: 1s;"></div>
-            <div class="footer-bubble" style="width: 25px; height: 25px; left: 50%; animation-duration: 14s; animation-delay: 3s;"></div>
-            <div class="footer-bubble" style="width: 35px; height: 35px; left: 65%; animation-duration: 16s; animation-delay: 0.5s;"></div>
-            <div class="footer-bubble" style="width: 15px; height: 15px; left: 80%; animation-duration: 13s; animation-delay: 4s;"></div>
-        </div>
-        
-        <div class="footer-content">
-            <div class="footer-form">
-                <h2 class="form-title">Send us feedback</h2>
-                <form class="feedback-form">
-                    <div class="form-group">
-                        <input type="text" class="form-input" id="name" placeholder=" " required>
-                        <label for="name" class="form-label">Your Name</label>
-                    </div>
-                    
-                    <div class="form-group">
-                        <input type="email" class="form-input" id="email" placeholder=" " required>
-                        <label for="email" class="form-label">Email Address</label>
-                    </div>
-                    
-                    <div class="form-group">
-                        <textarea class="form-input" id="message" placeholder=" " required></textarea>
-                        <label for="message" class="form-label">Your Message</label>
-                    </div>
-                    
-                    <button type="submit" class="submit-btn">Send Message</button>
-                </form>
+    <!-- Creator Badge -->
+    <div class="creator-badge">
+        Created by Argha Sarkar
+    </div>
+
+    <!-- Main Container -->
+    <div class="container">
+        <div class="login-card">
+            <!-- Animated Header -->
+            <div class="header">
+                <h1 class="welcome-text">Welcome to Our Webpage</h1>
+                <p class="subtitle">Please sign in to continue</p>
             </div>
+
+            <!-- Login Form -->
+            <form id="loginForm">
+                <!-- Username Input -->
+                <div class="input-group">
+                    <input type="text" class="input-field" placeholder="Enter your username" required>
+                </div>
+
+                <!-- Password Input -->
+                <div class="input-group">
+                    <input type="password" class="input-field" placeholder="Enter your password" required>
+                </div>
+
+                <!-- Usage Type Selection -->
+                <div class="usage-section">
+                    <label class="usage-label">Select Usage Type:</label>
+                    <div class="usage-buttons">
+                        <div class="usage-btn business" data-type="business">Business Use</div>
+                        <div class="usage-btn personal" data-type="personal">Personal Use</div>
+                    </div>
+                </div>
+
+                <!-- Social Media Links -->
+                <div class="social-section">
+                    <label class="social-label">Connect with us:</label>
+                    <div class="social-links">
+                        <a href="https://youtube.com" class="social-link youtube" target="_blank"><img src="https://www.freeiconspng.com/thumbs/youtube-logo-png/hd-youtube-logo-png-transparent-background-20.png"></a>
+                        <a href="https://facebook.com" class="social-link facebook" target="_blank"><img src="https://static.vecteezy.com/system/resources/previews/018/930/698/non_2x/facebook-logo-facebook-icon-transparent-free-png.png"></a>
+                        <a href="https://instagram.com" class="social-link instagram" target="_blank"><img src="https://static.vecteezy.com/system/resources/previews/018/930/415/non_2x/instagram-logo-instagram-icon-transparent-free-png.png"></a>
+                        <a href="https://github.com" class="social-link github" target="_blank"><img src="https://cdn-icons-png.flaticon.com/256/25/25231.png"></a>
+                    </div>
+                </div>
+
+                <!-- Submit Button -->
+                <button type="submit" class="submit-btn">Sign In</button>
+            </form>
+
+            <!-- Footer -->
+            <div class="footer">
+                <a href="#" class="feedback-trigger" onclick="openFeedback()">📝 Feedback & Support</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Feedback Modal -->
+    <div class="feedback-modal" id="feedbackModal">
+        <div class="feedback-form">
+            <button class="close-btn" onclick="closeFeedback()">×</button>
+            <div class="feedback-header">Feedback & Support</div>
             
-            <div class="footer-links">
-                <h3>Quick Links</h3>
-                <a href="#">About Us</a>
-                <a href="#">Our Services</a>
-                <a href="#">Portfolio</a>
-                <a href="#">Blog</a>
-                <a href="https://contacts.google.com/">Contact</a>
+            <div class="contact-info">
+                <p><strong>📧 Email:</strong> <a href="mailto:arghasarkar953@gmail.com">arghasarkar953@gmail.com</a></p>
+                <p><strong>📱 WhatsApp:</strong> <a href="https://wa.me/8944000648">+91-8944000648</a></p>
             </div>
-            
-            <div class="footer-links">
-                <h3>Connect With Us</h3>
-                <a href="#">Facebook</a>
-                <a href="#">Twitter</a>
-                <a href="#">Instagram</a>
-                <a href="#">LinkedIn</a>
-                <a href="#">YouTube</a>
-            </div>
+
+            <form id="feedbackForm">
+                <div class="input-group">
+                    <input type="text" class="input-field" placeholder="Your Name" required>
+                </div>
+                <div class="input-group">
+                    <input type="email" class="input-field" placeholder="Your Email" required>
+                </div>
+                <div class="input-group">
+                    <textarea class="input-field" placeholder="Your Suggestions/Feedback" rows="4" required style="resize: vertical; min-height: 100px;"></textarea>
+                </div>
+                <button type="submit" class="feedback-submit">Send Feedback</button>
+            </form>
         </div>
-        
-        <div class="footer-bottom">
-            <p>&copy; 2025 Imaganation Had No Limit . Just Go Beyond it .</p>
-        </div>
-    </footer>
+    </div>
 
     <script>
-        // Form submission handling (example)
-        document.querySelector('.feedback-form').addEventListener('submit', function(e) {
+        // Usage Type Selection
+        document.querySelectorAll('.usage-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                // Remove active class from all buttons
+                document.querySelectorAll('.usage-btn').forEach(b => b.classList.remove('active'));
+                // Add active class to clicked button
+                this.classList.add('active');
+                
+                // Add animation effect
+                this.style.transform = 'scale(0.95)';
+                setTimeout(() => {
+                    this.style.transform = 'scale(1)';
+                }, 100);
+            });
+        });
+
+        // Login Form Submission
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
             e.preventDefault();
             
-            // Get form values
-            const name = document.getElementById('name').value;
-            const email = document.getElementById('email').value;
-            const message = document.getElementById('message').value;
+            // Get form data
+            const username = this.querySelector('input[type="text"]').value;
+            const password = this.querySelector('input[type="password"]').value;
+            const usageType = document.querySelector('.usage-btn.active')?.dataset.type;
             
-            // Here you would typically send the data to a server
-            console.log('Form submitted:', { name, email, message });
-            
-            // Show success message
-            alert('Thank you for your feedback! We appreciate your message.');
-            
-            // Reset form
-            this.reset();
-        });
-        
-        // Create more bubbles dynamically
-        function createFooterBubbles() {
-            const bubblesContainer = document.querySelector('.footer-bubbles');
-            const bubbleCount = 10;
-            const footerWidth = document.querySelector('footer').offsetWidth;
-            
-            for (let i = 0; i < bubbleCount; i++) {
-                const bubble = document.createElement('div');
-                bubble.className = 'footer-bubble';
-                
-                // Random properties
-                const size = Math.random() * 30 + 10;
-                const left = Math.random() * 100;
-                const duration = Math.random() * 10 + 10;
-                const delay = Math.random() * 5;
-                
-                bubble.style.width = `${size}px`;
-                bubble.style.height = `${size}px`;
-                bubble.style.left = `${left}%`;
-                bubble.style.animationDuration = `${duration}s`;
-                bubble.style.animationDelay = `${delay}s`;
-                bubble.style.opacity = Math.random() * 0.3 + 0.1;
-                
-                bubblesContainer.appendChild(bubble);
+            if (!usageType) {
+                alert('Please select a usage type!');
+                return;
             }
-        }
-        
-        // Initialize bubbles
-        window.addEventListener('load', createFooterBubbles);
-        window.addEventListener('resize', function() {
-            document.querySelectorAll('.footer-bubble').forEach(b => b.remove());
-            createFooterBubbles();
+            
+            // Simulate login process
+            const submitBtn = this.querySelector('.submit-btn');
+            submitBtn.textContent = 'Signing In...';
+            submitBtn.style.background = 'linear-gradient(45deg, #00ff00, #008000)';
+            
+            setTimeout(() => {
+                alert(`Welcome ${username}! Logging in for ${usageType} use.`);
+                submitBtn.textContent = 'Sign In';
+                submitBtn.style.background = 'linear-gradient(45deg, #667eea, #764ba2)';
+            }, 2000);
         });
+
+        // Feedback Modal Functions
+        function openFeedback() {
+            document.getElementById('feedbackModal').classList.add('show');
+        }
+
+        function closeFeedback() {
+            document.getElementById('feedbackModal').classList.remove('show');
+        }
+
+        // Close modal when clicking outside
+        document.getElementById('feedbackModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeFeedback();
+            }
+        });
+
+        // Feedback Form Submission
+        document.getElementById('feedbackForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const submitBtn = this.querySelector('.feedback-submit');
+            submitBtn.textContent = 'Sending...';
+            submitBtn.style.background = 'linear-gradient(45deg, #00ff00, #008000)';
+            
+            setTimeout(() => {
+                alert('Thank you for your feedback! We will get back to you soon.');
+                this.reset();
+                closeFeedback();
+                submitBtn.textContent = 'Send Feedback';
+                submitBtn.style.background = 'linear-gradient(45deg, #00ffff, #ff00ff)';
+            }, 2000);
+        });
+
+        // Add pulse effect to input fields on focus
+        document.querySelectorAll('.input-field').forEach(input => {
+            input.addEventListener('focus', function() {
+                this.style.animation = 'pulseGlow 1s ease-in-out';
+            });
+            
+            input.addEventListener('animationend', function() {
+                this.style.animation = '';
+            });
+        });
+
+        // Add floating animation to creator badge
+        const creatorBadge = document.querySelector('.creator-badge');
+        setInterval(() => {
+            creatorBadge.style.transform = creatorBadge.style.transform.includes('translateY(-50%) scale(1.05)') 
+                ? 'translateY(-50%) scale(1)' 
+                : 'translateY(-50%) scale(1.05)';
+        }, 3000);
+
+        // Add random sparkle effects
+        function createSparkle() {
+            const sparkle = document.createElement('div');
+            sparkle.style.position = 'fixed';
+            sparkle.style.width = '4px';
+            sparkle.style.height = '4px';
+            sparkle.style.background = '#fff';
+            sparkle.style.borderRadius = '50%';
+            sparkle.style.pointerEvents = 'none';
+            sparkle.style.zIndex = '1000';
+            sparkle.style.left = Math.random() * window.innerWidth + 'px';
+            sparkle.style.top = Math.random() * window.innerHeight + 'px';
+            sparkle.style.animation = 'sparkle 2s ease-out forwards';
+            
+            document.body.appendChild(sparkle);
+            
+            setTimeout(() => {
+                sparkle.remove();
+            }, 2000);
+        }
+
+        // Add sparkle animation
+        const sparkleStyle = document.createElement('style');
+        sparkleStyle.textContent = `
+            @keyframes sparkle {
+                0% {
+                    opacity: 0;
+                    transform: scale(0);
+                }
+                50% {
+                    opacity: 1;
+                    transform: scale(1);
+                }
+                100% {
+                    opacity: 0;
+                    transform: scale(0);
+                }
+            }
+        `;
+        document.head.appendChild(sparkleStyle);
+
+        // Create sparkles periodically
+        setInterval(createSparkle, 1000);
     </script>
 </body>
 </html>
