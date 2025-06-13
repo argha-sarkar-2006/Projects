@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Top 5 Data Science Projects</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/atom-one-dark.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+        
+        :root {
+            --primary: #6e45e2;
+            --secondary: #88d3ceea;
+            --dark: #0f172a;
+            --light: #f8fafc;
+            --code-bg: #282c34;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: var(--dark);
+            color: var(--light);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        
+        /* Animated Background */
+        .bg-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+        
+        .bg-circle {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(110, 69, 226, 0.1);
+            animation: float 15s infinite linear;
+        }
+        
+        /* Header */
+        header {
+            text-align: center;
+            padding: 4rem 2rem 2rem;
+            position: relative;
+        }
+        
+        h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            animation: gradientShift 8s ease infinite;
+            background-size: 200% 200%;
+        }
+        
+        .subtitle {
+            font-size: 1.2rem;
+            color: rgba(248, 250, 252, 0.8);
+            max-width: 700px;
+            margin: 0 auto;
+        }
+        
+        /* Projects Grid */
+        .projects-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+        }
+        
+        .project-card {
+            background: rgba(15, 23, 42, 0.7);
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(110, 69, 226, 0.2);
+            overflow: hidden;
+            transition: all 0.3s ease;
+            opacity: 0;
+            transform: translateY(500px);
+        }
+        
+        .project-card.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .project-card:hover {
+            transform: scale(1.05);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+            border-color: rgba(110, 69, 226, 0.4);
+            box-shadow: #5384b4 0px 0px 10px, rgba(110, 69, 226, 0.2) 0px 0px 20px;
+            transition: all 0.5s ease;
+        }
+        
+        .project-img {
+            width: 300px;
+            height: 50px;
+            object-fit: cover;
+            border-bottom: 1px solid rgba(110, 69, 226, 0.2);
+        }
+        
+        .project-content {
+            padding: 1.5rem;
+        }
+        
+        .project-title {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+            color: var(--secondary);
+        }
+        
+        .project-desc {
+            color: rgba(248, 250, 252, 0.8);
+            margin-bottom: 1rem;
+            line-height: 1.6;
+        }
+        
+        .tech-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .tech-tag {
+            background: rgba(110, 69, 226, 0.2);
+            color: var(--secondary);
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+        
+        /* Code Snippet */
+        .code-container {
+            background: var(--code-bg);
+            border-radius: 8px;
+            overflow: hidden;
+            margin-bottom: 1rem;
+        }
+        
+        .code-header {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 0.5rem 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .code-title {
+            font-size: 0.9rem;
+            color: var(--light);
+        }
+        
+        .copy-btn {
+            background: rgba(110, 69, 226, 0.3);
+            color: var(--light);
+            border: none;
+            padding: 0.3rem 0.8rem;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .copy-btn:hover {
+            background: rgba(110, 69, 226, 0.5);
+        }
+        
+        pre {
+            margin: 0;
+            padding: 1rem;
+            overflow-x: auto;
+        }
+        
+        code {
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+        }
+        
+        /* User Guide Accordion */
+        .guide-accordion {
+            margin-top: 1rem;
+        }
+        
+        .accordion-btn {
+            width: 100%;
+            background: rgba(110, 69, 226, 0.2);
+            color: var(--light);
+            border: none;
+            padding: 0.8rem 1rem;
+            text-align: left;
+            border-radius: 8px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.3s ease;
+        }
+        
+        .accordion-btn:hover {
+            background: rgba(110, 69, 226, 0.3);
+        }
+        
+        .accordion-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+            background: rgba(15, 23, 42, 0.5);
+            border-radius: 0 0 8px 8px;
+        }
+        
+        .accordion-content p {
+            padding: 1rem;
+            color: rgba(248, 250, 252, 0.8);
+            line-height: 1.6;
+        }
+        
+        .accordion-btn.active + .accordion-content {
+            max-height: 500px;
+        }
+        
+        /* Animations */
+        @keyframes float {
+            0% {
+                transform: translate(0, 0) rotate(0deg);
+                opacity: 0.1;
+            }
+            50% {
+                opacity: 0.3;
+            }
+            100% {
+                transform: translate(100px, -100px) rotate(360deg);
+                opacity: 0.1;
+            }
+        }
+        
+        @keyframes gradientShift {
+            0% {
+                background-position: 0% 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.2rem;
+            }
+            
+            .subtitle {
+                font-size: 1rem;
+            }
+            
+            .projects-container {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-animation">
+        <div class="bg-circle" style="width: 600px; height: 600px; top: -300px; left: -300px; animation-delay: 0s;"></div>
+        <div class="bg-circle" style="width: 400px; height: 400px; bottom: -200px; right: -200px; animation-delay: 3s;"></div>
+        <div class="bg-circle" style="width: 300px; height: 300px; top: 30%; right: -150px; animation-delay: 6s;"></div>
+    </div>
+    
+    <header>
+        <h1>Top 5 Data Science Projects</h1>
+        <p class="subtitle">Interactive showcase with code snippets and user guides</p>
+    </header>
+    
+    <div class="projects-container">
+        <!-- Project 1 -->
+        <div class="project-card">
+            <!-- <img src="https://cdn-icons-png.flaticon.com/128/2782/2782163.png" alt="Sentiment Analysis" class="project-img"> -->
+            <div class="project-content">
+                <h2 class="project-title">Sentiment Analysis</h2>
+                <p class="project-desc">Analyze emotions in text data using NLP and machine learning.</p>
+                
+                <div class="tech-tags">
+                    <span class="tech-tag">Python</span>
+                    <span class="tech-tag">NLTK</span>
+                    <span class="tech-tag">Scikit-learn</span>
+                </div>
+                
+                <div class="code-container">
+                    <div class="code-header">
+                        <span class="code-title">sentiment_analysis.py</span>
+                        <button class="copy-btn">Copy</button>
+                    </div>
+                    <pre><code class="language-python">import pandas as pd
+from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.svm import SVC
+
+# Load dataset
+data = pd.read_csv('reviews.csv')
+
+# Vectorize text
+vectorizer = TfidfVectorizer()
+X = vectorizer.fit_transform(data['text'])
+
+# Train model
+model = SVC(kernel='linear')
+model.fit(X, data['sentiment'])
+
+# Predict sentiment
+def predict_sentiment(text):
+    return model.predict(vectorizer.transform([text]))</code></pre>
+                </div>
+                
+                <div class="guide-accordion">
+                    <button class="accordion-btn">User Guide <span>▼</span></button>
+                    <div class="accordion-content">
+                        <p>
+                            1. Install required libraries: `pip install pandas scikit-learn nltk`<br>
+                            2. Prepare your dataset in CSV format with 'text' and 'sentiment' columns.<br>
+                            3. Run the script to train the model.<br>
+                            4. Use `predict_sentiment()` to analyze new text.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Project 2 -->
+        <div class="project-card">
+            <!-- <img src="https://via.placeholder.com/600x400?text=House+Price+Prediction" alt="House Price Prediction" class="project-img"> -->
+            <div class="project-content">
+                <h2 class="project-title">House Price Prediction</h2>
+                <p class="project-desc">Predict housing prices using regression models.</p>
+                
+                <div class="tech-tags">
+                    <span class="tech-tag">Python</span>
+                    <span class="tech-tag">Pandas</span>
+                    <span class="tech-tag">XGBoost</span>
+                </div>
+                
+                <div class="code-container">
+                    <div class="code-header">
+                        <span class="code-title">house_price.py</span>
+                        <button class="copy-btn">Copy</button>
+                    </div>
+                    <pre><code class="language-python">import xgboost as xgb
+from sklearn.model_selection import train_test_split
+
+# Load data
+data = pd.read_csv('housing.csv')
+
+# Feature engineering
+X = data.drop('price', axis=1)
+y = data['price']
+
+# Split data
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2)
+
+# Train model
+model = xgb.XGBRegressor()
+model.fit(X_train, y_train)
+
+# Evaluate
+score = model.score(X_test, y_test)</code></pre>
+                </div>
+                
+                <div class="guide-accordion">
+                    <button class="accordion-btn">User Guide <span>▼</span></button>
+                    <div class="accordion-content">
+                        <p>
+                            1. Install XGBoost: `pip install xgboost`<br>
+                            2. Prepare your dataset with features like square footage, bedrooms, etc.<br>
+                            3. Run the script to train the model.<br>
+                            4. Use `model.predict()` for new predictions.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Project 3 -->
+        <div class="project-card">
+            <!-- <img src="https://via.placeholder.com/600x400?text=Customer+Segmentation" alt="Customer Segmentation" class="project-img"> -->
+            <div class="project-content">
+                <h2 class="project-title">Customer Segmentation</h2>
+                <p class="project-desc">Cluster customers using K-Means for targeted marketing.</p>
+                
+                <div class="tech-tags">
+                    <span class="tech-tag">Python</span>
+                    <span class="tech-tag">Scikit-learn</span>
+                    <span class="tech-tag">Matplotlib</span>
+                </div>
+                
+                <div class="code-container">
+                    <div class="code-header">
+                        <span class="code-title">segmentation.py</span>
+                        <button class="copy-btn">Copy</button>
+                    </div>
+                    <pre><code class="language-python">from sklearn.cluster import KMeans
+import matplotlib.pyplot as plt
+
+# Load customer data
+data = pd.read_csv('customers.csv')
+
+# Select features
+X = data[['age', 'income', 'spending_score']]
+
+# Apply K-Means
+kmeans = KMeans(n_clusters=5)
+clusters = kmeans.fit_predict(X)
+
+# Visualize
+plt.scatter(X['income'], X['spending_score'], c=clusters)
+plt.show()</code></pre>
+                </div>
+                
+                <div class="guide-accordion">
+                    <button class="accordion-btn">User Guide <span>▼</span></button>
+                    <div class="accordion-content">
+                        <p>
+                            1. Install required libraries: `pip install scikit-learn matplotlib`<br>
+                            2. Prepare customer data with relevant features.<br>
+                            3. Run the script to segment customers.<br>
+                            4. Adjust `n_clusters` for different groupings.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Project 4 -->
+        <div class="project-card">
+            <!-- <img src="https://via.placeholder.com/600x400?text=Fake+News+Detection" alt="Fake News Detection" class="project-img"> -->
+            <div class="project-content">
+                <h2 class="project-title">Fake News Detection</h2>
+                <p class="project-desc">Identify fake news using NLP and classification algorithms.</p>
+                
+                <div class="tech-tags">
+                    <span class="tech-tag">Python</span>
+                    <span class="tech-tag">TensorFlow</span>
+                    <span class="tech-tag">NLP</span>
+                </div>
+                
+                <div class="code-container">
+                    <div class="code-header">
+                        <span class="code-title">fake_news.py</span>
+                        <button class="copy-btn">Copy</button>
+                    </div>
+                    <pre><code class="language-python">import tensorflow as tf
+from tensorflow.keras.layers import TextVectorization, Embedding, LSTM, Dense
+
+# Build model
+model = tf.keras.Sequential([
+    TextVectorization(max_tokens=10000),
+    Embedding(10000, 128),
+    LSTM(64),
+    Dense(1, activation='sigmoid')
+])
+
+# Compile
+model.compile(optimizer='adam', loss='binary_crossentropy')
+
+# Train
+model.fit(train_data, train_labels, epochs=5)</code></pre>
+                </div>
+                
+                <div class="guide-accordion">
+                    <button class="accordion-btn">User Guide <span>▼</span></button>
+                    <div class="accordion-content">
+                        <p>
+                            1. Install TensorFlow: `pip install tensorflow`<br>
+                            2. Prepare labeled dataset (0=fake, 1=real).<br>
+                            3. Train the model on news articles.<br>
+                            4. Use `model.predict()` to classify new articles.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Project 5 -->
+        <div class="project-card">
+            <!-- <img src="https://via.placeholder.com/600x400?text=Recommendation+System" alt="Recommendation System" class="project-img"> -->
+            <div class="project-content">
+                <h2 class="project-title">Recommendation System</h2>
+                <p class="project-desc">Build a movie recommendation engine using collaborative filtering.</p>
+                
+                <div class="tech-tags">
+                    <span class="tech-tag">Python</span>
+                    <span class="tech-tag">Surprise</span>
+                    <span class="tech-tag">Pandas</span>
+                </div>
+                
+                <div class="code-container">
+                    <div class="code-header">
+                        <span class="code-title">recommendation.py</span>
+                        <button class="copy-btn">Copy</button>
+                    </div>
+                    <pre><code class="language-python">from surprise import Dataset, KNNBasic
+from surprise.model_selection import train_test_split
+
+# Load data
+data = Dataset.load_builtin('ml-100k')
+
+# Train-test split
+trainset, testset = train_test_split(data, test_size=0.2)
+
+# Train model
+model = KNNBasic()
+model.fit(trainset)
+
+# Predict
+predictions = model.test(testset)</code></pre>
+                </div>
+                
+                <div class="guide-accordion">
+                    <button class="accordion-btn">User Guide <span>▼</span></button>
+                    <div class="accordion-content">
+                        <p>
+                            1. Install Surprise: `pip install scikit-surprise`<br>
+                            2. Use MovieLens dataset or your own ratings data.<br>
+                            3. Train the model to find similar users/items.<br>
+                            4. Generate recommendations with `model.predict()`.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/highlight.min.js"></script>
+    <script>
+        // Initialize syntax highlighting
+        hljs.highlightAll();
+        
+        // Animation on scroll
+        document.addEventListener('DOMContentLoaded', () => {
+            const projectCards = document.querySelectorAll('.project-card');
+            
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                    }
+                });
+            }, { threshold: 0.1 });
+            
+            projectCards.forEach(card => {
+                observer.observe(card);
+            });
+            
+            // Copy button functionality
+            document.querySelectorAll('.copy-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const code = btn.parentElement.nextElementSibling.textContent;
+                    navigator.clipboard.writeText(code);
+                    btn.textContent = 'Copied!';
+                    setTimeout(() => btn.textContent = 'Copy', 2000);
+                });
+            });
+            
+            // Accordion functionality
+            document.querySelectorAll('.accordion-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    btn.classList.toggle('active');
+                });
+            });
+        });
+    </script>
+</body>
+</html>

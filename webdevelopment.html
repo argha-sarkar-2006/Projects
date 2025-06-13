@@ -1,0 +1,688 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Top 5 Web Development Projects</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Animated Particle Background */
+        #particles-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            opacity: 0.8;
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            padding: 80px 20px 60px;
+            position: relative;
+            z-index: 10;
+        }
+
+        .header h1 {
+            font-size: 4rem;
+            font-weight: 700;
+            background: linear-gradient(45deg, #fff, #f0f0f0, #fff);
+            background-size: 200% 200%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: shimmer 3s ease-in-out infinite;
+            margin-bottom: 20px;
+            text-shadow: 0 0 30px rgba(255,255,255,0.5);
+        }
+
+        .header p {
+            font-size: 1.3rem;
+            color: rgba(243, 242, 242, 0.9);
+            max-width: 600px;
+            margin: 0 auto;
+            line-height: 1.6;
+            animation: fadeInUp 1s ease-out 0.5s both;
+        }
+
+        /* Projects Container */
+        .projects-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 20px 80px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 40px;
+            position: relative;
+            z-index: 10;
+        }
+
+        /* Project Cards */
+        .project-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 25px;
+            padding: 40px;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            animation: slideInUp 0.8s ease-out both;
+            cursor: pointer;
+        }
+
+        .project-card:nth-child(1) { animation-delay: 0.1s; }
+        .project-card:nth-child(2) { animation-delay: 0.2s; }
+        .project-card:nth-child(3) { animation-delay: 0.3s; }
+        .project-card:nth-child(4) { animation-delay: 0.4s; }
+        .project-card:nth-child(5) { animation-delay: 0.5s; }
+
+        .project-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .project-card:hover::before {
+            left: 100%;
+        }
+
+        .project-card:hover {
+            transform: translateY(-15px) scale(1.2);
+            box-shadow: 0 25px 50px rgba(0,0,0,0.3);
+            border-color: rgba(255,255,255,0.4);
+            
+        }
+
+        .project-rank {
+            position: absolute;
+            top: 12px;
+            right: 10px;
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #ff6b6b, #ee5a24);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: white;
+            box-shadow: 0 10px 25px rgba(238, 90, 36, 0.4);
+            animation: bounce 2s infinite;
+        }
+
+        .project-icon {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #4facfe, #00f2fe);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            margin-bottom: 25px;
+            box-shadow: 0 15px 35px rgba(79, 172, 254, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .project-card:hover .project-icon {
+            transform: rotateY(180deg) scale(1.1);
+            box-shadow: 0 20px 40px rgba(79, 172, 254, 0.5);
+            transition: 1s ease-in-out;
+        }
+
+        .project-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 15px;
+            position: relative;
+        }
+
+        .project-description {
+            color: rgba(255,255,255,0.8);
+            line-height: 1.6;
+            margin-bottom: 25px;
+            font-size: 1.1rem;
+        }
+
+        .project-tech {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 25px;
+        }
+
+        .tech-tag {
+            background: rgba(255,255,255,0.2);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            border: 1px solid rgba(255,255,255,0.3);
+            transition: all 0.3s ease;
+        }
+
+        .tech-tag:hover {
+            background: rgba(255,255,255,0.3);
+            transform: scale(1.05);
+            transition: all 1s ease;
+        }
+
+        .project-links {
+            display: flex;
+            gap: 15px;
+        }
+
+        .project-link {
+            flex: 1;
+            padding: 12px 20px;
+            border-radius: 15px;
+            text-decoration: none;
+            font-weight: 600;
+            text-align: center;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-demo {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: 2px solid transparent;
+        }
+
+        .btn-code {
+            background: transparent;
+            color: white;
+            border: 2px solid rgba(255,255,255,0.3);
+        }
+
+        .project-link:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+        }
+
+        .btn-demo:hover {
+            background: linear-gradient(135deg, #764ba2, #667eea);
+        }
+
+        .btn-code:hover {
+            background: rgba(255,255,255,0.1);
+            border-color: rgba(255,255,255,0.5);
+        }
+
+        /* Floating Elements */
+        .floating-element {
+            position: absolute;
+            pointer-events: none;
+            opacity: 0.1;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .floating-element:nth-child(odd) {
+            animation-direction: reverse;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2.5rem;
+            }
+            
+            .header p {
+                font-size: 1.1rem;
+            }
+            
+            .projects-container {
+                grid-template-columns: 1fr;
+                gap: 30px;
+                padding: 0 15px 60px;
+            }
+            
+            .project-card {
+                padding: 30px;
+            }
+            
+            .project-links {
+                flex-direction: column;
+            }
+        }
+
+        /* Animations */
+        @keyframes shimmer {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideInUp {
+            from {
+                opacity: 0;
+                transform: translateY(60px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {
+                transform: translateY(0);
+            }
+            40% {
+                transform: translateY(-10px);
+            }
+            60% {
+                transform: translateY(-5px);
+            }
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0px) rotate(0deg);
+            }
+            50% {
+                transform: translateY(-20px) rotate(180deg);
+            }
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                opacity: 0.1;
+            }
+            50% {
+                opacity: 0.3;
+            }
+        }
+
+        /* Scroll Animation */
+        .scroll-indicator {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: white;
+            font-size: 2rem;
+            animation: bounce 2s infinite;
+            z-index: 100;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 12px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: rgba(255,255,255,0.1);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(135deg, #764ba2, #667eea);
+        }
+    </style>
+</head>
+<body>
+    <!-- Animated Particle Background -->
+    <canvas id="particles-canvas"></canvas>
+
+    <!-- Floating Elements -->
+    <div class="floating-element" style="top: 10%; left: 10%; font-size: 3rem;">💻</div>
+    <div class="floating-element" style="top: 20%; right: 15%; font-size: 2.5rem;">🚀</div>
+    <div class="floating-element" style="top: 60%; left: 5%; font-size: 2rem;">⚡</div>
+    <div class="floating-element" style="bottom: 20%; right: 10%; font-size: 3.5rem;">🎨</div>
+    <div class="floating-element" style="bottom: 40%; left: 20%; font-size: 2rem;">🔥</div>
+
+    <!-- Header -->
+    <div class="header">
+        <h1>Top 5 Web Development Projects</h1>
+        <p>Discover the most innovative and cutting-edge web development projects that are shaping the future of digital experiences</p>
+    </div>
+
+    <!-- Projects Container -->
+    <div class="projects-container">
+        <!-- Project 1 -->
+        <div class="project-card">
+            <div class="project-rank">1</div>
+            <div class="project-icon">🎯</div>
+            <h2 class="project-title">To-Do-List</h2>
+            <p class="project-description">
+                An intelligent task management system that use to completed your daily task on  a simless way .
+            </p>
+            <div class="project-tech">
+                <span class="tech-tag">HTML</span>
+                <span class="tech-tag">Java Script</span>
+                <span class="tech-tag">CSS3</span>
+                <!-- <span class="tech-tag">MongoDB</span>
+                <span class="tech-tag">WebRTC</span> -->
+            </div>
+            <div class="project-links">
+                <a href="/todo _list.html" TARGET= "_blank" class="project-link btn-demo">Live Demo</a>
+                <!-- <a href="#" class="project-link btn-code">View Code</a> -->
+            </div>
+        </div>
+
+        <!-- Project 2 -->
+        <div class="project-card">
+            <div class="project-rank">2</div>
+            <div class="project-icon">🎮</div>
+            <h2 class="project-title">Game Library-Your Ultimate Gaming Hub </h2>
+            <p class="project-description">
+a comprehensive game library that offers a vast collection of games across various genres, 
+                complete with detailed descriptions, ratings, and user reviews. 
+                Users can easily search, filter, and discover new games to play.
+            </p>
+            <div class="project-tech">
+                <span class="tech-tag">HTML</span>
+                <span class="tech-tag">Java Script</span>
+                <span class="tech-tag">CSS3</span>
+            </div>
+            <div class="project-links">
+                <a href="/gamelibrary.html" TARGET= "_blank" CLASS= "project-link btn-demo">Live Demo</a>
+                <!-- <a href="#" class="project-link btn-code">View Code</a> -->
+            </div>
+        </div>
+
+        <!-- Project 3 -->
+        <div class="project-card">
+            <div class="project-rank">3</div>
+            <div class="project-icon">📊</div>
+            <h2 class="project-title">Smart Stock Tracker </h2>
+            <p class="project-description">
+                A real-time stock market tracker that provides live updates, historical data, and advanced analytics 
+                to help users make informed investment decisions. Features include customizable watchlists, alerts, and 
+                detailed stock profiles.
+            </p>
+            <div class="project-tech">
+                <span class="tech-tag">HTML</span>
+                <span class="tech-tag">Java Script</span>
+                <span class="tech-tag">CSS3</span>
+            </div>
+            <div class="project-links">
+                <a href="/stocktracker.html" target="_blank" class="project-link btn-demo">Live Demo</a>
+                <!-- <a href="#" class="project-link btn-code">View Code</a> -->
+            </div>
+        </div>
+
+        <!-- Project 4 -->
+        <div class="project-card">
+            <div class="project-rank">4</div>
+            <div class="project-icon">📑</div>
+            <h2 class="project-title">A Cool Login Page </h2>
+            <p class="project-description">
+                A sleek and modern login page designed to provide a seamless user experience with a focus on security and usability. 
+                Features include social media login options,and a feed back form for users.
+            </p>
+            <div class="project-tech">
+                <span class="tech-tag">HTML</span>
+                <span class="tech-tag">Java Script</span>
+                <span class="tech-tag">CSS3</span>
+            </div>
+            <div class="project-links">
+                <a href="/Login_page.html" target="_blank" class="project-link btn-demo">Live Demo</a>
+                <!-- <a href="#" class="project-link btn-code">View Code</a> -->
+            </div>
+        </div>
+
+        <!-- Project 5 -->
+        <div class="project-card">
+            <div class="project-rank">5</div>
+            <div class="project-icon">🎮</div>
+            <h2 class="project-title">Comming Soon </h2>
+            <p class="project-description">
+Comming soon
+            </p>
+            <div class="project-tech">
+                <span class="tech-tag">HTML</span>
+                <span class="tech-tag">Java Script</span>
+                <span class="tech-tag">CSS3</span>
+            </div>
+            <div class="project-links">
+                <a href="#" class="project-link btn-demo">Live Demo</a>
+                <!-- <a href="#" class="project-link btn-code">View Code</a> -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Scroll Indicator -->
+    <div class="scroll-indicator">⬇️</div>
+
+    <script>
+        // Particle Animation System
+        class ParticleSystem {
+            constructor(canvas) {
+                this.canvas = canvas;
+                this.ctx = canvas.getContext('2d');
+                this.particles = [];
+                this.particleCount = 150;
+                this.connectionDistance = 120;
+                this.mouse = { x: 0, y: 0 };
+                
+                this.resize();
+                this.init();
+                this.animate();
+                
+                // Event listeners
+                window.addEventListener('resize', () => this.resize());
+                window.addEventListener('mousemove', (e) => {
+                    this.mouse.x = e.clientX;
+                    this.mouse.y = e.clientY;
+                });
+            }
+            
+            resize() {
+                this.canvas.width = window.innerWidth;
+                this.canvas.height = window.innerHeight;
+            }
+            
+            init() {
+                this.particles = [];
+                for (let i = 0; i < this.particleCount; i++) {
+                    this.particles.push({
+                        x: Math.random() * this.canvas.width,
+                        y: Math.random() * this.canvas.height,
+                        vx: (Math.random() - 0.5) * 2,
+                        vy: (Math.random() - 0.5) * 2,
+                        radius: Math.random() * 3 + 1,
+                        opacity: Math.random() * 0.8 + 0.2,
+                        color: `hsl(${Math.random() * 60 + 200}, 70%, 60%)`
+                    });
+                }
+            }
+            
+            animate() {
+                this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+                
+                // Update and draw particles
+                this.particles.forEach((particle, i) => {
+                    // Update position
+                    particle.x += particle.vx;
+                    particle.y += particle.vy;
+                    
+                    // Bounce off edges
+                    if (particle.x < 0 || particle.x > this.canvas.width) particle.vx *= -1;
+                    if (particle.y < 0 || particle.y > this.canvas.height) particle.vy *= -1;
+                    
+                    // Mouse interaction
+                    const dx = this.mouse.x - particle.x;
+                    const dy = this.mouse.y - particle.y;
+                    const distance = Math.sqrt(dx * dx + dy * dy);
+                    
+                    if (distance < 100) {
+                        particle.x -= dx * 0.01;
+                        particle.y -= dy * 0.01;
+                    }
+                    
+                    // Draw particle
+                    this.ctx.beginPath();
+                    this.ctx.arc(particle.x, particle.y, particle.radius, 0, Math.PI * 2);
+                    this.ctx.fillStyle = particle.color;
+                    this.ctx.globalAlpha = particle.opacity;
+                    this.ctx.fill();
+                    
+                    // Draw connections
+                    for (let j = i + 1; j < this.particles.length; j++) {
+                        const other = this.particles[j];
+                        const dx = particle.x - other.x;
+                        const dy = particle.y - other.y;
+                        const distance = Math.sqrt(dx * dx + dy * dy);
+                        
+                        if (distance < this.connectionDistance) {
+                            this.ctx.beginPath();
+                            this.ctx.moveTo(particle.x, particle.y);
+                            this.ctx.lineTo(other.x, other.y);
+                            this.ctx.strokeStyle = particle.color;
+                            this.ctx.globalAlpha = (1 - distance / this.connectionDistance) * 0.3;
+                            this.ctx.lineWidth = 1;
+                            this.ctx.stroke();
+                        }
+                    }
+                });
+                
+                this.ctx.globalAlpha = 1;
+                requestAnimationFrame(() => this.animate());
+            }
+        }
+        
+        // Initialize particle system
+        const canvas = document.getElementById('particles-canvas');
+        new ParticleSystem(canvas);
+        
+        // Smooth scrolling for project cards
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+        
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+        
+        // Observe all project cards
+        document.querySelectorAll('.project-card').forEach(card => {
+            observer.observe(card);
+        });
+        
+        // Hide scroll indicator when scrolled
+        window.addEventListener('scroll', () => {
+            const scrollIndicator = document.querySelector('.scroll-indicator');
+            if (window.scrollY > 100) {
+                scrollIndicator.style.opacity = '0';
+            } else {
+                scrollIndicator.style.opacity = '1';
+            }
+        });
+        
+        // Add click effects to project cards
+        document.querySelectorAll('.project-card').forEach(card => {
+            card.addEventListener('click', function(e) {
+                if (!e.target.closest('.project-link')) {
+                    // Create ripple effect
+                    const ripple = document.createElement('div');
+                    const rect = this.getBoundingClientRect();
+                    const size = Math.max(rect.width, rect.height);
+                    const x = e.clientX - rect.left - size / 2;
+                    const y = e.clientY - rect.top - size / 2;
+                    
+                    ripple.style.cssText = `
+                        position: absolute;
+                        width: ${size}px;
+                        height: ${size}px;
+                        left: ${x}px;
+                        top: ${y}px;
+                        background: radial-gradient(circle, rgba(255,255,255,0.3) 0%, transparent 70%);
+                        border-radius: 50%;
+                        transform: scale(0);
+                        animation: ripple 0.6s ease-out;
+                        pointer-events: none;
+                        z-index: 1000;
+                    `;
+                    
+                    this.appendChild(ripple);
+                    
+                    setTimeout(() => {
+                        ripple.remove();
+                    }, 600);
+                }
+            });
+        });
+        
+        // Add ripple animation
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes ripple {
+                to {
+                    transform: scale(2);
+                    opacity: 0;
+                }
+            }
+        `;
+        document.head.appendChild(style);
+        
+        // Parallax effect for floating elements
+        window.addEventListener('scroll', () => {
+            const scrolled = window.pageYOffset;
+            const parallax = document.querySelectorAll('.floating-element');
+            const speed = 0.5;
+            
+            parallax.forEach(element => {
+                const yPos = -(scrolled * speed);
+                element.style.transform = `translateY(${yPos}px)`;
+            });
+        });
+        
+        // Add loading animation
+        window.addEventListener('load', () => {
+            document.body.style.opacity = '0';
+            document.body.style.transition = 'opacity 0.5s ease-in-out';
+            
+            setTimeout(() => {
+                document.body.style.opacity = '1';
+            }, 100);
+        });
+    </script>
+</body>
+</html>

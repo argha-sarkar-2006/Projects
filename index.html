@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Developer Profile Animation</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;500&display=swap');
+        
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: #08172e; /* Navy blue background */
+            font-family: 'Roboto Mono', monospace;
+            margin: 0;
+            overflow: hidden;
+        }
+        
+        .developer-card {
+            position: relative;
+            width: 3300px;
+            padding: 2rem;
+            text-align: center;
+            background: rgba(10, 25, 47, 0.85);
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(100, 255, 218, 0.1);
+            overflow: hidden;
+            z-index: 1;
+        }
+        
+        .developer-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(
+                to bottom right,
+                rgba(100, 255, 218, 0.1),
+                transparent 50%,
+                transparent,
+                rgba(100, 255, 218, 0.1)
+            );
+            transform: rotate(30deg);
+            animation: shine 8s linear infinite;
+            z-index: -1;
+        }
+        
+        .profile-container {
+            position: relative;
+            width: 150px;
+            height: 150px;
+            margin: 0 auto 1.5rem;
+            border-radius: 50%;
+            overflow: hidden;
+            border: 3px solid #64ffda;
+            box-shadow: 0 0 20px rgba(100, 255, 218, 0.3);
+            transition: all 0.5s ease;
+        }
+        
+        .profile-photo {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: grayscale(20%) contrast(110%);
+            transition: all 0.5s ease;
+        }
+        
+        .profile-container:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 30px rgba(100, 255, 218, 0.5);
+        }
+        
+        .profile-container:hover .profile-photo {
+            filter: grayscale(0%) contrast(100%);
+        }
+        
+        .code-brackets {
+            position: absolute;
+            color: #64ffda;
+            font-size: 2rem;
+            font-weight: bold;
+            opacity: 0.7;
+        }
+        
+        .code-brackets.left {
+            left: -10px;
+            top: 50%;
+            transform: translateY(-50%);
+            animation: blinkLeft 4s infinite;
+        }
+        
+        .code-brackets.right {
+            right: -10px;
+            top: 50%;
+            transform: translateY(-50%);
+            animation: blinkRight 4s infinite;
+        }
+        
+        .developer-name {
+            color: #ccd6f6;
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+            position: relative;
+        }
+        
+        .developer-title {
+            color: #64ffda;
+            font-size: 1rem;
+            margin-bottom: 1.5rem;
+            position: relative;
+        }
+        
+        .tech-tag {
+            display: inline-block;
+            padding: 0.3rem 0.8rem;
+            background: rgba(100, 255, 218, 0.1);
+            color: #64ffda;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            margin: 0.3rem;
+            animation: floatTag 3s ease-in-out infinite;
+        }
+        
+        .tech-tag:nth-child(1) { animation-delay: 0s; }
+        .tech-tag:nth-child(2) { animation-delay: 0.5s; }
+        .tech-tag:nth-child(3) { animation-delay: 1s; }
+        
+        .binary-code {
+            position: absolute;
+            color: rgba(100, 255, 218, 0.05);
+            font-size: 0.8rem;
+            white-space: nowrap;
+            z-index: -1;
+        }
+        
+        @keyframes shine {
+            0% { transform: rotate(30deg) translate(-30%, -30%); }
+            100% { transform: rotate(30deg) translate(30%, 30%); }
+        }
+        
+        @keyframes blinkLeft {
+            0%, 100% { opacity: 0.2; transform: translateY(-50%) translateX(-5px); }
+            50% { opacity: 0.7; transform: translateY(-50%) translateX(0); }
+        }
+        
+        @keyframes blinkRight {
+            0%, 100% { opacity: 0.2; transform: translateY(-50%) translateX(5px); }
+            50% { opacity: 0.7; transform: translateY(-50%) translateX(0); }
+        }
+        
+        @keyframes floatTag {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-8px); }
+        }
+        
+        /* Binary code background animation */
+        .binary-1 {
+            top: 10%;
+            left: 5%;
+            animation: moveRight 2s linear infinite;
+        }
+        
+        .binary-2 {
+            top: 30%;
+            right: 5%;
+            animation: moveLeft 5s linear infinite;
+        }
+        
+        .binary-3 {
+            bottom: 20%;
+            left: 10%;
+            animation: moveRight 3s linear infinite;
+        }
+        .binary-4 {
+            top: 10%;
+            left: 5%;
+            animation: moveRight 20s linear infinite;
+        }
+        
+        .binary-5 {
+            top: 30%;
+            right: 5%;
+            animation: moveLeft 25s linear infinite;
+        }
+        
+        .binary-6 {
+            bottom: 20%;
+            left: 10%;
+            animation: moveRight 30s linear infinite;
+        }
+        .binary-1 {
+            top: 10%;
+            left: 5%;
+            animation: moveRight 20s linear infinite;
+        }
+        
+        .binary-2 {
+            top: 30%;
+            right: 5%;
+            animation: moveLeft 25s linear infinite;
+        }
+        
+        .binary-3 {
+            bottom: 20%;
+            left: 10%;
+            animation: moveRight 30s linear infinite;
+        }
+        .binary-1 {
+            top: 10%;
+            left: 5%;
+            animation: moveRight 20s linear infinite;
+        }
+        
+        .binary-2 {
+            top: 30%;
+            right: 5%;
+            animation: moveLeft 25s linear infinite;
+        }
+        
+        .binary-3 {
+            bottom: 20%;
+            left: 10%;
+            animation: moveRight 30s linear infinite;
+        }
+        .binary-1 {
+            top: 10%;
+            left: 5%;
+            animation: moveRight 20s linear infinite;
+        }
+        
+        .binary-2 {
+            top: 30%;
+            right: 5%;
+            animation: moveLeft 25s linear infinite;
+        }
+        
+        .binary-3 {
+            bottom: 20%;
+            left: 10%;
+            animation: moveRight 30s linear infinite;
+        }
+        .binary-1 {
+            top: 10%;
+            left: 5%;
+            animation: moveRight 20s linear infinite;
+        }
+        
+        .binary-2 {
+            top: 30%;
+            right: 5%;
+            animation: moveLeft 25s linear infinite;
+        }
+        
+        .binary-3 {
+            bottom: 20%;
+            left: 10%;
+            animation: moveRight 30s linear infinite;
+        }
+        
+        @keyframes moveRight {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100vw); }
+        }
+        
+        @keyframes moveLeft {
+            0% { transform: translateX(100vw); }
+            100% { transform: translateX(-100%); }
+        }
+        
+        /* Glowing dots */
+        .glow-dot {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(100, 255, 218, 0.3);
+            filter: blur(5px);
+            z-index: -1;
+        }
+        
+        .dot-1 {
+            width: 100px;
+            height: 100px;
+            top: 20%;
+            left: 10%;
+            animation: pulseGlow 6s ease infinite;
+        }
+        
+        .dot-2 {
+            width: 150px;
+            height: 150px;
+            bottom: 10%;
+            right: 15%;
+            animation: pulseGlow 8s ease infinite 2s;
+        }
+        
+        @keyframes pulseGlow {
+            0%, 100% { transform: scale(1); opacity: 0.3; }
+            50% { transform: scale(1.2); opacity: 0.1; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Background elements -->
+    <div class="binary-code binary-1">1010101010101010101010101010101010101010101010101010101010101010</div>
+    <div class="binary-code binary-2">1100110011001100110011001100110011001100110011001100110011001100</div>
+    <div class="binary-code binary-3">1001100110011001100110011001100110011001100110011001100110011001</div>
+    <div class="binary-code binary-4">1010101010101010101010101010101010101010101010101010101010101010</div>
+    <div class="binary-code binary-5">1100110011001100110011001100110011001100110011001100110011001100</div>
+    <div class="binary-code binary-6">1001100110011001100110011001100110011001100110011001100110011001</div>
+    <div class="binary-code binary-7">1010101010101010101010101010101010101010101010101010101010101010</div>
+    <div class="binary-code binary-8">1100110011001100110011001100110011001100110011001100110011001100</div>
+    <div class="binary-code binary-9">1001100110011001100110011001100110011001100110011001100110011001</div>
+    <div class="binary-code binary-10">1010101010101010101010101010101010101010101010101010101010101010</div>
+    <div class="binary-code binary-11">1100110011001100110011001100110011001100110011001100110011001100</div>
+    <div class="binary-code binary-12">1001100110011001100110011001100110011001100110011001100110011001</div>
+    <div class="binary-code binary-13">1010101010101010101010101010101010101010101010101010101010101010</div>
+    <div class="binary-code binary-14">1100110011001100110011001100110011001100110011001100110011001100</div>
+    <div class="binary-code binary-15">1001100110011001100110011001100110011001100110011001100110011001</div>
+    <div class="binary-code binary-16">1010101010101010101010101010101010101010101010101010101010101010</div>
+    <div class="binary-code binary-17">1100110011001100110011001100110011001100110011001100110011001100</div>
+    <div class="binary-code binary-18">1001100110011001100110011001100110011001100110011001100110011001</div>
+    <div class="glow-dot dot-1"></div>
+    <div class="glow-dot dot-2"></div>
+    
+    <!-- Developer profile card -->
+    <div class="developer-card">
+        <span class="code-brackets left">{</span>
+        <span class="code-brackets right">}</span>
+        
+        <div class="profile-container">
+            <!-- Replace with your profile photo -->
+            <img src="/pfp1.jpg" alt="Developer Photo" class="profile-photo">
+        </div>
+        
+        <h1 class="developer-name">Argha Sarkar</h1>
+        <p class="developer-title">Software Developer</p>
+        
+        <div class="tech-tags">
+            <a href="/bio.html" class="tech-tag">Resume</a>
+            <a href="/education.html"  class="tech-tag" target="_blank">Education</a>
+            <a href="" class="tech-tag">Awards</a>
+            <a href="/projects.html" class="tech-tag" target="_blank">Python</a>
+            <a href="/datascienceprojects.html" class="tech-tag">Data Science</a>
+            <a href="/webdevelopment.html" class="tech-tag">Web Development</a>
+            <!-- <a href="" target="_blank" class="tech-tag">hii</a> -->
+        </div>
+    </div>
+
+    <script>
+        // Generate random binary strings for background
+        document.querySelectorAll('.binary-code').forEach(el => {
+            let binary = '';
+            for (let i = 0; i < 60; i++) {
+                binary += Math.random() > 0.5 ? '1' : '0';
+            }
+            el.textContent = binary;
+        });
+    </script>
+</body>
+</html>

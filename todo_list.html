@@ -1,0 +1,938 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Animated To-Do List with Notifications</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: linear-gradient(135deg, 
+        #8b4794 0%, 
+        #7b17df 25%, 
+        rgba(192, 105, 105, 0.459) 75%, 
+        #5fc24156 100%);
+    background-size: 400% 400%;
+    min-height: 100vh;
+    padding: 20px;
+    animation: gradientFlow 15s ease infinite;
+    margin: 0;
+    color: white;
+}
+
+@keyframes gradientFlow {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            color: white;
+        }
+
+        .header h1 {
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+            text-shadow: 0 4px 20px rgba(0,0,0,0.3);
+        }
+
+        .header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .current-time {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 15px;
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        .notification-banner {
+            background: linear-gradient(135deg, #ffeaa7, #fab1a0);
+            border: 2px solid #fdcb6e;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            animation: slideIn 0.5s ease-out;
+        }
+        .notification-banner:hover {
+         border-color: #ff0059;
+            box-shadow: 0 8px 55px rgb(255, 255, 255);
+            transform: scale(1.05);
+            transform: translatey(-8px);
+            transition: ease-in-out 0.5s;
+        }
+
+
+        .notification-banner.hidden {
+            display: none;
+        }
+
+        .notification-content {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .notification-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #74b9ff, #0984e3);
+            color: white;
+        }
+
+        .btn-secondary {
+            background: rgba(255,255,255,0.2);
+            color: white;
+            backdrop-filter: blur(10px);
+        }
+
+        .btn-danger {
+            background: linear-gradient(135deg, #fd79a8, #e84393);
+            color: white;
+        }
+
+        .add-task-container {
+            margin-bottom: 30px;
+        }
+
+        .add-task-button {
+            width: 100%;
+            padding: 20px;
+            background: rgba(255,255,255,0.1);
+            border: 2px dashed rgba(255,255,255,0.3);
+            border-radius: 15px;
+            color: white;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .add-task-button:hover {
+            background: rgba(255, 255, 255, 0.1); ;
+            transform: translateY(-2px);
+            transform: scale(1.02);
+            box-shadow: 0 0px 50px rgb(17, 0, 255);
+            /* backdrop-filter: blur(-20px); */
+        }
+        
+        
+        .add-task-form {
+            background: rgba(255,255,255,0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.1);
+            animation: slideIn 0.5s ease-out;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #2d3436;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: #74b9ff;
+            box-shadow: 0 0 0 3px rgba(116, 185, 255, 0.1);
+        }
+
+        .priority-buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        .priority-btn {
+            flex: 1;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            background: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+        }
+
+        .priority-btn.active.high {
+            background: #e17055;
+            color: white;
+            border-color: #e17055;
+        }
+
+        .priority-btn.active.medium {
+            background: #fdcb6e;
+            color: white;
+            border-color: #fdcb6e;
+        }
+
+        .priority-btn.active.low {
+            background: #00b894;
+            color: white;
+            border-color: #00b894;
+        }
+
+        .form-actions {
+            display: flex;
+            gap: 15px;
+            margin-top: 25px;
+        }
+
+        .tasks-section {
+            margin-bottom: 30px;
+        }
+
+        .section-title {
+            color: white;
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+        }
+
+        .status-dot.pending {
+            background: #74b9ff;
+            animation: pulse 2s infinite;
+        }
+
+        .status-dot.completed {
+            background: #00b894;
+        }
+
+        .task-item {
+            background: rgba(255,255,255,0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            animation: slideIn 0.5s ease-out;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .task-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.15);
+        }
+
+        .task-item.completed {
+            opacity: 0.7;
+            transform: scale(0.98);
+        }
+
+        .task-item.completed::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(0,184,148,0.1), rgba(0,184,148,0.05));
+            animation: pulse 2s infinite;
+        }
+
+        .task-header {
+            display: flex;
+            align-items: flex-start;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .task-checkbox {
+            width: 24px;
+            height: 24px;
+            border: 2px solid #ddd;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+
+        .task-checkbox.completed {
+            background: #00b894;
+            border-color: #00b894;
+            color: white;
+        }
+
+        .task-content {
+            flex: 1;
+        }
+
+        .task-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #2d3436;
+            margin-bottom: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .task-title.completed {
+            text-decoration: line-through;
+            opacity: 0.6;
+        }
+
+        .task-description {
+            color: #636e72;
+            margin-bottom: 15px;
+            line-height: 1.5;
+        }
+
+        .task-description.completed {
+            text-decoration: line-through;
+            opacity: 0.6;
+        }
+
+        .task-meta {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .time-badge {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .time-badge.normal {
+            background: #f8f9fa;
+            color: #495057;
+        }
+
+        .time-badge.upcoming {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .time-badge.overdue {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        .priority-badge {
+            padding: 4px 10px;
+            border-radius: 15px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .priority-badge.high {
+            background: #e17055;
+            color: white;
+        }
+
+        .priority-badge.medium {
+            background: #fdcb6e;
+            color: white;
+        }
+
+        .priority-badge.low {
+            background: #00b894;
+            color: white;
+        }
+
+        .task-actions {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            opacity: 0;
+            transition: all 0.3s ease;
+        }
+
+        .task-item:hover .task-actions {
+            opacity: 1;
+        }
+
+        .delete-btn {
+            background: #fd79a8;
+            color: white;
+            border: none;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .delete-btn:hover {
+            background: #e84393;
+            transform: scale(1.1);
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: white;
+            animation: fadeIn 0.8s ease-out;
+        }
+
+        .empty-state svg {
+            margin-bottom: 20px;
+            opacity: 0.5;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        /* Animations */
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        @keyframes slideOut {
+            from {
+                opacity: 1;
+                transform: translateX(0);
+            }
+            to {
+                opacity: 0;
+                transform: translateX(100%);
+            }
+        }
+
+        .slide-out {
+            animation: slideOut 0.3s ease-out forwards;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 10px;
+            }
+            
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .notification-banner {
+                flex-direction: column;
+                gap: 15px;
+                text-align: center;
+            }
+            
+            .task-meta {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+            
+            .form-actions {
+                flex-direction: column;
+            }
+            
+            .priority-buttons {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1>🎯 Smart Todo</h1>
+            <p>Stay organized with beautiful task management and smart notifications</p>
+            <div class="current-time">
+                <span>🕐</span>
+                <span id="current-time"></span>
+                <span>•</span>
+                <span>📅</span>
+                <span id="current-date"></span>
+            </div>
+        </div>
+
+        <!-- Notification Banner -->
+        <div id="notification-banner" class="notification-banner">
+            <div class="notification-content">
+                <span>🔔</span>
+                <div>
+                    <h3 style="margin-bottom: 5px; font-weight: 600;">Enable Notifications</h3>
+                    <p>Get reminded 10 minutes before your tasks are due</p>
+                </div>
+            </div>
+            <div class="notification-actions">
+                <button class="btn btn-primary" onclick="requestNotificationPermission()">
+                    🔔 Enable
+                </button>
+                <button class="btn btn-secondary" onclick="dismissNotificationBanner()">
+                    ✕
+                </button>
+            </div>
+        </div>
+
+        <!-- Add Task Section -->
+        <div class="add-task-container">
+            <button id="add-task-button" class="add-task-button" onclick="showAddTaskForm()">
+                <span style="font-size: 1.2rem;" class="plus_1">➕ </span><span style="font-size: 1.2rem;">Add New Task</span>
+            </button>
+            
+            <div id="add-task-form" class="add-task-form hidden">
+                <form onsubmit="addTask(event)">
+                    <div class="form-group">
+                        <input type="text" id="task-title" class="form-control" placeholder="What do you need to do?" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <textarea id="task-description" class="form-control" placeholder="Add a description (optional)" rows="2"></textarea>
+                    </div>
+                    
+                    <div style="display: flex; gap: 20px;">
+                        <div class="form-group" style="flex: 1;">
+                            <label for="task-time">🕐 Due Time</label>
+                            <input type="time" id="task-time" class="form-control" required>
+                        </div>
+                        
+                        <div class="form-group" style="flex: 1;">
+                            <label>🚩 Priority</label>
+                            <div class="priority-buttons">
+                                <button type="button" class="priority-btn" data-priority="low" onclick="selectPriority('low')">Low</button>
+                                <button type="button" class="priority-btn active medium" data-priority="medium" onclick="selectPriority('medium')">Medium</button>
+                                <button type="button" class="priority-btn" data-priority="high" onclick="selectPriority('high')">High</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-primary" style="flex: 1;">Add Task</button>
+                        <button type="button" class="btn btn-secondary" onclick="hideAddTaskForm()">Cancel</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Pending Tasks -->
+        <div id="pending-section" class="tasks-section hidden">
+            <h2 class="section-title">
+                <span class="status-dot pending"></span>
+                Pending Tasks (<span id="pending-count">0</span>)
+            </h2>
+            <div id="pending-tasks"></div>
+        </div>
+
+        <!-- Completed Tasks -->
+        <div id="completed-section" class="tasks-section hidden">
+            <h2 class="section-title">
+                <span class="status-dot completed"></span>
+                Completed (<span id="completed-count">0</span>)
+            </h2>
+            <div id="completed-tasks"></div>
+        </div>
+
+        <!-- Empty State -->
+        <div id="empty-state" class="empty-state">
+            <svg width="64" height="64" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
+            </svg>
+            <h3 style="font-size: 1.5rem; margin-bottom: 10px;">No tasks yet</h3>
+            <p>Add your first task to get started!</p>
+        </div>
+    </div>
+
+    <script>
+        // Global variables
+        let tasks = [];
+        let selectedPriority = 'medium';
+        let hasNotificationPermission = false;
+        let notificationCheckInterval;
+
+        // Initialize app
+        document.addEventListener('DOMContentLoaded', function() {
+            loadTasks();
+            updateCurrentTime();
+            checkNotificationPermission();
+            startNotificationCheck();
+            
+            // Update time every minute
+            setInterval(updateCurrentTime, 60000);
+        });
+
+        // Time and date functions
+        function updateCurrentTime() {
+            const now = new Date();
+            document.getElementById('current-time').textContent = now.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+            document.getElementById('current-date').textContent = now.toLocaleDateString();
+        }
+
+        function formatTime(timeString) {
+            const date = new Date(`2000-01-01T${timeString}`);
+            return date.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+        }
+
+        function getTimeUntilDue(dueTime) {
+            const now = new Date();
+            const today = now.toISOString().split('T')[0];
+            const dueDate = new Date(`${today}T${dueTime}`);
+            
+            if (dueDate < now) {
+                dueDate.setDate(dueDate.getDate() + 1);
+            }
+            
+            return dueDate.getTime() - now.getTime();
+        }
+
+        function getTimeUntilString(dueTime) {
+            const msUntil = getTimeUntilDue(dueTime);
+            const minutes = Math.floor(msUntil / (1000 * 60));
+            const hours = Math.floor(minutes / 60);
+            
+            if (hours > 0) {
+                return `${hours}h ${minutes % 60}m`;
+            }
+            return `${minutes}m`;
+        }
+
+        function shouldSendNotification(dueTime) {
+            const msUntil = getTimeUntilDue(dueTime);
+            const minutesUntil = Math.floor(msUntil / (1000 * 60));
+            return minutesUntil <= 10 && minutesUntil > 0;
+        }
+
+        // Notification functions
+        function checkNotificationPermission() {
+            if ('Notification' in window) {
+                hasNotificationPermission = Notification.permission === 'granted';
+                if (hasNotificationPermission) {
+                    document.getElementById('notification-banner').classList.add('hidden');
+                }
+            } else {
+                document.getElementById('notification-banner').classList.add('hidden');
+            }
+        }
+
+        async function requestNotificationPermission() {
+            if (!('Notification' in window)) {
+                alert('This browser does not support notifications');
+                return;
+            }
+
+            if (Notification.permission !== 'denied') {
+                const permission = await Notification.requestPermission();
+                hasNotificationPermission = permission === 'granted';
+                if (hasNotificationPermission) {
+                    document.getElementById('notification-banner').classList.add('hidden');
+                    startNotificationCheck();
+                }
+            }
+        }
+
+        function dismissNotificationBanner() {
+            document.getElementById('notification-banner').classList.add('hidden');
+        }
+
+        function sendNotification(title, body) {
+            if (hasNotificationPermission) {
+                const notification = new Notification(title, {
+                    body: body,
+                    icon: 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%23667eea"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>',
+                    tag: 'todo-reminder',
+                    requireInteraction: true
+                });
+
+                setTimeout(() => {
+                    notification.close();
+                }, 10000);
+            }
+        }
+
+        function startNotificationCheck() {
+            if (!hasNotificationPermission) return;
+
+            if (notificationCheckInterval) {
+                clearInterval(notificationCheckInterval);
+            }
+
+            notificationCheckInterval = setInterval(() => {
+                tasks.forEach(task => {
+                    if (!task.completed && !task.notificationSent && shouldSendNotification(task.dueTime)) {
+                        sendNotification(
+                            '⏰ Task Reminder',
+                            `"${task.title}" is due at ${formatTime(task.dueTime)} (in 10 minutes or less!)`
+                        );
+                        task.notificationSent = true;
+                        saveTasks();
+                    }
+                });
+            }, 30000);
+        }
+
+        // Task management functions
+        function loadTasks() {
+            const savedTasks = localStorage.getItem('animated-todo-tasks');
+            if (savedTasks) {
+                tasks = JSON.parse(savedTasks);
+            }
+            renderTasks();
+        }
+
+        function saveTasks() {
+            localStorage.setItem('animated-todo-tasks', JSON.stringify(tasks));
+        }
+
+        function addTask(event) {
+            event.preventDefault();
+            
+            const title = document.getElementById('task-title').value.trim();
+            const description = document.getElementById('task-description').value.trim();
+            const dueTime = document.getElementById('task-time').value;
+            
+            if (!title || !dueTime) return;
+
+            const newTask = {
+                id: Date.now().toString(),
+                title: title,
+                description: description || undefined,
+                dueTime: dueTime,
+                completed: false,
+                priority: selectedPriority,
+                createdAt: new Date().toISOString(),
+                notificationSent: false
+            };
+
+            tasks.push(newTask);
+            tasks.sort((a, b) => a.dueTime.localeCompare(b.dueTime));
+            
+            saveTasks();
+            renderTasks();
+            hideAddTaskForm();
+            
+            // Reset form
+            document.getElementById('task-title').value = '';
+            document.getElementById('task-description').value = '';
+            document.getElementById('task-time').value = '';
+            selectPriority('medium');
+        }
+
+        function toggleTask(id) {
+            const task = tasks.find(t => t.id === id);
+            if (task) {
+                task.completed = !task.completed;
+                if (task.completed) {
+                    task.notificationSent = false;
+                }
+                saveTasks();
+                renderTasks();
+            }
+        }
+
+        function deleteTask(id) {
+            const taskElement = document.querySelector(`[data-task-id="${id}"]`);
+            if (taskElement) {
+                taskElement.classList.add('slide-out');
+                setTimeout(() => {
+                    tasks = tasks.filter(t => t.id !== id);
+                    saveTasks();
+                    renderTasks();
+                }, 300);
+            }
+        }
+
+        function renderTasks() {
+            const pendingTasks = tasks.filter(t => !t.completed);
+            const completedTasks = tasks.filter(t => t.completed);
+
+            // Update counts
+            document.getElementById('pending-count').textContent = pendingTasks.length;
+            document.getElementById('completed-count').textContent = completedTasks.length;
+
+            // Show/hide sections
+            document.getElementById('pending-section').classList.toggle('hidden', pendingTasks.length === 0);
+            document.getElementById('completed-section').classList.toggle('hidden', completedTasks.length === 0);
+            document.getElementById('empty-state').classList.toggle('hidden', tasks.length > 0);
+
+            // Render pending tasks
+            const pendingContainer = document.getElementById('pending-tasks');
+            pendingContainer.innerHTML = '';
+            pendingTasks.forEach((task, index) => {
+                const taskElement = createTaskElement(task, index);
+                pendingContainer.appendChild(taskElement);
+            });
+
+            // Render completed tasks
+            const completedContainer = document.getElementById('completed-tasks');
+            completedContainer.innerHTML = '';
+            completedTasks.forEach((task, index) => {
+                const taskElement = createTaskElement(task, index);
+                completedContainer.appendChild(taskElement);
+            });
+        }
+
+        function createTaskElement(task, index) {
+            const timeUntil = getTimeUntilDue(task.dueTime);
+            const isOverdue = timeUntil < 0;
+            const isUpcoming = timeUntil > 0 && timeUntil <= 10 * 60 * 1000;
+
+            const taskDiv = document.createElement('div');
+            taskDiv.className = `task-item ${task.completed ? 'completed' : ''}`;
+            taskDiv.setAttribute('data-task-id', task.id);
+            taskDiv.style.animationDelay = `${index * 0.1}s`;
+
+            let timeStatusClass = 'normal';
+            let timeStatusText = formatTime(task.dueTime);
+            let statusIndicator = '';
+
+            if (!task.completed) {
+                if (isOverdue) {
+                    timeStatusClass = 'overdue';
+                    statusIndicator = '<span style="color: #e17055; font-weight: 600; margin-left: 10px;">⚠️ Overdue</span>';
+                } else if (isUpcoming) {
+                    timeStatusClass = 'upcoming';
+                    statusIndicator = '<span style="color: #fdcb6e; font-weight: 600; margin-left: 10px;">⏰ Due soon!</span>';
+                } else {
+                    statusIndicator = `<span style="color: #636e72; margin-left: 10px;">Due in ${getTimeUntilString(task.dueTime)}</span>`;
+                }
+            }
+
+            taskDiv.innerHTML = `
+                <div class="task-header">
+                    <div class="task-checkbox ${task.completed ? 'completed' : ''}" onclick="toggleTask('${task.id}')">
+                        ${task.completed ? '✓' : ''}
+                    </div>
+                    <div class="task-content">
+                        <h3 class="task-title ${task.completed ? 'completed' : ''}">${task.title}</h3>
+                        ${task.description ? `<p class="task-description ${task.completed ? 'completed' : ''}">${task.description}</p>` : ''}
+                        <div class="task-meta">
+                            <span class="time-badge ${timeStatusClass}">
+                                🕐 ${timeStatusText}
+                            </span>
+                            <span class="priority-badge ${task.priority}">${task.priority}</span>
+                            ${statusIndicator}
+                        </div>
+                    </div>
+                </div>
+                <div class="task-actions">
+                    <button class="delete-btn" onclick="deleteTask('${task.id}')">🗑️</button>
+                </div>
+            `;
+
+            return taskDiv;
+        }
+
+        // UI functions
+        function showAddTaskForm() {
+            document.getElementById('add-task-button').classList.add('hidden');
+            document.getElementById('add-task-form').classList.remove('hidden');
+            document.getElementById('task-title').focus();
+        }
+
+        function hideAddTaskForm() {
+            document.getElementById('add-task-button').classList.remove('hidden');
+            document.getElementById('add-task-form').classList.add('hidden');
+        }
+
+        function selectPriority(priority) {
+            selectedPriority = priority;
+            
+            // Update button states
+            document.querySelectorAll('.priority-btn').forEach(btn => {
+                btn.classList.remove('active', 'high', 'medium', 'low');
+                if (btn.dataset.priority === priority) {
+                    btn.classList.add('active', priority);
+                }
+            });
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,813 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GameLibrary - Your Ultimate Gaming Hub</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0f0f23 0%, #1a1a2e 50%, #16213e 100%);
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+            color: rgb(218, 218, 218);
+        }
+
+        /* Animated Particle Background */
+        #particles-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            opacity: 0.7;
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            padding: 60px 20px 40px;
+            position: relative;
+            z-index: 10;
+        }
+
+        .header h1 {
+            font-size: 4rem;
+            font-weight: 700;
+            background: linear-gradient(45deg, #ff6b6b, #4ecdc4, #45b7d1, #96ceb4, #feca57);
+            background-size: 300% 300%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: gradientShift 4s ease-in-out infinite;
+            margin-bottom: 20px;
+            text-shadow: 0 0 30px rgba(255,255,255,0.3);
+        }
+
+        .header p {
+            font-size: 1.3rem;
+            color: rgba(255,255,255,0.8);
+            max-width: 600px;
+            margin: 0 auto;
+            line-height: 1.6;
+            animation: fadeInUp 1s ease-out 0.5s both;
+        }
+
+        /* Search Section */
+        .search-section {
+            max-width: 800px;
+            margin: 0 auto 60px;
+            padding: 0 20px;
+            position: relative;
+            z-index: 10;
+        }
+
+        .search-container {
+            position: relative;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            border-radius: 25px;
+            padding: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .search-container:focus-within {
+            border-color: rgba(255, 107, 107, 0.5);
+            box-shadow: 0 0 30px rgba(255, 107, 107, 0.3);
+        }
+
+        .search-input {
+            width: calc(100% - 120px);
+            padding: 20px 25px;
+            background: transparent;
+            border: none;
+            outline: none;
+            color: white;
+            font-size: 1.2rem;
+            font-weight: 500;
+        }
+
+        .search-input::placeholder {
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .search-btn {
+            position: absolute;
+            right: 8px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: linear-gradient(135deg, #ff6b6b, #ee5a24);
+            border: none;
+            padding: 15px 25px;
+            border-radius: 20px;
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .search-btn:hover {
+            background: linear-gradient(135deg, #ee5a24, #ff6b6b);
+            transform: translateY(-50%) scale(1.05);
+            box-shadow: 0 10px 25px rgba(255, 107, 107, 0.4);
+        }
+
+        /* Game Results */
+        .results-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 20px;
+            position: relative;
+            z-index: 10;
+        }
+
+        .game-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 25px;
+            padding: 30px;
+            margin-bottom: 30px;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            animation: slideInUp 0.8s ease-out both;
+            opacity: 0;
+        }
+
+        .game-card.show {
+            opacity: 1;
+        }
+
+        .game-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+            transition: left 0.5s;
+        }
+
+        .game-card:hover::before {
+            left: 100%;
+        }
+
+        .game-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 25px 50px rgba(0,0,0,0.3);
+            border-color: rgba(255,255,255,0.4);
+        }
+
+        .game-header {
+            display: flex;
+            gap: 30px;
+            margin-bottom: 25px;
+        }
+
+        .game-logo {
+            width: 120px;
+            height: 120px;
+            border-radius: 20px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            box-shadow: 0 15px 35px rgba(102, 126, 234, 0.3);
+            transition: all 0.3s ease;
+            flex-shrink: 0;
+        }
+
+        .game-card:hover .game-logo {
+            transform: rotateY(180deg) scale(1.1);
+        }
+
+        .game-info {
+            flex: 1;
+        }
+
+        .game-title {
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 10px;
+            background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .game-description {
+            color: rgba(255,255,255,0.8);
+            line-height: 1.6;
+            margin-bottom: 20px;
+            font-size: 1.1rem;
+        }
+
+        .game-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .tag {
+            background: rgba(255,255,255,0.2);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            border: 1px solid rgba(255,255,255,0.3);
+            transition: all 0.3s ease;
+        }
+
+        .tag:hover {
+            background: rgba(255,255,255,0.3);
+            transform: scale(1.05);
+        }
+
+        .game-banner {
+            width: 100%;
+            height: 200px;
+            border-radius: 15px;
+            background: linear-gradient(135deg, #667eea, #764ba2, #f093fb);
+            margin-bottom: 25px;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: white;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.5);
+        }
+
+        .game-banner::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="25" cy="25" r="1" fill="white" opacity="0.1"/><circle cx="75" cy="75" r="1" fill="white" opacity="0.1"/><circle cx="50" cy="10" r="0.5" fill="white" opacity="0.1"/><circle cx="10" cy="60" r="0.5" fill="white" opacity="0.1"/><circle cx="90" cy="40" r="0.5" fill="white" opacity="0.1"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>');
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .play-options {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .play-btn {
+            flex: 1;
+            min-width: 200px;
+            padding: 15px 25px;
+            border-radius: 15px;
+            text-decoration: none;
+            font-weight: 600;
+            text-align: center;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            border: 2px solid transparent;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            font-size: 1.1rem;
+        }
+
+        .play-btn.primary {
+            background: linear-gradient(135deg, #ff6b6b, #ee5a24);
+            color: white;
+        }
+
+        .play-btn.secondary {
+            background: linear-gradient(135deg, #4ecdc4, #44a08d);
+            color: white;
+        }
+
+        .play-btn.tertiary {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+        }
+
+        .play-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.3);
+        }
+
+        .play-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .play-btn:hover::before {
+            left: 100%;
+        }
+
+        /* Loading Animation */
+        .loading {
+            text-align: center;
+            padding: 60px 20px;
+            color: rgba(255,255,255,0.8);
+        }
+
+        .loading-spinner {
+            width: 60px;
+            height: 60px;
+            border: 4px solid rgba(255,255,255,0.1);
+            border-left: 4px solid #ff6b6b;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+
+        /* No Results */
+        .no-results {
+            text-align: center;
+            padding: 80px 20px;
+            color: rgba(255,255,255,0.6);
+        }
+
+        .no-results-icon {
+            font-size: 4rem;
+            margin-bottom: 20px;
+            opacity: 0.5;
+        }
+
+        /* Floating Elements */
+        .floating-element {
+            position: absolute;
+            pointer-events: none;
+            opacity: 0.1;
+            animation: float 8s ease-in-out infinite;
+            font-size: 2rem;
+        }
+
+        .floating-element:nth-child(odd) {
+            animation-direction: reverse;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2.5rem;
+            }
+            
+            .game-header {
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+            }
+            
+            .game-logo {
+                width: 100px;
+                height: 100px;
+            }
+            
+            .play-options {
+                flex-direction: column;
+            }
+            
+            .play-btn {
+                min-width: auto;
+            }
+        }
+
+        /* Animations */
+        @keyframes gradientShift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideInUp {
+            from {
+                opacity: 0;
+                transform: translateY(60px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0px) rotate(0deg);
+            }
+            50% {
+                transform: translateY(-20px) rotate(180deg);
+            }
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                opacity: 0.1;
+            }
+            50% {
+                opacity: 0.3;
+            }
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 12px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: rgba(255,255,255,0.1);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(135deg, #ff6b6b, #4ecdc4);
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(135deg, #4ecdc4, #ff6b6b);
+        }
+    </style>
+</head>
+<body>
+    <!-- Animated Particle Background -->
+    <canvas id="particles-canvas"></canvas>
+
+    <!-- Floating Elements -->
+    <div class="floating-element" style="top: 10%; left: 10%;">🎮</div>
+    <div class="floating-element" style="top: 20%; right: 15%;">🕹️</div>
+    <div class="floating-element" style="top: 60%; left: 5%;">⚡</div>
+    <div class="floating-element" style="bottom: 20%; right: 10%;">🎯</div>
+    <div class="floating-element" style="bottom: 40%; left: 20%;">🚀</div>
+    <div class="floating-element" style="top: 40%; right: 5%;">🎲</div>
+
+    <!-- Header -->
+    <div class="header">
+        <h1>🎮 GameLibrary</h1>
+        <p>Your Ultimate Gaming Hub - Search, Discover, and Play Amazing Games</p>
+    </div>
+
+    <!-- Search Section -->
+    <div class="search-section">
+        <div class="search-container">
+            <input type="text" class="search-input" placeholder="Search for your favorite games..." id="gameSearch">
+            <button class="search-btn" onclick="searchGame()">🔍 Search</button>
+        </div>
+    </div>
+
+    <!-- Results Container -->
+    <div class="results-container" id="resultsContainer">
+        <!-- Results will be populated here -->
+    </div>
+
+    <script>
+        // Particle Animation System
+        class ParticleSystem {
+            constructor(canvas) {
+                this.canvas = canvas;
+                this.ctx = canvas.getContext('2d');
+                this.particles = [];
+                this.particleCount = 200;
+                this.connectionDistance = 150;
+                this.mouse = { x: 0, y: 0 };
+                
+                this.resize();
+                this.init();
+                this.animate();
+                
+                // Event listeners
+                window.addEventListener('resize', () => this.resize());
+                window.addEventListener('mousemove', (e) => {
+                    this.mouse.x = e.clientX;
+                    this.mouse.y = e.clientY;
+                });
+            }
+            
+            resize() {
+                this.canvas.width = window.innerWidth;
+                this.canvas.height = window.innerHeight;
+            }
+            
+            init() {
+                this.particles = [];
+                for (let i = 0; i < this.particleCount; i++) {
+                    this.particles.push({
+                        x: Math.random() * this.canvas.width,
+                        y: Math.random() * this.canvas.height,
+                        vx: (Math.random() - 0.5) * 2,
+                        vy: (Math.random() - 0.5) * 2,
+                        radius: Math.random() * 3 + 1,
+                        opacity: Math.random() * 0.8 + 0.2,
+                        color: this.getRandomColor()
+                    });
+                }
+            }
+            
+            getRandomColor() {
+                const colors = [
+                    'rgba(255, 107, 107, 0.8)',
+                    'rgba(78, 205, 196, 0.8)',
+                    'rgba(69, 183, 209, 0.8)',
+                    'rgba(150, 206, 180, 0.8)',
+                    'rgba(254, 202, 87, 0.8)',
+                    'rgba(102, 126, 234, 0.8)'
+                ];
+                return colors[Math.floor(Math.random() * colors.length)];
+            }
+            
+            animate() {
+                this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+                
+                // Update and draw particles
+                this.particles.forEach((particle, i) => {
+                    // Update position
+                    particle.x += particle.vx;
+                    particle.y += particle.vy;
+                    
+                    // Bounce off edges
+                    if (particle.x < 0 || particle.x > this.canvas.width) particle.vx *= -1;
+                    if (particle.y < 0 || particle.y > this.canvas.height) particle.vy *= -1;
+                    
+                    // Mouse interaction
+                    const dx = this.mouse.x - particle.x;
+                    const dy = this.mouse.y - particle.y;
+                    const distance = Math.sqrt(dx * dx + dy * dy);
+                    
+                    if (distance < 120) {
+                        particle.x -= dx * 0.02;
+                        particle.y -= dy * 0.02;
+                    }
+                    
+                    // Draw particle
+                    this.ctx.beginPath();
+                    this.ctx.arc(particle.x, particle.y, particle.radius, 0, Math.PI * 2);
+                    this.ctx.fillStyle = particle.color;
+                    this.ctx.globalAlpha = particle.opacity;
+                    this.ctx.fill();
+                    
+                    // Draw connections
+                    for (let j = i + 1; j < this.particles.length; j++) {
+                        const other = this.particles[j];
+                        const dx = particle.x - other.x;
+                        const dy = particle.y - other.y;
+                        const distance = Math.sqrt(dx * dx + dy * dy);
+                        
+                        if (distance < this.connectionDistance) {
+                            this.ctx.beginPath();
+                            this.ctx.moveTo(particle.x, particle.y);
+                            this.ctx.lineTo(other.x, other.y);
+                            this.ctx.strokeStyle = particle.color;
+                            this.ctx.globalAlpha = (1 - distance / this.connectionDistance) * 0.3;
+                            this.ctx.lineWidth = 1;
+                            this.ctx.stroke();
+                        }
+                    }
+                });
+                
+                this.ctx.globalAlpha = 1;
+                requestAnimationFrame(() => this.animate());
+            }
+        }
+        
+        // Initialize particle system
+        const canvas = document.getElementById('particles-canvas');
+        new ParticleSystem(canvas);
+
+        // Game database (simulated)
+        const gameDatabase = {
+            'minecraft': {
+                title: 'Minecraft',
+                description: 'A sandbox video game developed by Mojang Studios. The game was created by Markus "Notch" Persson in the Java programming language. Build, explore, and survive in randomly generated worlds.',
+                logo: '🧱',
+                tags: ['Sandbox', 'Survival', 'Creative', 'Multiplayer'],
+                platforms: [
+                    { name: 'Official Website', url: 'https://minecraft.net', type: 'primary' },
+                    { name: 'Steam', url: 'https://store.steampowered.com', type: 'secondary' },
+                    { name: 'Microsoft Store', url: 'https://microsoft.com/store', type: 'tertiary' }
+                ]
+            },
+            'fortnite': {
+                title: 'Fortnite',
+                description: 'A free-to-play battle royale game developed and published by Epic Games. Drop into a massive 100-player PvP battle royale where you fight to be the last one standing.',
+                logo: '🏆',
+                tags: ['Battle Royale', 'Free-to-Play', 'Multiplayer', 'Action'],
+                platforms: [
+                    { name: 'Epic Games Store', url: 'https://epicgames.com', type: 'primary' },
+                    { name: 'PlayStation Store', url: 'https://playstation.com', type: 'secondary' },
+                    { name: 'Xbox Store', url: 'https://xbox.com', type: 'tertiary' }
+                ]
+            },
+            'valorant': {
+                title: 'Valorant',
+                description: 'A free-to-play first-person tactical hero shooter developed and published by Riot Games. Blend your style and experience on a global, competitive stage.',
+                logo: '🎯',
+                tags: ['FPS', 'Tactical', 'Competitive', 'Free-to-Play'],
+                platforms: [
+                    { name: 'Riot Games', url: 'https://playvalorant.com', type: 'primary' },
+                    { name: 'Download Direct', url: 'https://valorant.com/download', type: 'secondary' }
+                ]
+            },
+            'gta': {
+                title: 'Grand Theft Auto V',
+                description: 'An action-adventure game developed by Rockstar North and published by Rockstar Games. Experience the intertwining stories of three unique criminals.',
+                logo: '🚗',
+                tags: ['Action', 'Adventure', 'Open World', 'Crime'],
+                platforms: [
+                    { name: 'Steam', url: 'https://store.steampowered.com', type: 'primary' },
+                    { name: 'Epic Games Store', url: 'https://epicgames.com', type: 'secondary' },
+                    { name: 'Rockstar Games', url: 'https://rockstargames.com', type: 'tertiary' }
+                ]
+            },
+            'cyberpunk': {
+                title: 'Cyberpunk 2077',
+                description: 'An open-world, action-adventure story set in Night City, a megalopolis obsessed with power, glamour and body modification. Play as V, a mercenary outlaw.',
+                logo: '🤖',
+                tags: ['RPG', 'Open World', 'Sci-Fi', 'Action'],
+                platforms: [
+                    { name: 'Steam', url: 'https://store.steampowered.com', type: 'primary' },
+                    { name: 'GOG.com', url: 'https://gog.com', type: 'secondary' },
+                    { name: 'Epic Games Store', url: 'https://epicgames.com', type: 'tertiary' }
+                ]
+            },
+            'among us': {
+                title: 'Among Us',
+                description: 'A multiplayer social deduction game developed by InnerSloth. Play with 4-15 players online or via local WiFi as you attempt to prep your spaceship for departure.',
+                logo: '👾',
+                tags: ['Social Deduction', 'Multiplayer', 'Indie', 'Party Game'],
+                platforms: [
+                    { name: 'Steam', url: 'https://store.steampowered.com', type: 'primary' },
+                    { name: 'Mobile App Store', url: 'https://apps.apple.com', type: 'secondary' },
+                    { name: 'Google Play', url: 'https://play.google.com', type: 'tertiary' }
+                ]
+            }
+        };
+
+        // Search functionality
+        function searchGame() {
+            const searchTerm = document.getElementById('gameSearch').value.toLowerCase().trim();
+            const resultsContainer = document.getElementById('resultsContainer');
+            
+            if (!searchTerm) {
+                resultsContainer.innerHTML = '';
+                return;
+            }
+
+            // Show loading
+            showLoading();
+
+            // Simulate API delay
+            setTimeout(() => {
+                const results = findGames(searchTerm);
+                displayResults(results);
+            }, 1500);
+        }
+
+        function findGames(searchTerm) {
+            const results = [];
+            
+            for (const [key, game] of Object.entries(gameDatabase)) {
+                if (key.includes(searchTerm) || 
+                    game.title.toLowerCase().includes(searchTerm) ||
+                    game.tags.some(tag => tag.toLowerCase().includes(searchTerm))) {
+                    results.push(game);
+                }
+            }
+            
+            return results;
+        }
+
+        function showLoading() {
+            const resultsContainer = document.getElementById('resultsContainer');
+            resultsContainer.innerHTML = `
+                <div class="loading">
+                    <div class="loading-spinner"></div>
+                    <h3>Searching the gaming universe...</h3>
+                    <p>Finding the best games for you</p>
+                </div>
+            `;
+        }
+
+        function displayResults(results) {
+            const resultsContainer = document.getElementById('resultsContainer');
+            
+            if (results.length === 0) {
+                resultsContainer.innerHTML = `
+                    <div class="no-results">
+                        <div class="no-results-icon">🎮</div>
+                        <h3>No games found</h3>
+                        <p>Try searching for popular games like "Minecraft", "Fortnite", or "Valorant"</p>
+                    </div>
+                `;
+                return;
+            }
+
+            let html = '';
+            results.forEach((game, index) => {
+                const platformButtons = game.platforms.map(platform => 
+                    `<a href="${platform.url}" target="_blank" class="play-btn ${platform.type}" onclick="confirmRedirect('${game.title}', '${platform.name}', '${platform.url}')">
+                        🎮 Play on ${platform.name}
+                    </a>`
+                ).join('');
+
+                html += `
+                    <div class="game-card" style="animation-delay: ${index * 0.2}s">
+                        <div class="game-header">
+                            <div class="game-logo">${game.logo}</div>
+                            <div class="game-info">
+                                <h2 class="game-title">${game.title}</h2>
+                                <p class="game-description">${game.description}</p>
+                                <div class="game-tags">
+                                    ${game.tags.map(tag => `<span class="tag">${tag}</span>`).join('')}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="game-banner">
+                            🎮 ${game.title} - Game Banner
+                        </div>
+                        <div class="play-options">
+                            ${platformButtons}
+                        </div>
+                    </div>
+                `;
+            });
+
+            resultsContainer.innerHTML = html;
+            
+            // Animate cards
+            setTimeout(() => {
+                document.querySelectorAll('.game-card').forEach(card => {
+                    card.classList.add('show');
+                });
+            }, 100);
+        }
+
+        function confirmRedirect(gameTitle, platformName, url) {
+            event.preventDefault();
+            
+            if (confirm(`You're about to visit ${platformName} to play/download "${gameTitle}". Do you want to continue?`)) {
+                window.open(url, '_blank');
+            }
+        }
+
+        // Enter key search
+        document.getElementById('gameSearch').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                searchGame();
+            }
+        });
+
+        // Parallax effect for floating elements
+        window.addEventListener('scroll', () => {
+            const scrolled = window.pageYOffset;
+            const parallax = document.querySelectorAll('.floating-element');
+            const speed = 0.3;
+            
+            parallax.forEach(element => {
+                const yPos = -(scrolled * speed);
+                element.style.transform = `translateY(${yPos}px)`;
+            });
+        });
+
+        // Auto-focus search input
+        window.addEventListener('load', () => {
+            document.getElementById('gameSearch').focus();
+        });
+    </script>
+</body>
+</html>

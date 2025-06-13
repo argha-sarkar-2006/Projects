@@ -1,0 +1,1875 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StockTracker Pro</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Enhanced Interactive Background */
+        .animated-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .particle {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.116);
+            border-radius: 50%;
+            pointer-events: none;
+            animation: float 8s ease-in-out infinite;
+        }
+
+        .floating-shape {
+            position: absolute;
+            background: linear-gradient(45deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
+            border-radius: 50%;
+            animation: float 6s ease-in-out infinite;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .floating-shape:nth-child(1) {
+            width: 120px;
+            height: 120px;
+            top: 15%;
+            left: 10%;
+            animation-delay: 0s;
+        }
+
+        .floating-shape:nth-child(2) {
+            width: 80px;
+            height: 80px;
+            top: 70%;
+            left: 85%;
+            animation-delay: 2s;
+        }
+
+        .floating-shape:nth-child(3) {
+            width: 100px;
+            height: 100px;
+            top: 85%;
+            left: 15%;
+            animation-delay: 4s;
+        }
+
+        .floating-shape:nth-child(4) {
+            width: 60px;
+            height: 60px;
+            top: 25%;
+            left: 80%;
+            animation-delay: 1s;
+        }
+
+        .floating-shape:nth-child(5) {
+            width: 140px;
+            height: 140px;
+            top: 50%;
+            left: 50%;
+            animation-delay: 3s;
+        }
+
+        .floating-shape:nth-child(6) {
+            width: 90px;
+            height: 90px;
+            top: 10%;
+            left: 60%;
+            animation-delay: 5s;
+        }
+
+        .wave {
+            position: absolute;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.03) 0%, transparent 70%);
+            border-radius: 50%;
+            animation: wave 4s ease-in-out infinite;
+            pointer-events: none;
+        }
+
+        @keyframes float {
+            0%, 100% { 
+                transform: translateY(0px) rotate(0deg) scale(1); 
+                opacity: 0.7;
+            }
+            50% { 
+                transform: translateY(-30px) rotate(180deg) scale(1.1); 
+                opacity: 1;
+            }
+        }
+
+        @keyframes wave {
+            0%, 100% { 
+                transform: scale(0) rotate(0deg); 
+                opacity: 0;
+            }
+            50% { 
+                transform: scale(1) rotate(180deg); 
+                opacity: 0.3;
+            }
+        }
+
+        @keyframes particleFloat {
+            0% { 
+                transform: translateY(100vh) translateX(0px) rotate(0deg); 
+                opacity: 0;
+            }
+            10% { 
+                opacity: 1;
+            }
+            90% { 
+                opacity: 1;
+            }
+            100% { 
+                transform: translateY(-100px) translateX(100px) rotate(360deg); 
+                opacity: 0;
+            }
+        }
+
+        /* Header */
+        .header {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(15px);
+            padding: 1.5rem 2rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+
+        .header h1 {
+            color: white;
+            font-size: 2.5rem;
+            font-weight: 700;
+            text-align: center;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Navigation */
+        .nav-tabs {
+            display: flex;
+            justify-content: center;
+            margin: 2rem 0;
+            gap: 1rem;
+        }
+
+        .nav-tab {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: all 0.4s ease;
+            font-weight: 600;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .nav-tab::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .nav-tab:hover::before {
+            left: 100%;
+        }
+
+        .nav-tab:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+        }
+
+        .nav-tab.active {
+            background: rgba(255, 255, 255, 0.3);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+            transform: translateY(-2px);
+        }
+
+        /* Container */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        /* Search Section */
+        .search-section {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(15px);
+            border-radius: 25px;
+            padding: 2.5rem;
+            margin-bottom: 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+
+        .search-container {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .search-input {
+            flex: 1;
+            padding: 1.2rem;
+            border: none;
+            border-radius: 15px;
+            background: rgba(255, 255, 255, 0.9);
+            font-size: 1.1rem;
+            outline: none;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .search-input:focus {
+            box-shadow: 0 0 25px rgba(255, 255, 255, 0.4);
+            transform: scale(1.02);
+            background: rgba(255, 255, 255, 0.95);
+        }
+
+        .search-btn, .add-btn, .buy-btn {
+            background: linear-gradient(45deg, #ff6b6b, #ee5a24);
+            color: white;
+            border: none;
+            padding: 1.2rem 2.5rem;
+            border-radius: 15px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(238, 90, 36, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .search-btn::before, .add-btn::before, .buy-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .search-btn:hover::before, .add-btn:hover::before, .buy-btn:hover::before {
+            left: 100%;
+        }
+
+        .search-btn:hover, .add-btn:hover, .buy-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 30px rgba(238, 90, 36, 0.4);
+        }
+
+        /* Google Search Results */
+        .google-results {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(15px);
+            border-radius: 20px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            display: none;
+        }
+
+        .result-item {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 1.5rem;
+            border-radius: 15px;
+            margin-bottom: 1rem;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .result-item:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateX(10px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+        }
+
+        .result-title {
+            color: #4ecdc4;
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            text-decoration: none;
+        }
+
+        .result-title:hover {
+            text-decoration: underline;
+        }
+
+        .result-snippet {
+            color: rgba(255, 255, 255, 0.9);
+            line-height: 1.6;
+            margin-bottom: 0.5rem;
+        }
+
+        .result-url {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.9rem;
+        }
+
+        /* Stock Details */
+        .stock-details {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(15px);
+            border-radius: 25px;
+            padding: 2.5rem;
+            margin-bottom: 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            display: none;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+
+        .stock-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .stock-title {
+            color: white;
+            font-size: 2rem;
+            font-weight: 700;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .stock-price {
+            color: #4ecdc4;
+            font-size: 2.5rem;
+            font-weight: 700;
+            text-shadow: 0 2px 10px rgba(78, 205, 196, 0.3);
+        }
+
+        .stock-info {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .info-card {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 1.5rem;
+            border-radius: 15px;
+            text-align: center;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .info-card:hover {
+            transform: translateY(-8px);
+            background: rgba(255, 255, 255, 0.2);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .info-label {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .info-value {
+            color: white;
+            font-size: 1.3rem;
+            font-weight: 600;
+        }
+
+        /* Chart Container */
+        .chart-container {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 1.5rem;
+            margin: 2rem 0;
+            height: 400px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Buy Section */
+        .buy-section {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+            margin-top: 2rem;
+        }
+
+        .quantity-input {
+            padding: 1rem;
+            border: none;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.9);
+            width: 120px;
+            text-align: center;
+            font-weight: 600;
+        }
+
+        /* Watchlist */
+        .watchlist, .portfolio {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(15px);
+            border-radius: 25px;
+            padding: 2.5rem;
+            margin-bottom: 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+
+        .section-title {
+            color: white;
+            font-size: 1.8rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .stock-item {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 1.5rem;
+            border-radius: 15px;
+            margin-bottom: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .stock-item:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateX(10px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+        }
+
+        .stock-name {
+            color: white;
+            font-weight: 600;
+        }
+
+        .stock-price-small {
+            color: #4ecdc4;
+            font-weight: 600;
+        }
+
+        .remove-btn {
+            background: linear-gradient(45deg, #ff4757, #ff3742);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+        }
+
+        .remove-btn:hover {
+            background: linear-gradient(45deg, #ff3742, #ff2f3a);
+            transform: scale(1.05);
+            box-shadow: 0 6px 20px rgba(255, 71, 87, 0.4);
+        }
+
+        /* Hidden sections */
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 1rem;
+            }
+            
+            .search-container {
+                flex-direction: column;
+            }
+            
+            .stock-header {
+                flex-direction: column;
+                gap: 1rem;
+                text-align: center;
+            }
+            
+            .buy-section {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .nav-tabs {
+                flex-wrap: wrap;
+            }
+        }
+
+        /* Loading Animation */
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Pulse effect for interactive elements */
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% {
+                box-shadow: 0 0 0 0 rgba(78, 205, 196, 0.7);
+            }
+            70% {
+                box-shadow: 0 0 0 10px rgba(78, 205, 196, 0);
+            }
+            100% {
+                box-shadow: 0 0 0 0 rgba(78, 205, 196, 0);
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Enhanced Interactive Background -->
+    <div class="animated-bg" id="animatedBg">
+        <div class="floating-shape"></div>
+        <div class="floating-shape"></div>
+        <div class="floating-shape"></div>
+        <div class="floating-shape"></div>
+        <div class="floating-shape"></div>
+        <div class="floating-shape"></div>
+    </div>
+
+    <!-- Header -->
+    <div class="header">
+        <h1>📈 StockTracker Pro</h1>
+    </div>
+
+    <!-- Navigation -->
+    <div class="nav-tabs">
+        <button class="nav-tab active" onclick="showTab('search')">Search Stocks</button>
+        <button class="nav-tab" onclick="showTab('watchlist')">Watchlist</button>
+        <button class="nav-tab" onclick="showTab('portfolio')">Portfolio</button>
+    </div>
+
+    <div class="container">
+        <!-- Search Tab -->
+        <div id="search-tab" class="tab-content active">
+            <div class="search-section">
+                <div class="search-container">
+                    <input type="text" class="search-input" id="stockSymbol" placeholder="Enter stock symbol or company name (e.g., RELIANCE, TCS, AAPL , AMZN)" onkeypress="handleEnter(event)">
+                    <button class="search-btn" onclick="searchStock()">
+                        <span id="search-text">Search Stock</span>
+                        <div id="search-loading" class="loading" style="display: none;"></div>
+                    </button>
+                </div>
+                <button class="search-btn" onclick="searchGoogle()" style="background: linear-gradient(45deg, #4285f4, #34a853); margin-top: 1rem;">
+                    🔍 Search on Google
+                </button>
+            </div>
+
+            <!-- Google Search Results -->
+            <div class="google-results" id="googleResults">
+                <h3 style="color: white; margin-bottom: 1rem;">📰 Latest News & Information</h3>
+                <div id="googleResultsContent"></div>
+            </div>
+
+            <!-- Stock Details -->
+            <div class="stock-details" id="stockDetails">
+                <div class="stock-header">
+                    <div>
+                        <div class="stock-title" id="stockName">Apple Inc.</div>
+                        <div class="stock-price" id="stockPrice">$150.25</div>
+                    </div>
+                    <button class="add-btn pulse" onclick="addToWatchlist()">+ Add to Watchlist</button>
+                </div>
+
+                <div class="stock-info">
+                    <div class="info-card">
+                        <div class="info-label">Volume</div>
+                        <div class="info-value" id="stockVolume">45.2M</div>
+                    </div>
+                    <div class="info-card">
+                        <div class="info-label">Market Cap</div>
+                        <div class="info-value" id="stockMarketCap">$2.45T</div>
+                    </div>
+                    <div class="info-card">
+                        <div class="info-label">P/E Ratio</div>
+                        <div class="info-value" id="stockPE">28.5</div>
+                    </div>
+                    <div class="info-card">
+                        <div class="info-label">P/B Ratio</div>
+                        <div class="info-value" id="stockPB">12.8</div>
+                    </div>
+                    <div class="info-card">
+                        <div class="info-label">52W High</div>
+                        <div class="info-value" id="stock52High">$182.94</div>
+                    </div>
+                    <div class="info-card">
+                        <div class="info-label">52W Low</div>
+                        <div class="info-value" id="stock52Low">$124.17</div>
+                    </div>
+                </div>
+
+                <div class="chart-container">
+                    <canvas id="priceChart"></canvas>
+                </div>
+
+                <div class="buy-section">
+                    <input type="number" class="quantity-input" id="buyQuantity" placeholder="Qty" min="1" value="1">
+                    <button class="buy-btn" onclick="buyStock()">Buy Stock</button>
+                    <span style="color: white; margin-left: 1rem; font-weight: 600;">Total: $<span id="totalCost">150.25</span></span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Watchlist Tab -->
+        <div id="watchlist-tab" class="tab-content">
+            <div class="watchlist">
+                <h2 class="section-title">📋 My Watchlist</h2>
+                <div id="watchlistItems">
+                    <div class="stock-item">
+                        <div>
+                            <div class="stock-name">No stocks in watchlist</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Portfolio Tab -->
+        <div id="portfolio-tab" class="tab-content">
+            <div class="portfolio">
+                <h2 class="section-title">💼 My Portfolio</h2>
+                <div class="info-card" style="margin-bottom: 2rem;">
+                    <div class="info-label">Total Portfolio Value</div>
+                    <div class="info-value" id="portfolioValue">$0.00</div>
+                </div>
+                <div id="portfolioItems">
+                    <div class="stock-item">
+                        <div>
+                            <div class="stock-name">No stocks in portfolio</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Global variables
+        let currentStock = null;
+        let watchlist = JSON.parse(localStorage.getItem('watchlist')) || [];
+        let portfolio = JSON.parse(localStorage.getItem('portfolio')) || [];
+        let priceChart = null;
+        let particles = [];
+
+        // Enhanced stock database with Indian companies and US companies
+        const stockDatabase = {
+            // US Companies
+            'AAPL': {
+                name: 'Apple Inc.',
+                price: 150.25,
+                volume: '45.2M',
+                marketCap: '$2.45T',
+                pe: 28.5,
+                pb: 12.8,
+                high52: 182.94,
+                low52: 124.17,
+                priceHistory: [145, 148, 152, 149, 151, 150.25]
+            },
+            'GOOGL': {
+                name: 'Alphabet Inc.',
+                price: 2750.80,
+                volume: '1.2M',
+                marketCap: '$1.85T',
+                pe: 25.3,
+                pb: 5.2,
+                high52: 3030.93,
+                low52: 2193.62,
+                priceHistory: [2680, 2720, 2780, 2740, 2760, 2750.80]
+            },
+            'TSLA': {
+                name: 'Tesla Inc.',
+                price: 245.67,
+                volume: '28.5M',
+                marketCap: '$780B',
+                pe: 65.2,
+                pb: 15.8,
+                high52: 414.50,
+                low52: 152.37,
+                priceHistory: [230, 240, 250, 245, 248, 245.67]
+            },
+            'MSFT': {
+                name: 'Microsoft Corporation',
+                price: 378.85,
+                volume: '22.1M',
+                marketCap: '$2.82T',
+                pe: 32.1,
+                pb: 13.2,
+                high52: 384.30,
+                low52: 213.43,
+                priceHistory: [365, 370, 380, 375, 378, 378.85]
+            },
+            'AMZN': {
+                name: 'Amazon.com Inc.',
+                price: 3380.47,
+                volume: '3.8M',
+                marketCap: '$1.71T',
+                pe: 58.9,
+                pb: 8.1,
+                high52: 3773.08,
+                low52: 2671.45,
+                priceHistory: [3300, 3350, 3400, 3370, 3385, 3380.47]
+            },
+            'NVDA': {
+                name: 'NVIDIA Corporation',
+                price: 485.32,
+                volume: '35.7M',
+                marketCap: '$1.2T',
+                pe: 75.4,
+                pb: 22.1,
+                high52: 502.66,
+                low52: 180.96,
+                priceHistory: [450, 465, 490, 475, 480, 485.32]
+            },
+            'META': {
+                name: 'Meta Platforms Inc.',
+                price: 325.18,
+                volume: '18.9M',
+                marketCap: '$850B',
+                pe: 24.8,
+                pb: 6.7,
+                high52: 384.33,
+                low52: 88.09,
+                priceHistory: [310, 320, 330, 325, 328, 325.18]
+            },
+
+            // Indian Companies
+            'RELIANCE': {
+                name: 'Reliance Industries Ltd.',
+                price: 2485.75,
+                volume: '8.5M',
+                marketCap: '₹16.8L Cr',
+                pe: 24.2,
+                pb: 1.8,
+                high52: 2856.15,
+                low52: 2220.30,
+                priceHistory: [2420, 2450, 2480, 2465, 2475, 2485.75]
+            },
+            'TCS': {
+                name: 'Tata Consultancy Services',
+                price: 3542.80,
+                volume: '2.1M',
+                marketCap: '₹12.9L Cr',
+                pe: 28.5,
+                pb: 12.4,
+                high52: 4043.90,
+                low52: 3001.15,
+                priceHistory: [3480, 3520, 3560, 3535, 3545, 3542.80]
+            },
+            'HDFCBANK': {
+                name: 'HDFC Bank',
+                price: 1642.35,
+                volume: '12.8M',
+                marketCap: '₹12.5L Cr',
+                pe: 19.8,
+                pb: 2.1,
+                high52: 1725.00,
+                low52: 1363.55,
+                priceHistory: [1620, 1635, 1650, 1640, 1645, 1642.35]
+            },
+            'ICICIBANK': {
+                name: 'ICICI Bank',
+                price: 1058.90,
+                volume: '15.2M',
+                marketCap: '₹7.4L Cr',
+                pe: 16.2,
+                pb: 2.8,
+                high52: 1257.80,
+                low52: 881.75,
+                priceHistory: [1040, 1050, 1065, 1055, 1060, 1058.90]
+            },
+            'INFY': {
+                name: 'Infosys',
+                price: 1485.25,
+                volume: '4.8M',
+                marketCap: '₹6.2L Cr',
+                pe: 26.8,
+                pb: 8.1,
+                high52: 1953.90,
+                low52: 1351.65,
+                priceHistory: [1460, 1475, 1490, 1480, 1485, 1485.25]
+            },
+            'HINDUNILVR': {
+                name: 'Hindustan Unilever Ltd.',
+                price: 2654.80,
+                volume: '1.8M',
+                marketCap: '₹6.2L Cr',
+                pe: 58.4,
+                pb: 12.8,
+                high52: 2844.95,
+                low52: 2172.00,
+                priceHistory: [2620, 2640, 2670, 2650, 2660, 2654.80]
+            },
+            'ITC': {
+                name: 'ITC Ltd.',
+                price: 456.75,
+                volume: '18.5M',
+                marketCap: '₹5.7L Cr',
+                pe: 28.2,
+                pb: 4.8,
+                high52: 497.95,
+                low52: 387.60,
+                priceHistory: [445, 450, 460, 455, 458, 456.75]
+            },
+            'SBIN': {
+                name: 'State Bank of India',
+                price: 598.45,
+                volume: '25.8M',
+                marketCap: '₹5.3L Cr',
+                pe: 12.8,
+                pb: 1.2,
+                high52: 912.10,
+                low52: 543.40,
+                priceHistory: [580, 590, 605, 595, 600, 598.45]
+            },
+            'BHARTIARTL': {
+                name: 'Bharti Airtel',
+                price: 1185.60,
+                volume: '8.2M',
+                marketCap: '₹6.8L Cr',
+                pe: 68.5,
+                pb: 3.2,
+                high52: 1349.00,
+                low52: 900.05,
+                priceHistory: [1160, 1175, 1195, 1180, 1188, 1185.60]
+            },
+            'BAJFINANCE': {
+                name: 'Bajaj Finance',
+                price: 6845.30,
+                volume: '1.2M',
+                marketCap: '₹4.2L Cr',
+                pe: 28.8,
+                pb: 4.5,
+                high52: 8192.20,
+                low52: 6187.80,
+                priceHistory: [6750, 6800, 6880, 6820, 6850, 6845.30]
+            },
+            'LIC': {
+                name: 'LIC of India',
+                price: 685.25,
+                volume: '12.5M',
+                marketCap: '₹4.3L Cr',
+                pe: 15.2,
+                pb: 1.1,
+                high52: 740.00,
+                low52: 598.55,
+                priceHistory: [670, 680, 690, 685, 688, 685.25]
+            },
+            'HCLTECH': {
+                name: 'HCL Technologies',
+                price: 1248.90,
+                volume: '3.5M',
+                marketCap: '₹3.4L Cr',
+                pe: 22.5,
+                pb: 4.2,
+                high52: 1463.80,
+                low52: 1128.05,
+                priceHistory: [1230, 1240, 1255, 1245, 1250, 1248.90]
+            },
+            'KOTAKBANK': {
+                name: 'Kotak Mahindra Bank',
+                price: 1785.45,
+                volume: '4.8M',
+                marketCap: '₹3.5L Cr',
+                pe: 16.8,
+                pb: 2.1,
+                high52: 1942.00,
+                low52: 1543.85,
+                priceHistory: [1760, 1775, 1795, 1780, 1788, 1785.45]
+            },
+            'ADANIENT': {
+                name: 'Adani Enterprises',
+                price: 2485.60,
+                volume: '6.2M',
+                marketCap: '₹2.8L Cr',
+                pe: 78.5,
+                pb: 5.8,
+                high52: 4620.00,
+                low52: 2142.70,
+                priceHistory: [2420, 2450, 2500, 2470, 2490, 2485.60]
+            },
+            'ADANIPORTS': {
+                name: 'Adani Ports & SEZ',
+                price: 785.30,
+                volume: '8.5M',
+                marketCap: '₹1.7L Cr',
+                pe: 18.2,
+                pb: 2.8,
+                high52: 1621.40,
+                low52: 704.75,
+                priceHistory: [770, 780, 790, 785, 788, 785.30]
+            },
+            'WIPRO': {
+                name: 'Wipro',
+                price: 425.85,
+                volume: '8.8M',
+                marketCap: '₹2.3L Cr',
+                pe: 24.2,
+                pb: 2.8,
+                high52: 577.05,
+                low52: 385.05,
+                priceHistory: [415, 420, 430, 425, 428, 425.85]
+            },
+            'LT': {
+                name: 'Larsen & Toubro',
+                price: 3485.75,
+                volume: '2.8M',
+                marketCap: '₹4.9L Cr',
+                pe: 28.5,
+                pb: 3.2,
+                high52: 3919.90,
+                low52: 2330.05,
+                priceHistory: [3420, 3450, 3500, 3470, 3490, 3485.75]
+            },
+            'ASIANPAINT': {
+                name: 'Asian Paints',
+                price: 2985.40,
+                volume: '1.5M',
+                marketCap: '₹2.9L Cr',
+                pe: 48.2,
+                pb: 8.5,
+                high52: 3422.95,
+                low52: 2670.05,
+                priceHistory: [2950, 2970, 3000, 2980, 2990, 2985.40]
+            },
+            'AXISBANK': {
+                name: 'Axis Bank',
+                price: 1085.60,
+                volume: '12.5M',
+                marketCap: '₹3.3L Cr',
+                pe: 12.8,
+                pb: 1.8,
+                high52: 1339.65,
+                low52: 1032.15,
+                priceHistory: [1060, 1075, 1095, 1080, 1088, 1085.60]
+            },
+            'MARUTI': {
+                name: 'Maruti Suzuki India',
+                price: 10845.25,
+                volume: '0.8M',
+                marketCap: '₹3.3L Cr',
+                pe: 28.5,
+                pb: 3.8,
+                high52: 13680.00,
+                low52: 9737.05,
+                priceHistory: [10650, 10750, 10900, 10800, 10850, 10845.25]
+            },
+            'TITAN': {
+                name: 'Titan Company',
+                price: 3185.90,
+                volume: '1.8M',
+                marketCap: '₹2.8L Cr',
+                pe: 68.5,
+                pb: 18.2,
+                high52: 3886.95,
+                low52: 2805.00,
+                priceHistory: [3120, 3150, 3200, 3170, 3190, 3185.90]
+            },
+            'SUNPHARMA': {
+                name: 'Sun Pharmaceutical Industries',
+                price: 1485.75,
+                volume: '4.2M',
+                marketCap: '₹3.6L Cr',
+                pe: 38.5,
+                pb: 5.2,
+                high52: 1674.40,
+                low52: 1105.15,
+                priceHistory: [1450, 1470, 1500, 1480, 1490, 1485.75]
+            },
+            'NTPC': {
+                name: 'NTPC Ltd.',
+                price: 285.45,
+                volume: '18.5M',
+                marketCap: '₹2.8L Cr',
+                pe: 15.8,
+                pb: 1.2,
+                high52: 413.95,
+                low52: 242.05,
+                priceHistory: [275, 280, 290, 285, 288, 285.45]
+            },
+            'ULTRACEMCO': {
+                name: 'UltraTech Cement',
+                price: 8485.60,
+                volume: '0.5M',
+                marketCap: '₹2.4L Cr',
+                pe: 28.2,
+                pb: 3.8,
+                high52: 11674.00,
+                low52: 7650.05,
+                priceHistory: [8350, 8420, 8520, 8460, 8490, 8485.60]
+            },
+            'POWERGRID': {
+                name: 'Power Grid Corporation of India',
+                price: 245.85,
+                volume: '12.8M',
+                marketCap: '₹2.3L Cr',
+                pe: 12.5,
+                pb: 1.8,
+                high52: 362.05,
+                low52: 199.25,
+                priceHistory: [240, 243, 248, 245, 247, 245.85]
+            },
+            'MM': {
+                name: 'Mahindra & Mahindra',
+                price: 1685.40,
+                volume: '4.5M',
+                marketCap: '₹2.1L Cr',
+                pe: 28.8,
+                pb: 3.2,
+                high52: 2359.15,
+                low52: 1341.05,
+                priceHistory: [1650, 1670, 1700, 1680, 1690, 1685.40]
+            },
+            'NESTLEIND': {
+                name: 'Nestlé India',
+                price: 2385.75,
+                volume: '0.8M',
+                marketCap: '₹2.3L Cr',
+                pe: 68.5,
+                pb: 28.2,
+                high52: 2769.85,
+                low52: 2044.05,
+                priceHistory: [2350, 2370, 2400, 2380, 2390, 2385.75]
+            },
+            'COALINDIA': {
+                name: 'Coal India Ltd.',
+                price: 385.60,
+                volume: '15.2M',
+                marketCap: '₹2.4L Cr',
+                pe: 8.5,
+                pb: 1.2,
+                high52: 522.15,
+                low52: 315.05,
+                priceHistory: [375, 380, 390, 385, 388, 385.60]
+            },
+            'JSWSTEEL': {
+                name: 'JSW Steel',
+                price: 785.45,
+                volume: '8.5M',
+                marketCap: '₹1.9L Cr',
+                pe: 48.2,
+                pb: 1.8,
+                high52: 968.80,
+                low52: 684.05,
+                priceHistory: [770, 780, 795, 785, 788, 785.45]
+            },
+            'TATASTEEL': {
+                name: 'Tata Steel',
+                price: 125.85,
+                volume: '28.5M',
+                marketCap: '₹1.5L Cr',
+                pe: 68.5,
+                pb: 1.2,
+                high52: 184.60,
+                low52: 114.25,
+                priceHistory: [120, 123, 128, 125, 127, 125.85]
+            },
+            'ADANIGREEN': {
+                name: 'Adani Green Energy',
+                price: 1185.75,
+                volume: '4.2M',
+                marketCap: '₹1.9L Cr',
+                pe: 185.2,
+                pb: 18.5,
+                high52: 2174.10,
+                low52: 856.05,
+                priceHistory: [1150, 1170, 1200, 1180, 1190, 1185.75]
+            },
+            'ADANITRANS': {
+                name: 'Adani Transmission',
+                price: 785.90,
+                volume: '2.8M',
+                marketCap: '₹0.9L Cr',
+                pe: 28.5,
+                pb: 3.8,
+                high52: 1454.95,
+                low52: 685.05,
+                priceHistory: [770, 780, 795, 785, 790, 785.90]
+            },
+            'ATGL': {
+                name: 'Adani Total Gas',
+                price: 685.45,
+                volume: '3.5M',
+                marketCap: '₹0.8L Cr',
+                pe: 48.2,
+                pb: 5.8,
+                high52: 1348.90,
+                low52: 598.05,
+                priceHistory: [670, 680, 695, 685, 688, 685.45]
+            },
+            'BRITANNIA': {
+                name: 'Britannia Industries',
+                price: 4985.60,
+                volume: '0.5M',
+                marketCap: '₹1.2L Cr',
+                pe: 58.5,
+                pb: 18.2,
+                high52: 5664.95,
+                low52: 4347.05,
+                priceHistory: [4920, 4950, 5020, 4970, 4990, 4985.60]
+            },
+            'GRASIM': {
+                name: 'Grasim Industries',
+                price: 2185.75,
+                volume: '2.8M',
+                marketCap: '₹1.5L Cr',
+                pe: 18.5,
+                pb: 1.8,
+                high52: 2877.95,
+                low52: 1765.05,
+                priceHistory: [2150, 2170, 2200, 2180, 2190, 2185.75]
+            },
+            'INDUSINDBK': {
+                name: 'IndusInd Bank',
+                price: 985.45,
+                volume: '6.8M',
+                marketCap: '₹0.8L Cr',
+                pe: 12.8,
+                pb: 1.2,
+                high52: 1694.50,
+                low52: 954.05,
+                priceHistory: [970, 980, 995, 985, 988, 985.45]
+            },
+            'BAJAJFINSV': {
+                name: 'Bajaj Finserv',
+                price: 1585.90,
+                volume: '1.8M',
+                marketCap: '₹2.5L Cr',
+                pe: 28.5,
+                pb: 3.2,
+                high52: 1849.90,
+                low52: 1419.05,
+                priceHistory: [1550, 1570, 1600, 1580, 1590, 1585.90]
+            },
+            'TECHM': {
+                name: 'Tech Mahindra',
+                price: 1185.75,
+                volume: '4.2M',
+                marketCap: '₹1.2L Cr',
+                pe: 48.2,
+                pb: 3.8,
+                high52: 1707.35,
+                low52: 1098.15,
+                priceHistory: [1150, 1170, 1200, 1180, 1190, 1185.75]
+            },
+            'CIPLA': {
+                name: 'Cipla',
+                price: 1485.60,
+                volume: '2.5M',
+                marketCap: '₹1.2L Cr',
+                pe: 28.5,
+                pb: 3.2,
+                high52: 1702.05,
+                low52: 1132.15,
+                priceHistory: [1450, 1470, 1500, 1480, 1490, 1485.60]
+            },
+            'DRREDDY': {
+                name: 'Dr. Reddy\'s Laboratories',
+                price: 5985.45,
+                volume: '0.8M',
+                marketCap: '₹1.0L Cr',
+                pe: 18.5,
+                pb: 2.8,
+                high52: 7025.00,
+                low52: 4777.05,
+                priceHistory: [5850, 5920, 6020, 5970, 5990, 5985.45]
+            },
+            'HDFCLIFE': {
+                name: 'HDFC Life Insurance',
+                price: 685.90,
+                volume: '4.8M',
+                marketCap: '₹1.5L Cr',
+                pe: 28.5,
+                pb: 3.8,
+                high52: 737.95,
+                low52: 511.05,
+                priceHistory: [670, 680, 695, 685, 690, 685.90]
+            },
+            'SBILIFE': {
+                name: 'SBI Life Insurance',
+                price: 1385.75,
+                volume: '2.2M',
+                marketCap: '₹1.4L Cr',
+                pe: 18.2,
+                pb: 2.8,
+                high52: 1622.00,
+                low52: 1094.05,
+                priceHistory: [1350, 1370, 1400, 1380, 1390, 1385.75]
+            },
+            'DIVISLAB': {
+                name: 'Divi\'s Laboratories',
+                price: 3985.60,
+                volume: '0.5M',
+                marketCap: '₹1.1L Cr',
+                pe: 48.5,
+                pb: 8.2,
+                high52: 5940.00,
+                low52: 3307.05,
+                priceHistory: [3920, 3950, 4020, 3970, 3990, 3985.60]
+            },
+            'EICHERMOT': {
+                name: 'Eicher Motors',
+                price: 4185.45,
+                volume: '0.8M',
+                marketCap: '₹1.1L Cr',
+                pe: 38.5,
+                pb: 5.8,
+                high52: 4884.50,
+                low52: 3275.05,
+                priceHistory: [4120, 4150, 4220, 4170, 4190, 4185.45]
+            },
+            'BPCL': {
+                name: 'Bharat Petroleum Corporation Ltd.',
+                price: 285.75,
+                volume: '12.5M',
+                marketCap: '₹0.6L Cr',
+                pe: 8.5,
+                pb: 0.8,
+                high52: 416.80,
+                low52: 275.05,
+                priceHistory: [275, 280, 290, 285, 288, 285.75]
+            },
+            'HEROMOTOCO': {
+                name: 'Hero MotoCorp',
+                price: 4585.90,
+                volume: '0.8M',
+                marketCap: '₹0.9L Cr',
+                pe: 28.5,
+                pb: 3.8,
+                high52: 5774.90,
+                low52: 2762.05,
+                priceHistory: [4520, 4550, 4620, 4570, 4590, 4585.90]
+            },
+            'HINDZINC': {
+                name: 'Hindustan Zinc',
+                price: 385.45,
+                volume: '8.5M',
+                marketCap: '₹1.6L Cr',
+                pe: 18.2,
+                pb: 1.8,
+                high52: 511.00,
+                low52: 298.05,
+                priceHistory: [375, 380, 390, 385, 388, 385.45]
+            },
+            'VEDL': {
+                name: 'Vedanta Ltd.',
+                price: 485.60,
+                volume: '15.2M',
+                marketCap: '₹1.8L Cr',
+                pe: 28.5,
+                pb: 1.2,
+                high52: 511.95,
+                low52: 208.05,
+                priceHistory: [470, 480, 495, 485, 488, 485.60]
+            },
+            'DLF': {
+                name: 'DLF Ltd.',
+                price: 785.90,
+                volume: '8.8M',
+                marketCap: '₹1.9L Cr',
+                pe: 68.5,
+                pb: 1.8,
+                high52: 876.95,
+                low52: 385.05,
+                priceHistory: [770, 780, 795, 785, 790, 785.90]
+            },
+            'PIDILITIND': {
+                name: 'Pidilite Industries',
+                price: 2985.75,
+                volume: '1.2M',
+                marketCap: '₹1.4L Cr',
+                pe: 68.5,
+                pb: 18.2,
+                high52: 3472.95,
+                low52: 2296.05,
+                priceHistory: [2920, 2950, 3020, 2970, 2990, 2985.75]
+            }
+        };
+
+        // Initialize app
+        document.addEventListener('DOMContentLoaded', function() {
+            updateWatchlistDisplay();
+            updatePortfolioDisplay();
+            initializeParticles();
+            startParticleAnimation();
+            
+            // Update buy quantity total
+            document.getElementById('buyQuantity').addEventListener('input', updateBuyTotal);
+        });
+
+        // Enhanced particle system
+        function initializeParticles() {
+            const particleCount = 50;
+            const animatedBg = document.getElementById('animatedBg');
+            
+            for (let i = 0; i < particleCount; i++) {
+                createParticle();
+            }
+        }
+
+        function createParticle() {
+            const particle = document.createElement('div');
+            particle.className = 'particle';
+            
+            const size = Math.random() * 6 + 2;
+            const startX = Math.random() * window.innerWidth;
+            const duration = Math.random() * 10 + 15;
+            const delay = Math.random() * 5;
+            
+            particle.style.width = size + 'px';
+            particle.style.height = size + 'px';
+            particle.style.left = startX + 'px';
+            particle.style.animationDuration = duration + 's';
+            particle.style.animationDelay = delay + 's';
+            particle.style.animation = `particleFloat ${duration}s linear infinite`;
+            
+            document.getElementById('animatedBg').appendChild(particle);
+            
+            // Remove particle after animation
+            setTimeout(() => {
+                if (particle.parentNode) {
+                    particle.parentNode.removeChild(particle);
+                    createParticle(); // Create new particle
+                }
+            }, (duration + delay) * 1000);
+        }
+
+        function startParticleAnimation() {
+            setInterval(() => {
+                if (Math.random() < 0.3) {
+                    createParticle();
+                }
+            }, 1000);
+        }
+
+        // Tab switching
+        function showTab(tabName) {
+            // Hide all tabs
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            // Remove active class from all nav tabs
+            document.querySelectorAll('.nav-tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            // Show selected tab
+            document.getElementById(tabName + '-tab').classList.add('active');
+            
+            // Add active class to clicked nav tab
+            event.target.classList.add('active');
+        }
+
+        // Handle Enter key in search input
+        function handleEnter(event) {
+            if (event.key === 'Enter') {
+                searchStock();
+            }
+        }
+
+        // Enhanced Google search function
+        function searchGoogle() {
+            const query = document.getElementById('stockSymbol').value.trim();
+            
+            if (!query) {
+                alert('Please enter a search term');
+                return;
+            }
+
+            // Show Google results section
+            document.getElementById('googleResults').style.display = 'block';
+            
+            // Simulate Google search results (in real implementation, you'd use Google Custom Search API)
+            const mockResults = [
+                {
+                    title: `${query} Stock Price Today - Real Time Quote`,
+                    snippet: `Get the latest ${query} stock price, news, analysis, and financial information. Track real-time market data and make informed investment decisions.`,
+                    url: `https://finance.yahoo.com/quote/${query.toUpperCase()}`
+                },
+                {
+                    title: `${query} Company Profile & Financial Data`,
+                    snippet: `Comprehensive financial data, earnings reports, and company analysis for ${query}. View historical performance and future projections.`,
+                    url: `https://www.marketwatch.com/investing/stock/${query.toLowerCase()}`
+                },
+                {
+                    title: `${query} News & Market Updates`,
+                    snippet: `Latest news, market analysis, and expert opinions on ${query}. Stay updated with breaking news and market trends.`,
+                    url: `https://www.cnbc.com/quotes/${query.toUpperCase()}`
+                },
+                {
+                    title: `${query} Technical Analysis & Charts`,
+                    snippet: `Advanced charting tools and technical analysis for ${query}. View price patterns, indicators, and trading signals.`,
+                    url: `https://www.tradingview.com/symbols/${query.toUpperCase()}`
+                },
+                {
+                    title: `${query} Investor Relations & SEC Filings`,
+                    snippet: `Official investor relations page with SEC filings, earnings reports, and corporate announcements for ${query}.`,
+                    url: `https://investor.${query.toLowerCase()}.com`
+                }
+            ];
+
+            displayGoogleResults(mockResults);
+        }
+
+        function displayGoogleResults(results) {
+            const container = document.getElementById('googleResultsContent');
+            
+            container.innerHTML = results.map(result => `
+                <div class="result-item">
+                    <a href="${result.url}" target="_blank" class="result-title">${result.title}</a>
+                    <div class="result-snippet">${result.snippet}</div>
+                    <div class="result-url">${result.url}</div>
+                </div>
+            `).join('');
+        }
+
+        // Enhanced search stock function
+        function searchStock() {
+            const input = document.getElementById('stockSymbol').value.toUpperCase().trim();
+            
+            if (!input) {
+                alert('Please enter a stock symbol or company name');
+                return;
+            }
+
+            // Show loading
+            document.getElementById('search-text').style.display = 'none';
+            document.getElementById('search-loading').style.display = 'inline-block';
+
+            // Hide Google results when searching for stock data
+            document.getElementById('googleResults').style.display = 'none';
+
+            // Try to find stock by symbol or name
+            let symbol = input;
+            let stockData = stockDatabase[symbol];
+            
+            // If not found by symbol, try to find by company name
+            if (!stockData) {
+                for (const [key, value] of Object.entries(stockDatabase)) {
+                    if (value.name.toLowerCase().includes(input.toLowerCase()) || 
+                        input.toLowerCase().includes(value.name.toLowerCase().split(' ')[0].toLowerCase())) {
+                        symbol = key;
+                        stockData = value;
+                        break;
+                    }
+                }
+            }
+
+            // Simulate API call delay
+            setTimeout(() => {
+                if (stockData) {
+                    displayStockDetails(symbol, stockData);
+                } else {
+                    alert('Stock not found. Try symbols like RELIANCE, TCS, HDFC, AAPL, GOOGL, etc.');
+                }
+
+                // Hide loading
+                document.getElementById('search-text').style.display = 'inline';
+                document.getElementById('search-loading').style.display = 'none';
+            }, 1500);
+        }
+
+        // Display stock details
+        function displayStockDetails(symbol, data) {
+            currentStock = { symbol, ...data };
+            
+            document.getElementById('stockName').textContent = data.name;
+            
+            // Format price based on currency
+            const priceDisplay = data.marketCap.includes('₹') ? `₹${data.price}` : `$${data.price}`;
+            document.getElementById('stockPrice').textContent = priceDisplay;
+            
+            document.getElementById('stockVolume').textContent = data.volume;
+            document.getElementById('stockMarketCap').textContent = data.marketCap;
+            document.getElementById('stockPE').textContent = data.pe;
+            document.getElementById('stockPB').textContent = data.pb;
+            
+            // Format 52-week high/low based on currency
+            const high52Display = data.marketCap.includes('₹') ? `₹${data.high52}` : `$${data.high52}`;
+            const low52Display = data.marketCap.includes('₹') ? `₹${data.low52}` : `$${data.low52}`;
+            document.getElementById('stock52High').textContent = high52Display;
+            document.getElementById('stock52Low').textContent = low52Display;
+            
+            document.getElementById('stockDetails').style.display = 'block';
+            
+            // Update buy total
+            updateBuyTotal();
+            
+            // Create price chart
+            createPriceChart(data.priceHistory);
+        }
+
+        // Enhanced price chart
+        function createPriceChart(priceHistory) {
+            const ctx = document.getElementById('priceChart').getContext('2d');
+            
+            if (priceChart) {
+                priceChart.destroy();
+            }
+            
+            priceChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: ['5 days ago', '4 days ago', '3 days ago', '2 days ago', 'Yesterday', 'Today'],
+                    datasets: [{
+                        label: 'Stock Price',
+                        data: priceHistory,
+                        borderColor: '#4ecdc4',
+                        backgroundColor: 'rgba(78, 205, 196, 0.1)',
+                        borderWidth: 4,
+                        fill: true,
+                        tension: 0.4,
+                        pointBackgroundColor: '#4ecdc4',
+                        pointBorderColor: '#ffffff',
+                        pointBorderWidth: 3,
+                        pointRadius: 6,
+                        pointHoverRadius: 8
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: false,
+                            grid: {
+                                color: 'rgba(0,0,0,0.1)'
+                            },
+                            ticks: {
+                                callback: function(value) {
+                                    // Format based on current stock currency
+                                    const currency = currentStock && currentStock.marketCap.includes('₹') ? '₹' : '$';
+                                    return currency + value.toFixed(2);
+                                }
+                            }
+                        },
+                        x: {
+                            grid: {
+                                color: 'rgba(0,0,0,0.1)'
+                            }
+                        }
+                    },
+                    interaction: {
+                        intersect: false,
+                        mode: 'index'
+                    }
+                }
+            });
+        }
+
+        // Update buy total
+        function updateBuyTotal() {
+            if (currentStock) {
+                const quantity = parseInt(document.getElementById('buyQuantity').value) || 1;
+                const total = (currentStock.price * quantity).toFixed(2);
+                const currency = currentStock.marketCap.includes('₹') ? '₹' : '$';
+                document.getElementById('totalCost').textContent = total;
+                
+                // Update the currency symbol in the display
+                const totalElement = document.querySelector('.buy-section span');
+                totalElement.innerHTML = `Total: ${currency}<span id="totalCost">${total}</span>`;
+            }
+        }
+
+        // Add to watchlist
+        function addToWatchlist() {
+            if (!currentStock) return;
+            
+            const exists = watchlist.find(stock => stock.symbol === currentStock.symbol);
+            if (exists) {
+                alert('Stock already in watchlist!');
+                return;
+            }
+            
+            watchlist.push({
+                symbol: currentStock.symbol,
+                name: currentStock.name,
+                price: currentStock.price,
+                currency: currentStock.marketCap.includes('₹') ? '₹' : '$'
+            });
+            
+            localStorage.setItem('watchlist', JSON.stringify(watchlist));
+            updateWatchlistDisplay();
+            
+            // Add success animation
+            const btn = event.target;
+            btn.style.background = 'linear-gradient(45deg, #4ecdc4, #44a08d)';
+            btn.textContent = '✓ Added!';
+            setTimeout(() => {
+                btn.style.background = 'linear-gradient(45deg, #ff6b6b, #ee5a24)';
+                btn.textContent = '+ Add to Watchlist';
+            }, 2000);
+        }
+
+        // Buy stock
+        function buyStock() {
+            if (!currentStock) return;
+            
+            const quantity = parseInt(document.getElementById('buyQuantity').value) || 1;
+            const totalCost = currentStock.price * quantity;
+            
+            const existingStock = portfolio.find(stock => stock.symbol === currentStock.symbol);
+            
+            if (existingStock) {
+                existingStock.quantity += quantity;
+                existingStock.totalCost += totalCost;
+                existingStock.avgPrice = existingStock.totalCost / existingStock.quantity;
+            } else {
+                portfolio.push({
+                    symbol: currentStock.symbol,
+                    name: currentStock.name,
+                    quantity: quantity,
+                    avgPrice: currentStock.price,
+                    totalCost: totalCost,
+                    currentPrice: currentStock.price,
+                    currency: currentStock.marketCap.includes('₹') ? '₹' : '$'
+                });
+            }
+            
+            localStorage.setItem('portfolio', JSON.stringify(portfolio));
+            updatePortfolioDisplay();
+            
+            // Add success animation
+            const btn = event.target;
+            btn.style.background = 'linear-gradient(45deg, #4ecdc4, #44a08d)';
+            btn.textContent = '✓ Purchased!';
+            setTimeout(() => {
+                btn.style.background = 'linear-gradient(45deg, #ff6b6b, #ee5a24)';
+                btn.textContent = 'Buy Stock';
+            }, 2000);
+        }
+
+        // Update watchlist display
+        function updateWatchlistDisplay() {
+            const container = document.getElementById('watchlistItems');
+            
+            if (watchlist.length === 0) {
+                container.innerHTML = `
+                    <div class="stock-item">
+                        <div>
+                            <div class="stock-name">No stocks in watchlist</div>
+                        </div>
+                    </div>
+                `;
+                return;
+            }
+            
+            container.innerHTML = watchlist.map((stock, index) => `
+                <div class="stock-item">
+                    <div>
+                        <div class="stock-name">${stock.symbol} - ${stock.name}</div>
+                        <div class="stock-price-small">${stock.currency || '$'}${stock.price}</div>
+                    </div>
+                    <button class="remove-btn" onclick="removeFromWatchlist(${index})">Remove</button>
+                </div>
+            `).join('');
+        }
+
+        // Update portfolio display
+        function updatePortfolioDisplay() {
+            const container = document.getElementById('portfolioItems');
+            
+            if (portfolio.length === 0) {
+                container.innerHTML = `
+                    <div class="stock-item">
+                        <div>
+                            <div class="stock-name">No stocks in portfolio</div>
+                        </div>
+                    </div>
+                `;
+                document.getElementById('portfolioValue').textContent = '$0.00';
+                return;
+            }
+            
+            let totalValue = 0;
+            let portfolioCurrency = '$'; // Default currency
+            
+            container.innerHTML = portfolio.map((stock, index) => {
+                const currentValue = stock.quantity * stock.currentPrice;
+                const gainLoss = currentValue - stock.totalCost;
+                const gainLossPercent = ((gainLoss / stock.totalCost) * 100).toFixed(2);
+                totalValue += currentValue;
+                
+                // Use the stock's currency
+                const currency = stock.currency || '$';
+                if (index === 0) portfolioCurrency = currency;
+                
+                return `
+                    <div class="stock-item">
+                        <div>
+                            <div class="stock-name">${stock.symbol} - ${stock.name}</div>
+                            <div style="color: rgba(255,255,255,0.8); font-size: 0.9rem;">
+                                ${stock.quantity} shares @ ${currency}${stock.avgPrice.toFixed(2)} avg
+                            </div>
+                            <div class="stock-price-small">
+                                Current: ${currency}${stock.currentPrice} 
+                                <span style="color: ${gainLoss >= 0 ? '#4ecdc4' : '#ff4757'}">
+                                    (${gainLoss >= 0 ? '+' : ''}${currency}${gainLoss.toFixed(2)} | ${gainLossPercent}%)
+                                </span>
+                            </div>
+                        </div>
+                        <button class="remove-btn" onclick="removeFromPortfolio(${index})">Sell All</button>
+                    </div>
+                `;
+            }).join('');
+            
+            document.getElementById('portfolioValue').textContent = `${portfolioCurrency}${totalValue.toFixed(2)}`;
+        }
+
+        // Remove from watchlist
+        function removeFromWatchlist(index) {
+            watchlist.splice(index, 1);
+            localStorage.setItem('watchlist', JSON.stringify(watchlist));
+            updateWatchlistDisplay();
+        }
+
+        // Remove from portfolio
+        function removeFromPortfolio(index) {
+            if (confirm('Are you sure you want to sell all shares of this stock?')) {
+                portfolio.splice(index, 1);
+                localStorage.setItem('portfolio', JSON.stringify(portfolio));
+                updatePortfolioDisplay();
+            }
+        }
+
+        // Enhanced mouse interaction with floating shapes and wave effects
+        document.addEventListener('mousemove', function(e) {
+            const shapes = document.querySelectorAll('.floating-shape');
+            const mouseX = e.clientX;
+            const mouseY = e.clientY;
+            
+            shapes.forEach((shape, index) => {
+                const rect = shape.getBoundingClientRect();
+                const shapeX = rect.left + rect.width / 2;
+                const shapeY = rect.top + rect.height / 2;
+                
+                const distance = Math.sqrt(Math.pow(mouseX - shapeX, 2) + Math.pow(mouseY - shapeY, 2));
+                
+                if (distance < 150) {
+                    const force = (150 - distance) / 150;
+                    const angle = Math.atan2(mouseY - shapeY, mouseX - shapeX);
+                    const moveX = Math.cos(angle) * force * 30;
+                    const moveY = Math.sin(angle) * force * 30;
+                    
+                    shape.style.transform = `translate(${-moveX}px, ${-moveY}px) scale(${1 + force * 0.3}) rotate(${force * 45}deg)`;
+                    shape.style.background = `linear-gradient(45deg, rgba(255, 255, 255, ${0.1 + force * 0.2}), rgba(255, 255, 255, ${0.05 + force * 0.1}))`;
+                    
+                    // Create wave effect
+                    if (Math.random() < 0.1) {
+                        createWaveEffect(shapeX, shapeY);
+                    }
+                } else {
+                    shape.style.transform = 'translate(0px, 0px) scale(1) rotate(0deg)';
+                    shape.style.background = 'linear-gradient(45deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05))';
+                }
+            });
+        });
+
+        function createWaveEffect(x, y) {
+            const wave = document.createElement('div');
+            wave.className = 'wave';
+            wave.style.left = (x - 100) + 'px';
+            wave.style.top = (y - 100) + 'px';
+            wave.style.pointerEvents = 'none';
+            
+            document.getElementById('animatedBg').appendChild(wave);
+            
+            setTimeout(() => {
+                if (wave.parentNode) {
+                    wave.parentNode.removeChild(wave);
+                }
+            }, 4000);
+        }
+
+        // Click effects on interactive elements
+        document.addEventListener('click', function(e) {
+            if (e.target.classList.contains('search-btn') || 
+                e.target.classList.contains('add-btn') || 
+                e.target.classList.contains('buy-btn') ||
+                e.target.classList.contains('nav-tab')) {
+                
+                createClickEffect(e.clientX, e.clientY);
+            }
+        });
+
+        function createClickEffect(x, y) {
+            const effect = document.createElement('div');
+            effect.style.position = 'fixed';
+            effect.style.left = x + 'px';
+            effect.style.top = y + 'px';
+            effect.style.width = '20px';
+            effect.style.height = '20px';
+            effect.style.background = 'rgba(78, 205, 196, 0.6)';
+            effect.style.borderRadius = '50%';
+            effect.style.transform = 'translate(-50%, -50%)';
+            effect.style.pointerEvents = 'none';
+            effect.style.zIndex = '1000';
+            effect.style.animation = 'pulse 0.6s ease-out';
+            
+            document.body.appendChild(effect);
+            
+            setTimeout(() => {
+                if (effect.parentNode) {
+                    effect.parentNode.removeChild(effect);
+                }
+            }, 600);
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>My Projects</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Fira+Code&display=swap');
+
+    body {
+      margin: 0;
+      padding: 40px;
+      background: #0d081b;
+      font-family: 'Fira Code', monospace;
+      color: #fff;
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 30px;
+      color: #64ffda;
+    }
+
+    .projects {
+      display: flex;
+      flex-direction: column;
+      gap: 30px;
+    }
+
+    .project {
+      background: #1e1e1e;
+      border: 1px solid #64ffda33;
+      border-radius: 12px;
+      padding: 20px;
+      box-shadow: 0 5px 20px rgba(0, 255, 204, 0.05);
+      transition: transform 0.3s;
+    }
+
+    .project:hover {
+      transform: translateY(-5px);
+    }
+
+    .project h3 {
+      margin-top: 0;
+      color: #64ffda;
+    }
+
+    .toggle {
+      margin-top: 10px;
+      background: #64ffda;
+      color: #000;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 25px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: 1s ease;
+    }
+
+    .toggle:hover {
+      background: #9900ff;
+    }
+
+    .code-box {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.5s ease;
+      background: #18283a;
+      border-radius: 8px;
+      margin-top: 15px;
+      padding: 0 15px;
+    }
+
+    input[type="checkbox"] {
+      display: none;
+    }
+
+    input[type="checkbox"]:checked + label + .code-box {
+      max-height: 500px;
+      padding: 15px;
+    }
+
+    pre {
+      margin: 0;
+      color: #00ff9d;
+      white-space: pre-wrap;
+      font-size: 15px;
+    }
+    
+    .guide-toggle {
+      background: #ff8c42;
+    }
+
+    .guide-toggle:hover {
+      background: #ff7b1f;
+    }
+
+    .guide-box {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.5s ease, padding 0.5s ease;
+      background: #0d1b2a;
+      border-radius: 8px;
+      margin-top: 15px;
+      padding: 0 15px;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>🚀 My Top Python Projects 🚀</h1>
+
+  <div class="projects">
+
+    <!-- Project 1 -->
+    <div class="project">
+      <h3>Project 1: File Sorter</h3>
+      <input type="checkbox" id="code1" />
+      <label for="code1" class="toggle">Show Code</label>
+      <div class="code-box">
+        <pre>
+#creating file sorter 
+file_path = input("Enter the folder path: ")
+user_input = input("enter your Rename file name:")
+if user_input == None:
+        user_input = ""
+else:
+     pass
+import os
+files=os.listdir(file_path)
+files.sort()
+for index, filename in enumerate(files,start=0):
+        old_path=os.path.join(file_path,filename)
+        _, ext = os.path.splitext(filename)
+        newname = f"{user_input}_{index}{ext}"
+        new_path=os.path.join(file_path,newname)
+        os.rename(old_path,new_path)
+        print(f"Renamed {filename} to {newname}")
+
+        </pre>
+      </div>
+    </div>
+
+    <!-- Project 2 -->
+    <div class="project">
+      <h3>Project 2: PDF Merger</h3>
+      <input type="checkbox" id="code2" />
+      <label for="code2" class="toggle">Show Code</label>
+      <div class="code-box">
+        <pre>
+import PyPDF2 as pdf
+import os
+
+user = input("Enter the the file path of the pdf file: ")
+if os.path.exists(user):
+    pass
+else:
+    print("File does not exist")
+    exit()
+pdf_path_1 = "D:\O Kaaj Ar Jinis\chrome download\Documents\jui_upload_file.pdf"
+pdf_path_2 = "D:\O Kaaj Ar Jinis\chrome download\Documents\sample_2.pdf"
+writer = pdf.PdfWriter()
+if os.path.exists(pdf_path_1):
+    for pdf_path in [pdf_path_1, pdf_path_2]:
+         writer.append(pdf_path)
+writer.write("D:\O Kaaj Ar Jinis\chrome download\Documents\merged.pdf")
+writer.close()
+
+        </pre>
+      </div>
+    </div>
+
+    <!-- Project 3 -->
+    <div class="project">
+      <h3>Project 3: Coming Soon</h3>
+      <input type="checkbox" id="code3" />
+      <label for="code3" class="toggle">Show Code</label>
+      <div class="code-box">
+        <pre>
+Coming Soon
+        </pre>
+      </div>
+    </div>
+
+    <!-- Project 4 -->
+    <div class="project">
+      <h3>Project 4: Coming Soon</h3>
+      <input type="checkbox" id="code4" />
+      <label for="code4" class="toggle">Show Code</label>
+      <div class="code-box">
+        <pre>
+Coming Soon
+        </pre>
+      </div>
+    </div>
+
+    <!-- Project 5 -->
+    <div class="project">
+      <h3>Project 5: Coming Soon</h3>
+      <input type="checkbox" id="code5" />
+      <label for="code5" class="toggle">Show Code</label>
+      <div class="code-box">
+        <pre>
+Coming Soon
+        </pre>
+      </div>
+    </div>
+
+    <!-- Project 6 -->
+    <div class="project">
+      <h3>Project 6: Coming Soon</h3>
+      <input type="checkbox" id="code6" />
+      <label for="code6" class="toggle">Show Code</label>
+      <div class="code-box">
+        <pre>
+Coming Soon
+        </pre>
+      </div>
+    </div>
+
+    <!-- Project 7 -->
+    <div class="project">
+      <h3>Project 7: Coming Soon</h3>
+      <input type="checkbox" id="code7" />
+      <label for="code7" class="toggle">Show Code</label>
+      <div class="code-box">
+        <pre>
+Coming Soon
+        </pre>
+      </div>
+    </div>
+
+    <!-- Project 8 -->
+    <div class="project">
+      <h3>Project 8: Coming Soon</h3>
+      <input type="checkbox" id="code8" />
+      <label for="code8" class="toggle">Show Code</label>
+      <div class="code-box">
+        <pre>
+Coming Soon
+        </pre>
+      </div>
+    </div>
+
+    <!-- Project 9 -->
+    <div class="project">
+      <h3>Project 9: Coming Soon</h3>
+      <input type="checkbox" id="code9" />
+      <label for="code9" class="toggle">Show Code</label>
+      <div class="code-box">
+        <pre>
+Coming Soon
+        </pre>
+      </div>
+    </div>
+
+    <!-- Project 10 -->
+    <div class="project">
+      <h3>Project 10: Coming Soon</h3>
+      <input type="checkbox" id="code10" />
+      <label for="code10" class="toggle">Show Code</label>
+      <div class="code-box">
+        <pre>
+Coming Soon
+        </pre>
+      </div>
+    </div>
+
+</body>
+</html>
