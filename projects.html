@@ -76,7 +76,7 @@
     }
 
     input[type="checkbox"]:checked + label + .code-box {
-      max-height: 50000;
+      max-height: 50000px;
       padding: 15px;
     }
 
@@ -352,54 +352,85 @@ if __name__ == "__main__":
 
     <!-- Project 5 -->
     <div class="project">
-      <h3>Project 5: Stone Paper Sessior Game</h3>
+      <h3>Project 5: Pdf Password Cracker</h3>
       <input type="checkbox" id="code5" />
       <label for="code5" class="toggle">Show Code</label>
       <div class="code-box">
         <pre>
-# stone_paper_scissor.py
-import random
+from PyPDF2 import PdfReader
+import os 
+import requests
+url_1 = "https://gitlab.com/kalilinux/packages/seclists/-/raw/kali/master/Passwords/Common-Credentials/10-million-password-list-top-10000.txt?inline=false"
+url_2= "https://gitlab.com/kalilinux/packages/seclists/-/raw/kali/master/Passwords/Common-Credentials/10-million-password-list-top-1000000.txt?inline=false"  
+url_3 = "https://github.com/brannondorsey/naive-hashcat/releases/download/data/rockyou.txt"
+print("intencity 1 : 10000 Combination of Password\nintencity 2 : 1-Million Combination of Password \nintencity 3 : 30-Million Combination of Password\nonly enter the intencity number like 1,2,3")
+intencity = int(input("Enter the intencity of the attack : "))
+if intencity == 1:
+    url = url_1
+    print("Intencity 1 Selected")
+elif intencity == 2:
+    url = url_2
+    print("Intencity 2 Selected")
+elif intencity == 3:
+    url = url_3
+    print("Intencity 3 Selected")
+else:
+    print("Invalid intencity selected. Please choose 1, 2, or 3.")
+    exit(1)
+try:
+    # Use a non-routable IP address to simulate "no network"
+    requests.get("https://www.google.com", timeout=3)
+    pass
+except requests.exceptions.ConnectionError as e:
+    print("⚠️ Simulated Offline Error: No Internet Connection")
+    print(f"Plese check your network connection. \nError: {e}")
+    exit(1)
+print("Downloading password list...")
+response = requests.get(url)
+if response.status_code != 200:
+    print("Failed to download the password list.")
+    exit(1)
+with open("pass_list.txt", "wb") as f:
+    f.write(response.content)
+print("Download complete!")
 
-print("Welcome to the game \nType 'start' to start\nType 'quit' to quit")
+password_list_path = "pass_list.txt" 
+pdf_path = input("Enter The file Path : ")
+if not os.path.isfile(pdf_path):
+    print("Please provide a valid PDF file path.")
+    exit(1)
 
-def game():
-    list1 = ["stone", "paper", "scissor"]
-    
-    while True:
-        print("Choose one of these: stone, paper, scissor")
-        user = input("Enter your choice (or type 'quit' to exit): ").lower()
-        
-        if user == "quit":
-            print("Thanks for playing!")
-            break
-        
-        if user not in list1:
-            print("Invalid input. Please choose stone, paper or scissor.")
+def crack_pdf(pdf_path, password_list_path):
+    with open(password_list_path, 'r', encoding='utf-8', errors='ignore') as file:
+        passwords = [line.strip() for line in file]
+
+    for pwd in passwords:
+        try:
+            reader = PdfReader(pdf_path)
+
+            if not reader.is_encrypted:
+                print("PDF is not encrypted.")
+                return None
+
+            result = reader.decrypt(pwd)
+            print(f"Trying '{pwd}' \nResult: {result}")
+
+            if result in [1, 2]:
+                print(f"[✔] Password found: {pwd}")
+                return pwd
+            else:
+                print(f"Pass Not Matched: {pwd}")
+
+        except Exception as e:
+            print(f"Error with '{pwd}': {e}")
             continue
-        
-        computer = random.choice(list1)
-        print(f"Computer chose: {computer}")
-        
-        if user == computer:
-            print("Draw")
-        elif (user == "stone" and computer == "scissor") or \
-             (user == "paper" and computer == "stone") or \
-             (user == "scissor" and computer == "paper"):
-            print("You win!")
-        else:
-            print("Computer wins!")
 
-# Main loop
-while True:
-    inp = input("Type 'start' to play or 'quit' to exit: ").lower()
-    if inp not in ["start", "quit"]:
-        print("Invalid input. Please type 'start' to play or 'quit' to exit.")
-        continue
-    if inp == "start":
-        game()
-    elif inp == "quit":
-        print("Thanks for playing!")
-        break
+    print("[X] Password not found in list.")
+    print("Please Select Higher Intencity")
+    return None
+
+crack_pdf(pdf_path, password_list_path)
+os.remove(password_list_path)  # Clean up the downloaded password list
         </pre>
       </div>
     </div>
